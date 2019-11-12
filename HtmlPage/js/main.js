@@ -78,18 +78,30 @@
 		Radio Btn
 	--------------------- */
     $(".filter-left .category-filter .category-option .co-item label").on('click', function () {
-        $(".filter-left .category-filter .category-option .co-item label").removeClass('active');
-        $(this).addClass('active');
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        }
+        else {
+            $(this).addClass('active');
+        }
     });
 
     $(".filter-left .rating-filter .rating-option .ro-item label").on('click', function () {
-        $(".filter-left .rating-filter .rating-option .ro-item label").removeClass('active');
-        $(this).addClass('active');
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        }
+        else {
+            $(this).addClass('active');
+        }
     });
 
     $(".filter-left .distance-filter .distance-option .do-item label").on('click', function () {
-        $(".filter-left .distance-filter .distance-option .do-item label").removeClass('active');
-        $(this).addClass('active');
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        }
+        else {
+            $(this).addClass('active');
+        }
     });
 
 })(jQuery);
