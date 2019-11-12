@@ -1107,10 +1107,12 @@ ol {
 .map {
 	position: relative;
 	height: 657px;
+	top: 120px;
+	text-align: center;
 }
 
 .map iframe {
-	width: 100%;
+	width: 90%;
 }
 
 .map img {
@@ -2114,7 +2116,7 @@ ol {
 
 @media only screen and (min-width: 1350px) and (max-width: 1920px) {
 	.header-section .logo {
-		margin-right: 180px;
+		margin-right: 100px;
 	}
 }
 
@@ -2305,9 +2307,11 @@ ol {
 	.header-section .header-right-warp .header-right .user-access {
 		display: block;
 		padding: 10px 0;
+		text-align: right;
+		margin-right: 0px;
 	}
 	.header-section .header-right-warp .header-right .user-access a {
-		padding: 0;
+		padding: 1;
 	}
 	.header-section .header-right-warp .header-right .primary-btn {
 		display: inline-block;
@@ -2335,6 +2339,8 @@ ol {
 	.slicknav_nav a {
 		padding: 12px 25px;
 		margin: 0;
+		text-align: right;
+		margin-right: 25px;
 	}
 	.slicknav_nav a:hover {
 		border-radius: 0;
