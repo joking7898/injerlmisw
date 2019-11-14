@@ -2,9 +2,8 @@ var express = require('express')
 var router = express.Router()
 var mysql = require('mysql');
 var ejs = require('ejs');
-/*
-밑의 데이터베이스 연결은 알아서 뚝딱뚞딲 고쳐서 쓰시오.
-*/
+
+//밑 코드 데이터베이스 연결
 var mysqlcon = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -19,23 +18,23 @@ router.use(bodyparser.urlencoded({extended:false}))
 mysqlcon.connect(function(err){
 })
 
-/*
- * router.get뒤에 있는 주소로 접속하면 뒤의 콜백함수가 출력됨.
- 원래 페이지 출력은 여기 콜백함수안에서 이루어져야 함. 하지만 제대로 출력되지 않아 문제가 되는 중.
- */
-// router.get("/htmlpage/listings.html",function (req,res){
-//     //res.sendfile(__dirname + "/htmlpage/listings.html")
-//     /*
-//     쿼리를 떄리려면 밑처럼 때리면 됨.
-//     json으로 데이터베이스에서 받아온 값을 페이지에 건네줄 수 있지만, 이상망측한 문제가 있고, 다들 ejs 기능으로 값 전달하라고 함.
-//     */
-//     mysqlcon.query("select * from member_db",function(err,rows){
-//         if(err)
-//             console.log(err)
-//         res.json({documents:rows})
-//         //res.end()
-//     })
-// })
+//페이지 출력 여기서 해주라는 요청.
+router.get("/views/listings.ejs",function (req,res){
+    mysqlcon.query("select * from spot_db",function(err,results) {
+    if (!err){
+       // console.log('The solution is: ', rows);
+       // log로 체크하는구문.
+        res.render('listings.ejs', {
+        result: results    
+        // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
+      });
+    }
+    else{
+        console.log('Error while performing Query.', err);
+    }
+    })
+    //res.redirect("/views/listing.ejs")
+})
 /**
  * 홈페이지에 url없이 접속시 index url로 리다이렉트
  */
