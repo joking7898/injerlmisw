@@ -1615,7 +1615,7 @@ ol {
 }
 
 .intro-share {
-	text-align: right;
+	text-align: center;
 	margin-top: 8px;
 }
 
@@ -1631,7 +1631,6 @@ ol {
 	letter-spacing: 0.2px;
 	background: #FF5581;
 	padding: 7px 22px;
-	margin-left: 14px;
 }
 
 .intro-share .share-btn a.share {
@@ -2573,3 +2572,21 @@ ol {
 #submit {
 	color:white
 }
+
+/*리뷰 영역*/
+.share-btn {position:relative;}
+#review_f{
+  width:335px;height:201px;background: wheat;
+  position:absolute;left:150px;
+  top:-500px;z-index:15;padding:40px 0 0 30px;
+}
+.rating, .content{position:relative;}
+.rating label, .content label{position:absolute;top:3px;left:1px;}
+
+#rating, #content{
+  width:170px;height:33px;line-height:33px;
+  padding-left:3px;border:1px solid #aaa;margin:2px 0;
+}
+
+.regist_btn{position:absolute;top:39px;right:40px;}
+.review_close_btn{position:absolute;bottom:20px;right:22px;}
