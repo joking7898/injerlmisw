@@ -7,7 +7,7 @@
         <meta name="keywords" content="Yoga, unica, creative, html">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>인절미BS | 관광지</title>
+        <title>Local Directory | Template</title>
 
         <!-- Google Font -->
         <link
@@ -35,30 +35,30 @@
         <header class="header-section listings">
             <div class="container-fluid">
                 <div class="logo">
-                    <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                    <a href="./index.ejs"><img src="img/logo.png" alt=""></a>
                 </div>
                 <nav class="main-menu mobile-menu">
                     <ul>
                         <li>
-                            <a href="index.html">홈</a>
+                            <a href="index.ejs">홈</a>
                         </li>
                         <!-- <li>
-                            <a href="how-it-works.html">Explore</a>
+                            <a href="how-it-works.ejs">Explore</a>
                         </li> -->
                         <li class="active">
-                            <a href="listings.html">관광지</a>
+                            <a href="listings.ejs">관광지</a>
                         </li>
                         <!-- <li>
-                            <a href="blog.html">News</a>
+                            <a href="blog.ejs">News</a>
                         </li> -->
                         <li>
-                            <a href="contact.html">문의</a>
+                            <a href="contact.ejs">문의</a>
                         </li>
                     </ul>
                 </nav>
                 <div class="header-right">
                     <div class="user-access">
-                        <a href="./Register/Login.html" class="primary-btn">로그인</a>
+                        <a href="./Register/Login.ejs" class="primary-btn">로그인</a>
                     </div>
                     <!-- <a href="#" class="primary-btn">Add Listing</a> -->
                 </div>
@@ -72,7 +72,7 @@
             <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d202404.22056510206!2d126.84912352641236!3d37.56528899085878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca28b61c565cd%3A0x858aedb4e4ea83eb!2z7ISc7Jq47Yq567OE7Iuc!5e0!3m2!1sko!2skr!4v1573526085048!5m2!1sko!2skr"
                 height="550"
-                style="border:1"
+                style="border:1;"
                 allowfullscreen=""></iframe>
         </div>
         <!-- Map Section End -->
@@ -97,23 +97,15 @@
                             <div class="location-search">
                                 <h5>위치</h5>
                                 <select class="lo-search">
-                                    <option>서울</option>
-                                    <option>부산</option>
-                                    <option>대구</option>
-                                    <option>인천</option>
-                                    <option>광주</option>
-                                    <option>대전</option>
-                                    <option>울산</option>
-                                    <option>세종</option>
-                                    <option>경기</option>
-                                    <option>강원</option>
-                                    <option>충북</option>
-                                    <option>충남</option>
-                                    <option>전북</option>
-                                    <option>전남</option>
-                                    <option>경북</option>
-                                    <option>경남</option>
-                                    <option>제주</option>
+                                    <option>서울시</option>
+                                    <option>강원도</option>
+                                    <option>경기도</option>
+                                    <option>경상북도</option>
+                                    <option>경상남도</option>
+                                    <option>전라북도</option>
+                                    <option>전라남도</option>
+                                    <option>충청북도</option>
+                                    <option>충청남도</option>
                                 </select>
                             </div>
                             <button type="submit">검색</button>
@@ -240,12 +232,13 @@
                                 </form>
                             </div>
                             <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.html">
+                                <a class="arrange-items" href="single-listing.ejs">
                                     <div class="arrange-pic">
                                         <img src="img/arrange/arrange-1.jpg" alt="">
                                         <div class="rating">4.9</div>
                                         <div class="tic-text">Restaurants</div>
                                     </div>
+
                                     <div class="arrange-text">
                                         <h5>New Place Restaurant</h5>
                                         <span>Main Road , No 25/11</span>
@@ -255,7 +248,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.html">
+                                <a class="arrange-items" href="single-listing.ejs">
                                     <div class="arrange-pic">
                                         <img src="img/arrange/arrange-2.jpg" alt="">
                                         <div class="rating">4.9</div>
@@ -270,7 +263,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.html">
+                                <a class="arrange-items" href="single-listing.ejs">
                                     <div class="arrange-pic">
                                         <img src="img/arrange/arrange-3.jpg" alt="">
                                         <div class="rating">4.9</div>
@@ -285,7 +278,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.html">
+                                <a class="arrange-items" href="single-listing.ejs">
                                     <div class="arrange-pic">
                                         <img src="img/arrange/arrange-4.jpg" alt="">
                                         <div class="rating">4.9</div>
@@ -300,7 +293,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.html">
+                                <a class="arrange-items" href="single-listing.ejs">
                                     <div class="arrange-pic">
                                         <img src="img/arrange/arrange-5.jpg" alt="">
                                         <div class="rating">4.9</div>
@@ -315,7 +308,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.html">
+                                <a class="arrange-items" href="single-listing.ejs">
                                     <div class="arrange-pic">
                                         <img src="img/arrange/arrange-6.jpg" alt="">
                                         <div class="rating">4.9</div>
@@ -330,7 +323,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.html">
+                                <a class="arrange-items" href="single-listing.ejs">
                                     <div class="arrange-pic">
                                         <img src="img/arrange/arrange-7.jpg" alt="">
                                         <div class="rating">4.9</div>
@@ -345,7 +338,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.html">
+                                <a class="arrange-items" href="single-listing.ejs">
                                     <div class="arrange-pic">
                                         <img src="img/arrange/arrange-8.jpg" alt="">
                                         <div class="rating">4.9</div>
@@ -360,7 +353,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.html">
+                                <a class="arrange-items" href="single-listing.ejs">
                                     <div class="arrange-pic">
                                         <img src="img/arrange/arrange-9.jpg" alt="">
                                         <div class="rating">4.9</div>
@@ -374,6 +367,29 @@
                                     </div>
                                 </a>
                             </div>
+                            <!-- 아래 표 부분이 db에서 붙여버린것. 이런형식으로 db에서 가져오면됨. -->
+                            <div >
+                            <table>
+                                <thead>
+                                     <tr>
+                                       <th>sid</th>
+                                       <th>sname</th>
+                                       <th>saddress</th>
+                                       <th>sinfo</th>
+                                     </tr>
+                                   </thead>
+                                   <tbody id="listings">
+                                     <% for (var index in result) { %>  
+                                       <tr>
+                                         <td>
+                                             <%= result[index].title%>
+                                         </td>
+                                       </tr>
+                                       <% } %>
+                                   </tbody>
+                                 </table> 
+                                 </div>
+                                 
                             <div class="col-lg-12 text-right">
                                 <div class="pagination-num">
                                     <a href="#">01</a>
@@ -419,25 +435,87 @@
                 <div class="row">
                     <div class="col-lg-3 col-sm-6">
                         <div class="footer-widget">
-                            <h4>사이트 맵</h4>
+                            <h4>Usefull Links</h4>
                             <ul>
-                                <li>홈</li>
-                                <li>관광지</li>
-                                <li>문의</li>
+                                <li>About us</li>
+                                <li>Testimonials</li>
+                                <li>How it works</li>
+                                <li>Create an account</li>
+                                <li>Our Services</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
                         <div class="footer-widget">
-                            <h4>카테고리</h4>
+                            <h4>Categories</h4>
                             <ul>
-                                <li>전체</li>
-                                <li>자연</li>
-                                <li>문화관광</li>
-                                <li>테마관광지</li>
-                                <li>도보</li>
-                                <li>레저/체험</li>>
+                                <li>Hotels</li>
+                                <li>Restaurant</li>
+                                <li>Spa & resorts</li>
+                                <li>Concert & Events</li>
+                                <li>Bars & Pubs</li>
                             </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="footer-widget">
+                            <h4>Usefull Links</h4>
+                            <ul>
+                                <li>About us</li>
+                                <li>Testimonials</li>
+                                <li>How it works</li>
+                                <li>Create an account</li>
+                                <li>Our Services</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="footer-widget">
+                            <h4>From the Blog</h4>
+                            <div class="single-blog">
+                                <div class="blog-pic">
+                                    <img src="img/f-blog-1.jpg" alt="">
+                                </div>
+                                <div class="blog-text">
+                                    <h6>10 Best clubs in town</h6>
+                                    <span>March 27, 2019</span>
+                                </div>
+                            </div>
+                            <div class="single-blog">
+                                <div class="blog-pic">
+                                    <img src="img/f-blog-2.jpg" alt="">
+                                </div>
+                                <div class="blog-text">
+                                    <h6>10 Best clubs in town</h6>
+                                    <span>March 27, 2019</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row footer-bottom">
+                    <div class="col-lg-5 order-2 order-lg-1">
+                        <div class="copyright">
+                            <p class="text-white">
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY
+                                3.0. -->
+                                Copyright &copy;<script>
+                                    document.write(new Date().getFullYear());
+                                </script>
+                                All rights reserved | This template is made with
+                                <i class="fa fa-heart" aria-hidden="true"></i>
+                                by
+                                <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY
+                                3.0. -->
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 text-center text-lg-right order-1 order-lg-2">
+                        <div class="footer-menu">
+                            <a href="index.ejs">홈</a>
+                            <a href="listings.ejs">관광지</a>
+                            <a href="contact.ejs">문의</a>
                         </div>
                     </div>
                 </div>
@@ -455,4 +533,5 @@
         <script src="js/mixitup.min.js"></script>
         <script src="js/main.js"></script>
     </body>
+
 </html>

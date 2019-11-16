@@ -22,7 +22,7 @@ mysqlcon.connect(function(err){
 
 //페이지 출력 여기서 해주라는 요청.
 router.get("/views/listings.ejs",function (req,res){
-    mysqlcon.query("select * from spot_db",function(err,results) {
+    mysqlcon.query("select * from attraction",function(err,results) {
     if (!err){
        // console.log('The solution is: ', rows);
        // log로 체크하는구문.
