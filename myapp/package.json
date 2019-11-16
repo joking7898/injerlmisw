@@ -4,6 +4,7 @@
   "description": "",
   "main": "PageRouter.js",
   "dependencies": {
+    "aws-sdk": "^2.573.0",
     "default": "^0.1.1",
     "ejs": "^2.7.1",
     "engine": "^1.0.0",

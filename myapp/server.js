@@ -19,23 +19,24 @@ var ejs = require('ejs');
 mysql 연결하는 단계. 호스트, 유저, 비밀번호, 사용 데이터베이스는 본인 깔려있는 데이터베이스에 맞게 알아서 맞추면 됨.
 사실 db연결을 여기서 할 필요는 업음, 이건 DB기능 테스트할때 만들어본거. 지워도 됨. DB연결부는 Pagerouter.js에 몰빵하시오.
  */
+/*
 var mysqlcon = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'dlswjfal123!',
     database: 'injerlme'
-});
+});*/
 Eapp.use(morgan('short'))
 Eapp.use(bodyparser.urlencoded({extended:false}))
 Eapp.use(PageRouter);
 Eapp.use(express.static('./public'))
-
+/*
 mysqlcon.connect(function(err){
     if(err)
     // 확인하고 싶은 사항이 있다면, 알고리즘 문제 풀 때 printf로 체크하듯이, console.log로 확인하면 됨.
     console.log("error with connecting to database: " + err);
 });
-
+*/
 /*
 밑의 Eapp.use는 없애도 서버는 정상작동함. 현재 유일한 역할은 url에 따라 페이지 보여주는 것.
 문제가 되는 부분은, PageRouter에서도 request를 받아 처리하는 부분이 있다는 것.
