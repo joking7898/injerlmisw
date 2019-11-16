@@ -1015,19 +1015,25 @@ ol {
 
 .footer-section .footer-widget {
 	margin-bottom: 40px;
+	position: relative;
+	left: 70%;
 }
 
 .footer-section .footer-widget h4 {
+	position: relative;
 	color: #fff;
 	font-weight: 700;
 	margin-bottom: 56px;
+	left: 70%;
 }
 
 .footer-section .footer-widget ul li {
+	position: relative;
 	list-style: none;
 	color: #8e8e8e;
 	font-size: 16px;
 	line-height: 36px;
+	left: 70%;
 }
 
 .footer-section .footer-widget .single-blog {
@@ -1112,7 +1118,7 @@ ol {
 }
 
 .map iframe {
-	width: 90%;
+	width: 76%;
 }
 
 .map img {
@@ -2562,4 +2568,8 @@ ol {
 	.howit-img.last-img {
 		margin-left: 0;
 	}
+}
+
+#submit {
+	color:white
 }
