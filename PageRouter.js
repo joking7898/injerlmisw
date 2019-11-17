@@ -46,9 +46,10 @@ router.get("/views/listings.ejs",function (req,res){
     })
     //res.redirect("/views/listing.ejs")
 })
-router.get("/views/CategorySelection",function (req,res){
-    res.redirect("/views/index.ejs")
-})
+// router.get("/views/CategorySelection",function (req,res){
+//     console.log( );
+//     res.redirect("/views/index.ejs")
+// })
 /**
  * 홈페이지에 url없이 접속시 index url로 리다이렉트
  */

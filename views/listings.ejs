@@ -82,7 +82,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form action="CategorySelection" class="filter-search">
+                        <form class="filter-search">
                             <div class="category-search">
                                 <h5>카테고리</h5>
                                 <select class="ca-search" id = "AttractionCategory">
@@ -108,7 +108,7 @@
                                     <option>충청남도</option>
                                 </select>
                             </div>
-                            <button type = "submit">검색</button>
+                            <button id = "button1" type = "submit">검색</button>
                         </form>
                     </div>
                 </div>
@@ -413,6 +413,15 @@
         <script src="js/jquery.nice-select.min.js"></script>
         <script src="js/mixitup.min.js"></script>
         <script src="js/main.js"></script>
+        <script>
+                $('#button1').click(function () {
+                    console.log('listings.ejs?category=' + $('#category option:selected').text() + '&location=' + $('#location option:selected').text());
+            
+                    location.href = 'http://localhost:3000/views/listings.ejs?category=' + $('#AttractionCategory option:selected').text() + '&location=' + $('#AttractionLocation option:selected').text();
+            
+                });
+        </script>
     </body>
-
+    
+    
 </html>
