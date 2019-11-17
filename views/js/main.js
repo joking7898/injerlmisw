@@ -78,18 +78,57 @@
 		Radio Btn
 	--------------------- */
     $(".filter-left .category-filter .category-option .co-item label").on('click', function () {
-        $(".filter-left .category-filter .category-option .co-item label").removeClass('active');
-        $(this).addClass('active');
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        }
+        else {
+            $(this).addClass('active');
+        }
     });
 
     $(".filter-left .rating-filter .rating-option .ro-item label").on('click', function () {
-        $(".filter-left .rating-filter .rating-option .ro-item label").removeClass('active');
-        $(this).addClass('active');
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        }
+        else {
+            $(this).addClass('active');
+        }
     });
 
     $(".filter-left .distance-filter .distance-option .do-item label").on('click', function () {
-        $(".filter-left .distance-filter .distance-option .do-item label").removeClass('active');
-        $(this).addClass('active');
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        }
+        else {
+            $(this).addClass('active');
+        }
     });
+
+    /*-------------------
+		리뷰 작성
+    --------------------- */
+        /*로그인 버튼*/
+        $(".share-btn>a").on("click",function(){
+          $("#review_f").animate({top:"20px"},500);
+          return false;
+        });
+      
+        $(".share-btn .review_close_btn, input[alt='등록버튼']")
+        .on("click",function(){
+          $("#review_f").animate({top:"-500px"},500);
+          return false;
+        });
+      
+        $("#rating, #content").on("focus",function(){
+           $(this).prev().css("left","-9999px");
+        });
+      
+        $("#rating, #content").on("blur",function(){
+           if($(this).val()=="") $(this).prev().css("left","2px");
+        });
+
+        function showReview() {
+            window.open("./review.html", "a", "width=400, height=300, left=100, top=50");
+        }
 
 })(jQuery);
