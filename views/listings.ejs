@@ -7,7 +7,7 @@
         <meta name="keywords" content="Yoga, unica, creative, html">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Local Directory | Template</title>
+        <title>인절미BS | 관광지</title>
 
         <!-- Google Font -->
         <link
@@ -82,10 +82,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form action="#" class="filter-search">
+                        <form action="CategorySelection" class="filter-search">
                             <div class="category-search">
                                 <h5>카테고리</h5>
-                                <select class="ca-search">
+                                <select class="ca-search" id="AttractionCategory1">
                                     <option>전체</option>
                                     <option>자연</option>
                                     <option>문화관광</option>
@@ -96,19 +96,28 @@
                             </div>
                             <div class="location-search">
                                 <h5>위치</h5>
-                                <select class="lo-search">
-                                    <option>서울시</option>
-                                    <option>강원도</option>
-                                    <option>경기도</option>
-                                    <option>경상북도</option>
-                                    <option>경상남도</option>
-                                    <option>전라북도</option>
-                                    <option>전라남도</option>
-                                    <option>충청북도</option>
-                                    <option>충청남도</option>
+                                <select class="lo-search"  id="AttractionLocation1">
+                                    <option>전체</option>
+                                    <option>서울</option>
+                                    <option>부산</option>
+                                    <option>대구</option>
+                                    <option>인천</option>
+                                    <option>광주</option>
+                                    <option>대전</option>
+                                    <option>울산</option>
+                                    <option>세종</option>
+                                    <option>경기</option>
+                                    <option>강원</option>
+                                    <option>충북</option>
+                                    <option>충남</option>
+                                    <option>전북</option>
+                                    <option>전남</option>
+                                    <option>경북</option>
+                                    <option>경남</option>
+                                    <option>제주</option>
                                 </select>
                             </div>
-                            <button type="submit">검색</button>
+                            <button type="submit1" id="submit1">검색</button>
                         </form>
                     </div>
                 </div>
@@ -220,7 +229,7 @@
                             type="radio"> <label>3.0-10.0km</label> </div> </div> </div> -->
                         </div>
                     </div>
-                    <div class="col-lg-9">
+                    <div class="col-lg-9" id="viewtable">
                         <div class="row">
                             <div class="col-lg-12">
                                 <form action="#" class="arrange-select">
@@ -231,128 +240,8 @@
                                     </select>
                                 </form>
                             </div>
-                            <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.ejs">
-                                    <div class="arrange-pic">
-                                        <img src="img/arrange/arrange-1.jpg" alt="">
-                                        <div class="rating">4.9</div>
-                                        <div class="tic-text">Restaurants</div>
-                                    </div>
-
-                                    <div class="arrange-text">
-                                        <h5>New Place Restaurant</h5>
-                                        <span>Main Road , No 25/11</span>
-                                        <p>Fusce urna quam, euismod sit</p>
-                                        <div class="open tomorrow">Opens Tomorow at 10am</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.ejs">
-                                    <div class="arrange-pic">
-                                        <img src="img/arrange/arrange-2.jpg" alt="">
-                                        <div class="rating">4.9</div>
-                                        <div class="tic-text">Restaurants</div>
-                                    </div>
-                                    <div class="arrange-text">
-                                        <h5>Grand Bistro</h5>
-                                        <span>Main Road , No 25/11</span>
-                                        <p>Euismod sit amet mollis.</p>
-                                        <div class="open">Open Until 3am</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.ejs">
-                                    <div class="arrange-pic">
-                                        <img src="img/arrange/arrange-3.jpg" alt="">
-                                        <div class="rating">4.9</div>
-                                        <div class="tic-text">Restaurants</div>
-                                    </div>
-                                    <div class="arrange-text">
-                                        <h5>Pizza Oven</h5>
-                                        <span>Main Road , No 25/11</span>
-                                        <p>Euismod sit amet mollis.</p>
-                                        <div class="open">Open Until 3am</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.ejs">
-                                    <div class="arrange-pic">
-                                        <img src="img/arrange/arrange-4.jpg" alt="">
-                                        <div class="rating">4.9</div>
-                                        <div class="tic-text">Restaurants</div>
-                                    </div>
-                                    <div class="arrange-text">
-                                        <h5>Petit Place Cafe</h5>
-                                        <span>Main Road , No 25/11</span>
-                                        <p>Fusce urna quam, euismod.</p>
-                                        <div class="open tomorrow">Opens Tomorow at 10am</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.ejs">
-                                    <div class="arrange-pic">
-                                        <img src="img/arrange/arrange-5.jpg" alt="">
-                                        <div class="rating">4.9</div>
-                                        <div class="tic-text">Restaurants</div>
-                                    </div>
-                                    <div class="arrange-text">
-                                        <h5>Green Pub</h5>
-                                        <span>Main Road , No 25/11</span>
-                                        <p>Urna quam, euismod sit amet.</p>
-                                        <div class="open">Open Until 3am</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.ejs">
-                                    <div class="arrange-pic">
-                                        <img src="img/arrange/arrange-6.jpg" alt="">
-                                        <div class="rating">4.9</div>
-                                        <div class="tic-text">Restaurants</div>
-                                    </div>
-                                    <div class="arrange-text">
-                                        <h5>Cosmo Pub</h5>
-                                        <span>Main Road , No 25/11</span>
-                                        <p>Urna quam, euismod sit amet.</p>
-                                        <div class="open">Open Until 3am</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.ejs">
-                                    <div class="arrange-pic">
-                                        <img src="img/arrange/arrange-7.jpg" alt="">
-                                        <div class="rating">4.9</div>
-                                        <div class="tic-text">Restaurants</div>
-                                    </div>
-                                    <div class="arrange-text">
-                                        <h5>Trocadero Restaurant</h5>
-                                        <span>Main Road , No 25/11</span>
-                                        <p>Euismod sit amet mollis.</p>
-                                        <div class="open closed">Closed Now</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-sm-6">
-                                <a class="arrange-items" href="single-listing.ejs">
-                                    <div class="arrange-pic">
-                                        <img src="img/arrange/arrange-8.jpg" alt="">
-                                        <div class="rating">4.9</div>
-                                        <div class="tic-text">Restaurants</div>
-                                    </div>
-                                    <div class="arrange-text">
-                                        <h5>Pizza Bistro</h5>
-                                        <span>Main Road , No 25/11</span>
-                                        <p>Fusce urna quam, euismod.</p>
-                                        <div class="open">Open Until 3am</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-sm-6">
+                            <% for (var index in result){ if (index >8) break;%>
+                            <div class="col-lg-4 col-sm-6" >
                                 <a class="arrange-items" href="single-listing.ejs">
                                     <div class="arrange-pic">
                                         <img src="img/arrange/arrange-9.jpg" alt="">
@@ -360,16 +249,17 @@
                                         <div class="tic-text">Restaurants</div>
                                     </div>
                                     <div class="arrange-text">
-                                        <h5>Ciao Pub</h5>
-                                        <span>Main Road , No 25/11</span>
-                                        <p>Fusce urna quam, euismod.</p>
-                                        <div class="open">Open Until 3am</div>
+                                        <h5> <%= result[index].title%> </h5>
+                                        <span><%= result[index].address%></span>
+                                        <p>요금 : <%= (result[index].fee ==0)?'무료': result[index].fee%></p>
+                                        <div class="open"><%= result[index].opentime%></div>
                                     </div>
                                 </a>
                             </div>
+                            <%}%>
                             <!-- 아래 표 부분이 db에서 붙여버린것. 이런형식으로 db에서 가져오면됨. -->
                             <div >
-                            <table>
+                            <!-- <table>
                                 <thead>
                                      <tr>
                                        <th>sid</th>
@@ -387,7 +277,7 @@
                                        </tr>
                                        <% } %>
                                    </tbody>
-                                 </table> 
+                                 </table>  -->
                                  </div>
                                  
                             <div class="col-lg-12 text-right">
@@ -435,87 +325,25 @@
                 <div class="row">
                     <div class="col-lg-3 col-sm-6">
                         <div class="footer-widget">
-                            <h4>Usefull Links</h4>
+                            <h4>사이트 맵</h4>
                             <ul>
-                                <li>About us</li>
-                                <li>Testimonials</li>
-                                <li>How it works</li>
-                                <li>Create an account</li>
-                                <li>Our Services</li>
+                                <li>홈</li>
+                                <li>관광지</li>
+                                <li>문의</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
                         <div class="footer-widget">
-                            <h4>Categories</h4>
+                            <h4>카테고리</h4>
                             <ul>
-                                <li>Hotels</li>
-                                <li>Restaurant</li>
-                                <li>Spa & resorts</li>
-                                <li>Concert & Events</li>
-                                <li>Bars & Pubs</li>
+                                <li>전체</li>
+                                <li>자연</li>
+                                <li>문화관광</li>
+                                <li>테마관광지</li>
+                                <li>도보</li>
+                                <li>레저/체험</li>>
                             </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-widget">
-                            <h4>Usefull Links</h4>
-                            <ul>
-                                <li>About us</li>
-                                <li>Testimonials</li>
-                                <li>How it works</li>
-                                <li>Create an account</li>
-                                <li>Our Services</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-widget">
-                            <h4>From the Blog</h4>
-                            <div class="single-blog">
-                                <div class="blog-pic">
-                                    <img src="img/f-blog-1.jpg" alt="">
-                                </div>
-                                <div class="blog-text">
-                                    <h6>10 Best clubs in town</h6>
-                                    <span>March 27, 2019</span>
-                                </div>
-                            </div>
-                            <div class="single-blog">
-                                <div class="blog-pic">
-                                    <img src="img/f-blog-2.jpg" alt="">
-                                </div>
-                                <div class="blog-text">
-                                    <h6>10 Best clubs in town</h6>
-                                    <span>March 27, 2019</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row footer-bottom">
-                    <div class="col-lg-5 order-2 order-lg-1">
-                        <div class="copyright">
-                            <p class="text-white">
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY
-                                3.0. -->
-                                Copyright &copy;<script>
-                                    document.write(new Date().getFullYear());
-                                </script>
-                                All rights reserved | This template is made with
-                                <i class="fa fa-heart" aria-hidden="true"></i>
-                                by
-                                <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY
-                                3.0. -->
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-7 text-center text-lg-right order-1 order-lg-2">
-                        <div class="footer-menu">
-                            <a href="index.ejs">홈</a>
-                            <a href="listings.ejs">관광지</a>
-                            <a href="contact.ejs">문의</a>
                         </div>
                     </div>
                 </div>
