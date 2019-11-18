@@ -74,7 +74,7 @@
                             <form action="#" class="filter-search">
                                 <div class="category-search">
                                     <h5>카테고리</h5>
-                                    <select class="ca-search">
+                                    <select class="ca-search" id="AttractionCategory">
                                         <option>전체</option>
                                         <option>자연</option>
                                         <option>문화관광</option>
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="location-search">
                                     <h5>위치</h5>
-                                    <select class="lo-search">
+                                    <select class="lo-search"  id="AttractionLocation">
                                         <option>전체</option>
                                         <option>서울</option>
                                         <option>부산</option>
@@ -106,7 +106,7 @@
                                         <option>제주</option>
                                     </select>
                                 </div>
-                                <button type="submit"><a href="./listings.html" id="submit">검색</a></button>
+                                <button type="submit" id="submit">검색</button>
                             </form>
                         </div>
                     </div>
@@ -293,6 +293,29 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- 아래 표 부분이 db에서 붙여버린것. 이런형식으로 db에서 가져오면됨. -->
+                        <div >
+                            <table>
+                                <thead>
+                                     <tr>
+                                       <th>categori</th>
+                                       <th>count</th>
+                                     </tr>
+                                   </thead>
+                                   <tbody id="listings">
+                                     <% for (var index in result) { %>  
+                                       <tr>
+                                         <td>
+                                             <%= result[index].category%>
+                                         </td>
+                                         <td>
+                                            <%= result[index].count%>
+                                        </td>
+                                       </tr>
+                                       <% } %>
+                                   </tbody>
+                                 </table> 
+                                 </div>
                     </div>
                 </div>
             </div>

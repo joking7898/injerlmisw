@@ -130,5 +130,18 @@
         function showReview() {
             window.open("./review.html", "a", "width=400, height=300, left=100, top=50");
         }
+        
+        $('#submit').click(function () {
+            //console.log('listings.ejs?category=' + $('#AttractionCategory option:selected').text() + '&location=' + $('#AttractionLocation option:selected').text());
 
+            location.href = './listings.ejs?category=' + $('#AttractionCategory option:selected').text() + '&location=' + $('#AttractionLocation option:selected').text();
+
+        });
+        $('#submit1').click(function () {
+            //console.log('listings.ejs?category=' + $('#AttractionCategory1 option:selected').text() + '&location=' + $('#AttractionLocation1 option:selected').text());
+
+            location.href = './listings.ejs?category=' + $('#AttractionCategory1 option:selected').text() + '&location=' + $('#AttractionLocation2 option:selected').text();
+
+        });
+        
 })(jQuery);

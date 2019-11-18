@@ -85,7 +85,7 @@
                         <form action="CategorySelection" class="filter-search">
                             <div class="category-search">
                                 <h5>카테고리</h5>
-                                <select class="ca-search" id = "AttractionCategory">
+                                <select class="ca-search" id="AttractionCategory1">
                                     <option>전체</option>
                                     <option>자연</option>
                                     <option>문화관광</option>
@@ -94,9 +94,9 @@
                                     <option>레저/체험</option>
                                 </select>
                             </div>
-                            <div class="location-search" id = "AttractionLocation">
+                            <div class="location-search">
                                 <h5>위치</h5>
-                                <select class="lo-search">
+                                <select class="lo-search"  id="AttractionLocation1">
                                     <option>전체</option>
                                     <option>서울</option>
                                     <option>부산</option>
@@ -117,7 +117,7 @@
                                     <option>제주</option>
                                 </select>
                             </div>
-                            <button type = "submit">검색</button>
+                            <button type="submit1" id="submit1">검색</button>
                         </form>
                     </div>
                 </div>
@@ -229,7 +229,7 @@
                             type="radio"> <label>3.0-10.0km</label> </div> </div> </div> -->
                         </div>
                     </div>
-                    <div class="col-lg-9">
+                    <div class="col-lg-9" id="viewtable">
                         <div class="row">
                             <div class="col-lg-12">
                                 <form action="#" class="arrange-select">
@@ -241,7 +241,7 @@
                                 </form>
                             </div>
                             <% for (var index in result){ if (index >8) break;%>
-                            <div class="col-lg-4 col-sm-6">
+                            <div class="col-lg-4 col-sm-6" >
                                 <a class="arrange-items" href="single-listing.ejs">
                                     <div class="arrange-pic">
                                         <img src="img/arrange/arrange-9.jpg" alt="">
