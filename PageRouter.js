@@ -83,7 +83,7 @@ router.get("/views/listings.ejs",function (req,res){
 
 // 홈페이지에 url없이 접속시 index url로 리다이렉트
 router.get("/",function (req,res){
-    res.redirect("/views/index.ejs#?")
+    res.redirect("/views/index.ejs?#") // 이 주소로 해야지 정상 작동되는거 구현완료.
 })
 
 //index.html 페이지를 띄우는 건 사실 server.js가 아니라 여기 이부분에서 처리되어야 함. 밑은 페이지 출력을 구현하려던 흔적
