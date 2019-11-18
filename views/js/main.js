@@ -155,13 +155,14 @@
         ).text() + '&location=' + $('#AttractionLocation option:selected').text();
 
     });
-    $("#submit1").click(function () {
-        // console.log('listings.ejs?category=' + $('#AttractionCategory1
-        // option:selected').text() + '&location=' + $('#AttractionLocation1
+
+    $("#submit2").click(function () {
+        // console.log('listings.ejs?category=' + $('#AttractionCategory
+        // option:selected').text() + '&location=' + $('#AttractionLocation
         // option:selected').text());
 
         location.href = './listings.ejs?category=' + $(
-            '#AttractionCategory1 option:selected'
+            '#AttractionCategory2 option:selected'
         ).text() + '&location=' + $('#AttractionLocation2 option:selected').text();
 
     });

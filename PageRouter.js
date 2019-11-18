@@ -6,7 +6,7 @@ var qs = require('querystring')
 var url = require('url')
 //밑 코드 데이터베이스 연결
 var mysqlcon = mysql.createConnection({
-    host: 'gottraction.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com',
+    host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com',
     user: 'admin',
     password: 'freehongkong',
     database: 'gottraction'
@@ -83,7 +83,7 @@ router.get("/views/listings.ejs",function (req,res){
 
 // 홈페이지에 url없이 접속시 index url로 리다이렉트
 router.get("/",function (req,res){
-    res.redirect("/views/index.ejs#?")
+    res.redirect("/views/index.ejs?#?")
 })
 
 //index.html 페이지를 띄우는 건 사실 server.js가 아니라 여기 이부분에서 처리되어야 함. 밑은 페이지 출력을 구현하려던 흔적
