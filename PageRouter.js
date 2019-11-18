@@ -4,20 +4,19 @@ var mysql = require('mysql');
 var ejs = require('ejs');
 var qs = require('querystring')
 var url = require('url')
+
 //밑 코드 데이터베이스 연결
 var mysqlcon = mysql.createConnection({
-    host: 'gottraction.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com',
-    user: 'admin',
-    password: 'freehongkong',
-    database: 'gottraction'
+    host: 'gottraction.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com', user: 'admin', password: 'freehongkong', database: 'gottraction'
     //port: '3306'
 });
-var fs= require('fs')
+var fs = require('fs')
 var ejs = require('ejs')
 var bodyparser = require('body-parser')
-router.use(bodyparser.urlencoded({extended:false}))
+router.use(bodyparser.urlencoded({extended: false}))
 
-mysqlcon.connect(function(err){
+mysqlcon.connect(function (err) {
+    console.log("Ekrqnr", err);
 })
 
 //index.ejs 관련 sql
@@ -93,4 +92,47 @@ router.get("/html/index.html",function (req,res){
     res.end(fs.readFileSync(__dirname + "/htmlpage/index.html"));
 })
 */
+
+//작성 내용 mysql에 넣기
+
+router.post("/register", function (req, res, next) {
+    console.log(req.body);
+    var name_r = req.body.name_r;
+    var address_r = req.body.address_r;
+    var phone_r = req.body.phone_r;
+    var fee_r = req.body.fee_r;
+    var time_r = req.body.time_r;
+    var cate_r = req.body.cate_r;
+    var loca_r = req.body.loca_r;
+    var content_r = req.body.content_r;
+    var picture_r = req.body.picture_r;
+
+
+    mysqlcon.query(
+        `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture) VALUES (?,?,?,?,?,?,?,?,?)`,
+        [req.body.name_r, req.body.address_r, req.body.phone_r, req.body.fee_r, req.body.time_r, 
+        req.body.cate_r, req.body.loca_r, req.body.content_r, req.body.picture_r], 
+        function (error, result) {
+            if (error) {
+                console.log("데이터베이스 입력 에러...");
+                throw error;
+            }
+            // response.writeHead(302, {Location: `/?id=${result.insertId}`});
+            // response.end();
+        }
+    )
+
+    // var regist_body = '';
+    // request.on('data', function (data) {
+    //     regist_body = regist_body + data;
+    // });
+    // request.on('end', function () {
+    //     var post = qs.parse(regist_body);
+        
+    // });
+
+
+    res.redirect("/views/listings.ejs")
+})
+
 module.exports = router;
