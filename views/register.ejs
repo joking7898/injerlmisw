@@ -7,7 +7,7 @@
         <meta name="keywords" content="Yoga, unica, creative, html">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Local Directory | Template</title>
+        <title>인절미BS | 관광지 등록</title>
 
         <!-- Google Font -->
         <link
@@ -35,26 +35,26 @@
         <header class="header-section listings">
             <div class="container-fluid">
                 <div class="logo">
-                    <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                    <a href="./index.ejs"><img src="img/logo.png" alt=""></a>
                 </div>
                 <nav class="main-menu mobile-menu">
                     <ul>
                         <li>
-                            <a href="index.html">홈</a>
+                            <a href="index.ejs">홈</a>
                         </li>
                         <!-- <li> <a href="how-it-works.html">Explore</a> </li> -->
                         <li>
-                            <a href="listings.html">관광지</a>
+                            <a href="listings.ejs">관광지</a>
                         </li>
                         <!-- <li> <a href="blog.html">News</a> </li> -->
                         <li class="active">
-                            <a href="contact.html">문의</a>
+                            <a href="contact.ejs">문의</a>
                         </li>
                     </ul>
                 </nav>
                 <div class="header-right">
                     <div class="user-access">
-                        <a href="./Register/Login.html" class="primary-btn">로그인</a>
+                        <a href="./Register/Login.ejs" class="primary-btn">로그인</a>
                     </div>
                     <!-- <a href="#" class="primary-btn">Add Listing</a> -->
                 </div>
@@ -69,28 +69,28 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <!-- 데이터 전송 begin -->
-                        <form action="register.ejs" method="post" class="contact-form">
+                        <form action="/register" method="post" class="contact-form">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <input id="name_r" type="text" placeholder="관광지 이름">
+                                    <input name="name_r" type="text" placeholder="관광지 이름">
                                 </div>
                                 <div class="col-lg-6">
-                                    <input id="address_r" type="text" placeholder="주소">
+                                    <input name="address_r" type="text" placeholder="주소">
                                 </div>
                                 <div class="col-lg-6">
-                                    <input id="phone_r" type="text" placeholder="전화번호">
+                                    <input name="phone_r" type="text" placeholder="전화번호">
                                 </div>
                                 <div class="col-lg-6">
-                                    <input id="fee_r" type="text" placeholder="요금">
+                                    <input name="fee_r" type="text" placeholder="요금">
                                 </div>
                                 <div class="col-lg-6">
-                                    <input id="time_r" type="text" placeholder="이용시간">
+                                    <input name="time_r" type="text" placeholder="이용시간">
                                 </div>
                                 <div class="col-lg-6" style="margin-bottom:28px">
                                     <!-- Search Filter Section Begin -->
                                     <div style="float:left; width:45%">
                                         <h5>카테고리</h5>
-                                        <select>
+                                        <select name="cate_r">
                                             <option>전체</option>
                                             <option>자연</option>
                                             <option>문화관광</option>
@@ -102,22 +102,30 @@
                                     <div style="float:left; width:45%">
                                         <h5>위치</h5>
                                         <select>
-                                            <option>서울시</option>
-                                            <option>강원도</option>
-                                            <option>경기도</option>
-                                            <option>경상북도</option>
-                                            <option>경상남도</option>
-                                            <option>전라북도</option>
-                                            <option>전라남도</option>
-                                            <option>충청북도</option>
-                                            <option>충청남도</option>
+                                            <option>서울</option>
+                                            <option>부산</option>
+                                            <option>대구</option>
+                                            <option>인천</option>
+                                            <option>광주</option>
+                                            <option>대전</option>
+                                            <option>울산</option>
+                                            <option>세종</option>
+                                            <option>경기</option>
+                                            <option>강원</option>
+                                            <option>충북</option>
+                                            <option>충남</option>
+                                            <option>전북</option>
+                                            <option>전남</option>
+                                            <option>경북</option>
+                                            <option>경남</option>
+                                            <option>제주</option>
                                         </select>
                                     </div>
                                     <!-- Search Filter Section End -->
                                 </div>
                                 <div class="col-lg-12 text-center">
-                                    <textarea id="content_r" placeholder="내용"></textarea>
-                                    <input id="picture_r" type="file" name="서버와 같이 사용">
+                                    <textarea name="content_r" placeholder="내용"></textarea>
+                                    <input name="picture_r" type="file">
                                     <button type="submit">보내기</button>
                                 </div>
                             </div>
@@ -131,100 +139,42 @@
         
         <!-- Footer Section Begin -->
         <footer class="footer-section spad">
-            <div class="container">
-                <!-- <div class="row"> <div class="col-lg-12"> <form action="#"
-                class="newslatter-form"> <input type="text" placeholder="Your email address">
-                <button type="submit">Subscribe to our Newsletter</button> </form> </div> </div>
-                -->
-                <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-widget">
-                            <h4>Usefull Links</h4>
-                            <ul>
-                                <li>About us</li>
-                                <li>Testimonials</li>
-                                <li>How it works</li>
-                                <li>Create an account</li>
-                                <li>Our Services</li>
-                            </ul>
+                <div class="container">
+                    <!-- <div class="row">
+                        <div class="col-lg-12">
+                            <form action="#" class="newslatter-form">
+                                <input type="text" placeholder="Your email address">
+                                <button type="submit">Subscribe to our Newsletter</button>
+                            </form>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-widget">
-                            <h4>Categories</h4>
-                            <ul>
-                                <li>Hotels</li>
-                                <li>Restaurant</li>
-                                <li>Spa & resorts</li>
-                                <li>Concert & Events</li>
-                                <li>Bars & Pubs</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-widget">
-                            <h4>Usefull Links</h4>
-                            <ul>
-                                <li>About us</li>
-                                <li>Testimonials</li>
-                                <li>How it works</li>
-                                <li>Create an account</li>
-                                <li>Our Services</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-widget">
-                            <h4>From the Blog</h4>
-                            <div class="single-blog">
-                                <div class="blog-pic">
-                                    <img src="img/f-blog-1.jpg" alt="">
-                                </div>
-                                <div class="blog-text">
-                                    <h6>10 Best clubs in town</h6>
-                                    <span>March 27, 2019</span>
-                                </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="footer-widget">
+                                <h4>사이트 맵</h4>
+                                <ul>
+                                    <li>홈</li>
+                                    <li>관광지</li>
+                                    <li>문의</li>
+                                </ul>
                             </div>
-                            <div class="single-blog">
-                                <div class="blog-pic">
-                                    <img src="img/f-blog-2.jpg" alt="">
-                                </div>
-                                <div class="blog-text">
-                                    <h6>10 Best clubs in town</h6>
-                                    <span>March 27, 2019</span>
-                                </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="footer-widget">
+                                <h4>카테고리</h4>
+                                <ul>
+                                    <li>전체</li>
+                                    <li>자연</li>
+                                    <li>문화관광</li>
+                                    <li>테마관광지</li>
+                                    <li>도보</li>
+                                    <li>레저/체험</li>>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row footer-bottom">
-                    <div class="col-lg-5 order-2 order-lg-1">
-                        <div class="copyright">
-                            <p class="text-white">
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY
-                                3.0. -->
-                                Copyright &copy;<script>
-                                    document.write(new Date().getFullYear());
-                                </script>
-                                All rights reserved | This template is made with
-                                <i class="fa fa-heart" aria-hidden="true"></i>
-                                by
-                                <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY
-                                3.0. -->
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-7 text-center text-lg-right order-1 order-lg-2">
-                        <div class="footer-menu">
-                            <a href="index.html">홈</a>
-                            <a href="listings.html">관광지</a>
-                            <a href="contact.html">문의</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+            </footer>
         <!-- Footer Section End -->
 
         <!-- Js Plugins -->
