@@ -48,10 +48,13 @@ Eapp.use(function(request,response){
     url = _url.parse(url,true).pathname;
 
     response.writeHead(200);
+    if(url.endsWith('html'))
+        response.redirect(url.slice(0,-4)+'ejs')
+    else
     /*
     홈페이지에 들어온 request의 url에 따라 웹 페이지를 출력함. 원래 이렇게 짜면 안되고, PageRouter에서 출력해 줘야 함.
     */
-    if(url.endsWith('ejs')||url.endsWith('html')||url.endsWith('js')||url.endsWith('css')||url.endsWith('jpg')||url.endsWith('png')||url.endsWith('woff')||url.endsWith('ttf')||url.endsWith('woff2'))
+    if(url.endsWith('ejs')||url.endsWith('js')||url.endsWith('css')||url.endsWith('jpg')||url.endsWith('png')||url.endsWith('woff')||url.endsWith('ttf')||url.endsWith('woff2'))
     {
         response.end(fs.readFileSync(__dirname + url));
     }else{

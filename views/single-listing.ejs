@@ -76,6 +76,129 @@
                             <div class="about-intro">
                                 <div class="rating">4.5</div>
                                 <div class="intro-text">
+                                    <h2><%=result[0].title%></h2>
+                                    <p><%=result[0].category%></p>
+                                    <!-- <div class="open">운영 시간 : </div> -->
+                                    <!-- <div class="closed">운영 마감</div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-item">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="about-left">
+                                <div class="about-desc">
+                                    <%-result[0].contents%>
+                                    <!-- <%=
+                                    result[0].contents.replace(new RegExp("\n","g"), "<br/>")
+                                    %> -->
+                                    
+                                    <!-- <h4>마법이 걸린 산 속,<br>영원한 땅에 살고 있는 에버랜더들이 꿈꾸는 세상</h4>
+                                    <p>마음속에 품고 있는 "소중한 가치"를 모두 담아 함께 나눌 행복이 머무는 곳, 그 곳이 바로 에버랜드입니다.</p>
+                                    <p>에버랜드는 글로벌 페어, 아메리칸 어드벤처, 매직랜드, 유러피언 어드벤처, 주토피아로 구분되어 5개의 행복한 공간으로 구성되어 있습니다.</p>
+                                    <p>각각 테마존별의 특징을 알아볼까요?</p> -->
+                                </div>
+                                <div class="about-video">
+                                    <!-- <img src="img/everland456.jpg" alt=""> -->
+                                </div>
+                                <div class="client-reviews">
+                                    <h3>리뷰</h3>
+                                    <%for (var index in reviews){%>
+                                    <div class="reviews-item">
+                                        <div class="rating">
+                                            <%for (let j = 0;j<Math.min(reviews[index].stars,5);j++){%>
+                                            <i class="fa fa-star"></i>
+                                            <%}%>
+                                        </div>
+                                        <h5><%=reviews[index].title%></h5>
+                                        <p><%=reviews[index].Description%></p>
+                                        <div class="client-text">
+                                            <h5><%=reviews[index].UserId%></h5>
+                                            <span><%=reviews[index].Wtime%></span>
+                                        </div>
+                                    </div>
+                                    <%}%>
+<!--                                    <div class="reviews-item">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <h5>“꼭 가라. 두 번 가라”</h5>
+                                        <p>아~ T익스프레스 마려워~~</p>
+                                        <div class="client-text">
+                                            <h5>김태윤</h5>
+                                            <span>2019년 11월 16일</span>
+                                        </div>
+                                    </div>
+                                    <div class="reviews-item">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <h5>“묻고 더블로 가!”</h5>
+                                        <p>마포대교는 무너졌니~</p>
+                                        <div class="client-text">
+                                            <h5>이윤우</h5>
+                                            <span>2019년 10월 25일</span>
+                                        </div>
+                                        
+                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="about-right">
+                                <div class="contact-info">
+                                    <div class="map">
+                                        <iframe
+                                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5655.493669953989!2d127.20037446915745!3d37.29376644208718!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b5403ce34d773%3A0x1fa18ab619238098!2z7JeQ67KE656c65Oc!5e0!3m2!1sko!2skr!4v1573902925122!5m2!1sko!2skr"
+                                            width="400"
+                                            height="300"
+                                            frameborder="0"
+                                            style="border:0;"
+                                            allowfullscreen=""></iframe>
+                                    </iframe>
+                                </div>
+                                <div class="contact-text">
+                                    <span><%=result[0].address%></span>
+                                    <ul>
+                                        <li><%=result[0].phone%></li>
+                                        <li>영업시간 : <%=result[0].opentime%></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 offset-lg-1">
+                        <div class="intro-share">
+                            <div class="share-btn">
+                                    <a href="#">리뷰 작성</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- default page -->
+        <!-- <section class="about-section">
+            <div class="intro-item">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="about-intro">
+                                <div class="rating">4.5</div>
+                                <div class="intro-text">
                                     <h2>에버랜드</h2>
                                     <p>환상의 나라 에버랜드로 놀러오세요!</p>
                                     <div class="open">운영 중</div>
@@ -184,7 +307,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
     <!-- About Secton End -->
 
     <!-- Footer Section Begin -->
