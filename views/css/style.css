@@ -2590,3 +2590,50 @@ ol {
 
 .regist_btn{position:absolute;top:39px;right:40px;}
 .review_close_btn{position:absolute;bottom:20px;right:22px;}
+
+#comment {
+	border: 1px solid #1eb49f;
+	width: 80%;
+    height: 102px;
+    padding: 9px 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+	vertical-align: top;
+}
+
+#btn-review-reg {
+	display: inline-block;
+    color: #fff;
+    font-size: 18px;
+	font-weight: 400;
+	padding: 11px 22px 11px;
+	margin: 11px 0px 33px 0px;
+	background: #FF5581;
+	line-height: 23px;
+	text-decoration: none;
+	cursor: pointer;
+	border: 0;
+	outline: 0;
+}
+
+.starR{
+	color: #999999;
+	font-size: 30px;
+	background-size: auto 100%;
+	width: 30px;
+	height: 30px;
+	/* display: inline-block; */
+	text-indent: -9999px;
+	cursor: pointer;
+  }
+
+  .starR.on{
+	  background-position:0 0;
+	  color: #ffc107;
+	}
+
+	#review-text{
+		color: #999999;
+		font-size: 16px;
+		margin: 0px 0px 5px 10px;
+	}
