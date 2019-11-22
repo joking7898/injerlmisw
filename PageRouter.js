@@ -7,7 +7,11 @@ var url = require('url')
 
 //밑 코드 데이터베이스 연결
 var mysqlcon = mysql.createConnection({
-    host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com', user: 'admin', password: 'freehongkong', database: 'gottraction',multipleStatements:true
+    host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com', user: 'admin', password: 'freehongkong', database: 'gottraction',multipleStatements:true,
+    user: 'admin',
+    password: 'freehongkong',
+    database: 'gottraction'
+    
     //port: '3306'
 });
 var fs = require('fs')
