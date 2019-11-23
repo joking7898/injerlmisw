@@ -4,8 +4,14 @@ var mysql = require('mysql');
 var ejs = require('ejs');
 var qs = require('querystring')
 var url = require('url')
-
+// 태윤 추가부분.
+var passport = require('passport');
+var session = require('express-session');
+var LocalStrategy = require('passport-local').Strategy;
+var MySQLStore = require('express-mysql-session')(session);
 //밑 코드 데이터베이스 연결
+var dbConfig = require('./dbConfig');
+var dbOptions = dbConfig;
 var mysqlcon = mysql.createConnection({
     host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com', user: 'admin', password: 'freehongkong', database: 'gottraction',multipleStatements:true,
     user: 'admin',
@@ -18,10 +24,74 @@ var fs = require('fs')
 var ejs = require('ejs')
 var bodyparser = require('body-parser')
 router.use(bodyparser.urlencoded({extended: false}))
+router.use(passport.initialize());
+router.use(passport.session());
 
 mysqlcon.connect(function (err) {
 })
-
+//passport 구현부분
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+      var sql = 'SELECT * FROM user WHERE id=?';
+      conn.query(sql, [username], function(err, results){
+        if(err)
+          return done(err);
+        if(!results[0])
+          return done('please check your id.');
+        var user = results[0];
+      });//query
+    }
+  ));
+  passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
+   passport.deserializeUser(function(id, done) {
+    var sql = 'SELECT * FROM user WHERE id=?';
+    conn.query(sql, [id], function(err, results){
+      if(err)
+        return done(err, false);
+      if(!results[0])
+        return done(err, false);
+   
+      return done(null, results[0]);
+    });
+  });
+   
+//   router.get('/', function (req, res) { // 이거 건드리면 시작페이지 이동 이상함.
+//     if(!req.user)
+//       res.redirect('/views/Register/login1.ejs');
+//     else
+//       res.redirect('/views/Register/welcome.ejs');
+//   });
+  
+  router.get('/views/Register/login', function(req, res){
+    if(!req.user)
+      res.render('login', {message:'input your id and password.'});
+    else
+      res.redirect('/views/Register/welcome.ejs');
+  });
+  
+  router.get('/views/Register/welcome.ejs', function(req, res){
+    if(!req.user)
+      return res.redirect('/views/Register/login.ejs');
+    else
+      res.render('welcome', {name:req.user.name});
+  });
+  
+  router.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+  });
+   
+  router.post('/views/Register/login.ejs',
+    passport.authenticate(
+      'local',
+      {
+        successRedirect: '/views/Register/welcome.ejs',
+        failureRedirect: '/views/Register/login.ejs',
+        failureFlash: false
+      })
+  );
 //index.ejs 관련 sql
 router.get("/views/index.ejs",function (req,res){
     var querydata = url.parse(req.url,true).query;

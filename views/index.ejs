@@ -246,7 +246,7 @@
                         <a href="img/categories/cat-1.jpg" class="img-hover pop-up"><img src="img/zoom.png" alt=""></a>
                         <div class="categories-text">
                             <h4>자연</h4>
-                            <p>2373 Listings</p>
+                            <p><%= result[0].count%> 개의 관광지</p>
                             <a href="#">View All</a>
                         </div>
                     </div>
@@ -258,7 +258,7 @@
                                 <a href="img/categories/cat-2.jpg" class="img-hover pop-up"><img src="img/zoom.png" alt=""></a>
                                 <div class="categories-text">
                                     <h4>문화관광</h4>
-                                    <p>2373 Listings</p>
+                                    <p><%= result[1].count%> 개의 관광지</p>
                                     <a href="#">View All</a>
                                 </div>
                             </div>
@@ -268,7 +268,7 @@
                                 <a href="img/categories/cat-3.jpg" class="img-hover pop-up"><img src="img/zoom.png" alt=""></a>
                                 <div class="categories-text">
                                     <h4>테마관광지</h4>
-                                    <p>2373 Listings</p>
+                                    <p><%= result[2].count%> 개의 관광지</p>
                                     <a href="#">View All</a>
                                 </div>
                             </div>
@@ -278,7 +278,7 @@
                                 <a href="img/categories/cat-4.jpg" class="img-hover pop-up"><img src="img/zoom.png" alt=""></a>
                                 <div class="categories-text">
                                     <h4>도보</h4>
-                                    <p>2373 Listings</p>
+                                    <p><%= result[3].count%> 개의 관광지</p>
                                     <a href="#">View All</a>
                                 </div>
                             </div>
@@ -288,35 +288,11 @@
                                 <a href="img/categories/cat-5.jpg" class="img-hover pop-up"><img src="img/zoom.png" alt=""></a>
                                 <div class="categories-text">
                                     <h4>레저/체험</h4>
-                                    <p>2373 Listings</p>
+                                    <p><%= result[4].count%> 개의 관광지</p>
                                     <a href="#">View All</a>
                                 </div>
                             </div>
                         </div>
-                        <!-- 아래 표 부분이 db에서 붙여버린것. 이런형식으로 db에서 가져오면됨. -->
-                        <div >
-                            <table>
-                                <thead>
-                                     <tr>
-                                       <th>categori</th>
-                                       <th>count</th>
-                                     </tr>
-                                   </thead>
-                                   <tbody id="listings">
-                                     <% for (var index in result) { %>  
-                                       <tr>
-                                         <td>
-                                             <%= result[index].category%>
-                                         </td>
-                                         <td>
-                                            <%= result[index].count%>
-                                        </td>
-                                       </tr>
-                                       <% } %>
-                                   </tbody>
-                                 </table> 
-                                 </div>
-                    </div>
                 </div>
             </div>
         </section>
