@@ -74,9 +74,10 @@
                     <div class="row">
                         <div class="col-lg-7">
                             <div class="about-intro">
-                                <div class="rating">4.5</div>
+                                <div class="rating"><%=result[0].score%></div>
                                 <div class="intro-text">
-                                    <h2><%=result[0].title%></h2>
+                                    <%var titletag = result[0].authorized?'h2':'h3'%>
+                                    <%-'<'+titletag+'>'%><%=result[0].title%><%-'</'+titletag+'>'%>
                                     <p><%=result[0].category%></p>
                                     <!-- <div class="open">운영 시간 : </div> -->
                                     <!-- <div class="closed">운영 마감</div> -->
@@ -91,6 +92,10 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="about-left">
+                                <%var transition = (result[0].authorized)?'비공개글로 전환':'공개글로 전환'%>
+                                <%if(authority =='admin'){%>
+                                    <%-'<form method="POST" action ="authorize?Aid='+result[0].id+'" ><button type="submit">'+transition+'</button></form>'%><br>
+                                <%}%>
                                 <div class="about-desc">
                                     <%-result[0].contents%>
                                         
@@ -98,14 +103,17 @@
                                     <div class="about-video">
                                         <!-- <img src="img/everland456.jpg" alt=""> -->
                                     </div>
+                                    <form method="POST" action =<%="deleteAttraction?Aid="+result[0].id %>><button type="submit">글 삭제</button></form><br>
                                     <div class="client-reviews">
                                         <p style="font-size: 30px; font-weight: bold;">
                                             리뷰&nbsp;&nbsp;
                                             <span>
-                                                <span style="color: blue;">2</span>
+                                                <span style="color: blue;"><%=reviews.length%></span>
                                             </span>
                                         </p>
                                         <br>
+                                        <% if(reviews.length==0)var NONOTHING = "작성된 리뷰가 없습니다."%>
+                                        <%=NONOTHING%>
                                         <%for (var index in reviews){%>
                                             <div class="reviews-item">
                                                 <div class="rating">
@@ -117,24 +125,31 @@
                                                 <p><%=reviews[index].Description%></p>
                                                 <div class="client-text">
                                                     <h5><%=reviews[index].UserId%></h5>
-                                                    <span><%=reviews[index].Wtime%></span>
+                                                    <span><%=reviews[index].Wtime%></span><form method="POST" action =<%="deleteReview?Aid="+reviews[index].AttractionId + "&Rid=" + reviews[index].id %>><button type="submit">삭제</button></form>
                                                 </div>
                                             </div>
                                         <%}%>
-                                        <div class="starRev">
-                                            <span class="starR on">★</span>
-                                            <span class="starR">★</span>
-                                            <span class="starR">★</span>
-                                            <span class="starR">★</span>
-                                            <span class="starR">★</span>
+                                        <form class="review-form" action=<%="single-listing.ejs?id="+Aid%> method="post">
+                                        <div class="starRev" name = value = 0;>
+                                            <input id="star1" type="radio" name = "stars" value=1 checked='checked' style="visibility: hidden;"></input>
+                                            <input id="star2" type="radio" name = "stars" value=2 style="visibility: hidden;"></input>
+                                            <input id="star3" type="radio" name = "stars" value=3 style="visibility: hidden;"></input>
+                                            <input id="star4" type="radio" name = "stars" value=4 style="visibility: hidden;"></input>
+                                            <input id="star5" type="radio" name = "stars" value=5 style="visibility: hidden;"></input><br>
+                                        
+                                            <span class="starR on" onclick="document.getElementById('star1').click()">★</span>
+                                            <span class="starR"onclick="document.getElementById('star2').click()">★</span>
+                                            <span class="starR"onclick="document.getElementById('star3').click()">★</span>
+                                            <span class="starR"onclick="document.getElementById('star4').click()">★</span>
+                                            <span class="starR"onclick="document.getElementById('star5').click()">★</span>
                                             <p id="review-text">별점을 선택하세요.</p>
                                         </div>
-                                        <div class="review-form">
-                                            <textarea id="comment" name="comment" placeholder="리뷰를 작성해주세요."></textarea>
-                                        </div>
-                                        <div class="form-reg">
-                                            <button type="button" class="btn_register" id="btn-review-reg">등록</button>
-                                        </div>
+                                            <textarea id="comment" name="description" placeholder="리뷰를 작성해주세요."></textarea><br>
+                                        
+                                        <!-- <div class="form-reg"> -->
+                                            <button type="submit" class="btn_register" id="btn-review-reg">등록</button>
+                                        <!-- </div> -->
+                                        </form><br><br><br><br>
                                     </div>
                                 </div>
                             </div>

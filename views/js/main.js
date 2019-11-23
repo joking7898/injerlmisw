@@ -228,6 +228,7 @@
     $('.starRev span').click(function(){
         $(this).parent().children('span').removeClass('on');
         $(this).addClass('on').prevAll('span').addClass('on');
+        $(this).parent().value++;
         return false;
       });
 

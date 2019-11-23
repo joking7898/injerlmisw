@@ -1585,7 +1585,11 @@ ol {
 	font-size: 48px;
 	font-weight: 700;
 }
-
+.about-intro .intro-text h3 {
+	color: #971616;
+	font-size: 48px;
+	font-weight: 700;
+}
 .about-intro .intro-text p {
 	color: #787878;
 	font-size: 18px;
