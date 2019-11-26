@@ -7,7 +7,6 @@ var url = require('url')
 // 태윤 추가부분.
 var passport = require('passport');
 var session = require('express-session');
-var LocalStrategy = require('passport-local').Strategy;
 var MySQLStore = require('express-mysql-session')(session);
 //밑 코드 데이터베이스 연결
 var dbConfig = require('./dbConfig');
@@ -29,34 +28,78 @@ router.use(passport.session());
 
 mysqlcon.connect(function (err) {
 })
-//passport 구현부분
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-      var sql = 'SELECT * FROM user WHERE id=?';
-      conn.query(sql, [username], function(err, results){
-        if(err)
-          return done(err);
-        if(!results[0])
-          return done('please check your id.');
-        var user = results[0];
-      });//query
+//session test - kty
+router.use(session({
+    secret:'ABCD1234ABAB!@',
+    resave:false,
+    saveUninitialized:true,
+    store:new MySQLStore({
+         host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com',
+         user: 'admin',
+         password: 'freehongkong',
+         database: 'gottraction'
+    })
+}));
+
+router.get('/login',(req,res)=>{
+    var output=`
+    <h1>Login</h1>
+    <form action="/login" method="post"></p>
+      <p><input type="text" name="username" placeholder="id" /><br /></p>
+      <p><input type="password" name="password" placeholder="password" /><br /></p>
+      <p><input type="submit" />
+    </form>
+    `;
+    res.send(output);
+});
+//로그인 처리 
+router.post('/login',(req,res)=>{
+    //저장된 사용자 정보
+    var userinfo ={
+        user_id:"jamong",
+        user_pwd:"1234",
+        displayName:"jamong"
+    };
+    var uid =req.body.username;
+    var upwd =req.body.password;
+    
+    if(uid === userinfo.user_id && upwd === userinfo.user_pwd) {
+        req.session.displayName = userinfo.displayName;
+        req.session.save(()=> {
+            res.redirect('/welcome');
+        });
     }
-  ));
-  passport.serializeUser(function(user, done) {
-    done(null, user.id);
-  });
-   passport.deserializeUser(function(id, done) {
-    var sql = 'SELECT * FROM user WHERE id=?';
-    conn.query(sql, [id], function(err, results){
-      if(err)
-        return done(err, false);
-      if(!results[0])
-        return done(err, false);
-   
-      return done(null, results[0]);
+    else{
+        res.send('there is no id <a href="/login">Login</a>');
+    }
+});
+//index화면 웰컴으로 설정했을때 예시임.
+router.get('/welcome',(req,res)=>{
+    var output="";
+    if(req.session.displayName){
+        output +=`
+            <h1>hello ${req.session.displayName}</h1>
+            <a href="/logout">logout</a>
+        `;
+        res.send(output);
+    }
+    else{
+        output +=`
+            <h1>welcome</h1>
+            <a href="/login">login</a>
+        `;
+        res.send(output);
+    }
+})
+//로그아웃
+router.get('/logout',(req,res)=>{
+    delete req.session.displayName;
+    req.session.save(()=>{
+        res.redirect('/welcome');
     });
-  });
-   
+});
+
+
 //   router.get('/', function (req, res) { // 이거 건드리면 시작페이지 이동 이상함.
 //     if(!req.user)
 //       res.redirect('/views/Register/login1.ejs');
