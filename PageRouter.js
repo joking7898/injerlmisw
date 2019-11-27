@@ -8,15 +8,18 @@ var url = require('url')
 var passport = require('passport');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
+var LocalStrategy = require('passport-local').Strategy;
+var bodyParser = require('body-parser');
+
 //밑 코드 데이터베이스 연결
 var dbConfig = require('./dbConfig');
-var dbOptions = dbConfig;
+// var dbOptions = dbConfig;
 var mysqlcon = mysql.createConnection({
-    host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com', user: 'admin', password: 'freehongkong', database: 'gottraction',multipleStatements:true,
+    host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com',
     user: 'admin',
-    password: 'freehongkong',
-    database: 'gottraction'
-    
+    password: 'freehongkong', 
+    database: 'gottraction',
+    multipleStatements:true
     //port: '3306'
 });
 var fs = require('fs')
@@ -28,113 +31,196 @@ router.use(passport.session());
 
 mysqlcon.connect(function (err) {
 })
+
+var app = express();
+var dbOptions = {
+  host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com', 
+  user: 'admin', 
+  password: 'freehongkong',
+  database: 'gottraction',
+};
+ 
+var conn = mysql.createConnection(dbOptions);
+conn.connect();
+
 //session test - kty
 router.use(session({
-    secret:'ABCD1234ABAB!@',
-    resave:false,
-    saveUninitialized:true,
-    store:new MySQLStore({
-         host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com',
-         user: 'admin',
-         password: 'freehongkong',
-         database: 'gottraction'
-    })
+  secret: '!@#$%^&*',
+  store: new MySQLStore(dbOptions),
+  resave: false,
+  saveUninitialized: false,
+  cookie : {maxAge: 1000 * 60 * 60 }// 유효기간 1시간  
 }));
 
-router.get('/login',(req,res)=>{
-    var output=`
-    <h1>Login</h1>
-    <form action="/login" method="post"></p>
-      <p><input type="text" name="username" placeholder="id" /><br /></p>
-      <p><input type="password" name="password" placeholder="password" /><br /></p>
-      <p><input type="submit" />
-    </form>
-    `;
-    res.send(output);
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    var sql = 'SELECT * FROM user WHERE id=?';
+    conn.query(sql, [username], function(err, results){
+      if(err)
+        return done(err);
+      if(!results[0])
+        return done('please check your id.');
+
+      var user = results[0];
+        if(password === user.password){
+          console.log("pw일치");
+          return done(null, user);
+        }
+        else {
+          console.log("pw체크해라.");
+          return done('please check your password.');
+        }
+    });//query
+  }
+));
+passport.serializeUser(function(user, done) {
+  console.log("serializeUser 실행");
+  done(null, user.id);
 });
-//로그인 처리 
-router.post('/login',(req,res)=>{
-    //저장된 사용자 정보
-    var userinfo ={
-        user_id:"jamong",
-        user_pwd:"1234",
-        displayName:"jamong"
-    };
-    var uid =req.body.username;
-    var upwd =req.body.password;
-    
-    if(uid === userinfo.user_id && upwd === userinfo.user_pwd) {
-        req.session.displayName = userinfo.displayName;
-        req.session.save(()=> {
-            res.redirect('/welcome');
-        });
+// 이부분 호출안됨.
+passport.deserializeUser(function(id, done) {
+  console.log("deserializeUser 실행");
+  var sql = 'SELECT * FROM user WHERE id=?';
+  conn.query(sql, [id], function(err, results){
+    if(err){
+      console.log("1");
+      return done(err, false);      
     }
-    else{
-        res.send('there is no id <a href="/login">Login</a>');
+    if(!results[0]){
+      console.log("2");
+      return done(err, false);      
     }
-});
-//index화면 웰컴으로 설정했을때 예시임.
-router.get('/welcome',(req,res)=>{
-    var output="";
-    if(req.session.displayName){
-        output +=`
-            <h1>hello ${req.session.displayName}</h1>
-            <a href="/logout">logout</a>
-        `;
-        res.send(output);
-    }
-    else{
-        output +=`
-            <h1>welcome</h1>
-            <a href="/login">login</a>
-        `;
-        res.send(output);
-    }
-})
-//로그아웃
-router.get('/logout',(req,res)=>{
-    delete req.session.displayName;
-    req.session.save(()=>{
-        res.redirect('/welcome');
-    });
+    return done(null, results[0]);
+  });
 });
 
 
-//   router.get('/', function (req, res) { // 이거 건드리면 시작페이지 이동 이상함.
-//     if(!req.user)
-//       res.redirect('/views/Register/login1.ejs');
-//     else
-//       res.redirect('/views/Register/welcome.ejs');
+router.get('/', function (req, res) {
+  if(!req.user)
+    res.redirect('/login');
+  else
+    res.redirect('/welcome');
+});
+router.get('/login', function(req, res){
+  if(!req.user){
+    res.render('login.ejs', {message:'input your id and password.'});    
+  }
+  else
+    res.redirect('/welcome');
+});
+router.get('/welcome', function(req, res){
+  if(!req.user){
+    //왜 안가져와지는걸까.
+    console.log("안가져와짐.")
+    return res.redirect('/login');
+  }
+  else{
+    console.log("id가져옴.");
+    res.render('welcome.ejs', {name:req.user.id});    
+  }
+
+});
+router.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+ 
+router.post('/login',
+  passport.authenticate(
+    'local',
+    {
+      successRedirect: '/welcome',
+      failureRedirect: '/login',
+      failureFlash: false
+    })
+);
+// session 구현부분.
+// router.get('/', function (req, res) {
+//   if(!req.session.name)
+//     res.redirect('/login');
+//   else
+//     res.redirect('/welcome');
+// });
+// router.get('/login', function(req, res){
+//   if(!req.session.name)
+//     res.render('login.ejs', { message:'로그인좀 해라.'});
+//   else
+//     res.redirect('/welcome');
+// });
+// router.get('/welcome', function(req, res){
+//   if(!req.user)
+//     return res.redirect('/login');
+//   else
+//     res.render('welcome.ejs', {name:req.user.id});
+// });
+// router.get('/welcome', function(req, res){
+//   console.log('웰컴들어오냐?');
+//   if(!req.session.name){
+//     console.log('세션 이름이 왜없니.?');
+//     return res.redirect('/login');    
+//   }
+//   else
+//     res.render('welcome.ejs', {name:req.session.name});
+// });
+// router.post('/login', function(req, res) {
+//     var id = req.body.username;
+//     var pw = req.body.password;
+//     var sql = 'SELECT * FROM user WHERE id=?';
+//     conn.query(sql, [id], function(err, results){
+//       if(err)
+//         console.log(err);
+ 
+//       if(!results[0])
+//       return res.render('login.ejs', {message:'아이디 체크 안허냐'});
+ 
+//       var user = results[0];
+//       if(pw === user.password){
+//         req.session.name = user.id;
+//         req.session.save(function(){
+//           return res.redirect('/welcome');
+//         });
+//       }
+//       else {
+//         return res.render('login.ejs', {message:'비밀번호 체크하라고!!.'});
+//       }
+//     });//query
+//   }
+// );
+// router.get('/logout', function(req, res){
+//   req.session.destroy(function(err){
+//     res.redirect('/');
 //   });
-  
-  router.get('/views/Register/login', function(req, res){
-    if(!req.user)
-      res.render('login', {message:'input your id and password.'});
-    else
-      res.redirect('/views/Register/welcome.ejs');
-  });
-  
-  router.get('/views/Register/welcome.ejs', function(req, res){
-    if(!req.user)
-      return res.redirect('/views/Register/login.ejs');
-    else
-      res.render('welcome', {name:req.user.name});
-  });
-  
-  router.get('/logout', function(req, res){
-    req.logout();
-    res.redirect('/');
-  });
-   
-  router.post('/views/Register/login.ejs',
-    passport.authenticate(
-      'local',
-      {
-        successRedirect: '/views/Register/welcome.ejs',
-        failureRedirect: '/views/Register/login.ejs',
-        failureFlash: false
-      })
-  );
+// });
+ 
+
+router.get('/views/Register/login', function(req, res){
+  if(!req.user)
+    res.render('login', {message:'input your id and password.'});
+  else
+    res.redirect('/views/Register/welcome.ejs');
+});
+
+router.get('/views/Register/welcome.ejs', function(req, res){
+  if(!req.user)
+    return res.redirect('/views/Register/login.ejs');
+  else
+    res.render('welcome', {name:req.user.name});
+});
+
+router.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+ 
+router.post('/views/Register/login.ejs',
+  passport.authenticate(
+    'local',
+    {
+      successRedirect: '/views/Register/welcome.ejs',
+      failureRedirect: '/views/Register/login.ejs',
+      failureFlash: false
+    })
+);
 //index.ejs 관련 sql
 router.get("/views/index.ejs",function (req,res){
     var querydata = url.parse(req.url,true).query;
@@ -238,17 +324,19 @@ router.get("/views/single-listing.ejs",function (req,res){
 )
 
 // 홈페이지에 url없이 접속시 index url로 리다이렉트
-router.get("/",function (req,res){
-    res.redirect("/views/index.ejs?#") // 이 주소로 해야지 정상 작동되는거 구현완료.
-})
+// router.get("/",function (req,res){
+//     res.redirect("/views/index.ejs?#") // 이 주소로 해야지 정상 작동되는거 구현완료.
+// })
 
-//index.html 페이지를 띄우는 건 사실 server.js가 아니라 여기 이부분에서 처리되어야 함. 밑은 페이지 출력을 구현하려던 흔적
-/*
-router.get("/html/index.html",function (req,res){
-    res.writeHead(200);
-    res.end(fs.readFileSync(__dirname + "/htmlpage/index.html"));
-})
-*/
+//index.html 페이지를 시작페이지로 설정하는 부분.
+
+  router.get('/', function (req, res) { // 이거 건드리면 시작페이지 이동 이상함.
+    if(!req.user)
+      res.redirect('/views/index.ejs');
+    else
+      res.redirect('/views/Register/welcome.ejs');
+  });
+
 
 //작성 내용 mysql에 넣기
 
