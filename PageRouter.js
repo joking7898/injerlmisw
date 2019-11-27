@@ -22,16 +22,6 @@ var mysqlcon = mysql.createConnection({
     multipleStatements:true
     //port: '3306'
 });
-var fs = require('fs')
-var ejs = require('ejs')
-var bodyparser = require('body-parser')
-router.use(bodyparser.urlencoded({extended: false}))
-router.use(passport.initialize());
-router.use(passport.session());
-
-mysqlcon.connect(function (err) {
-})
-
 var app = express();
 var dbOptions = {
   host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com', 
@@ -42,6 +32,10 @@ var dbOptions = {
  
 var conn = mysql.createConnection(dbOptions);
 conn.connect();
+var fs = require('fs')
+var ejs = require('ejs')
+var bodyparser = require('body-parser')
+router.use(bodyparser.urlencoded({extended: false}))
 
 //session test - kty
 router.use(session({
@@ -49,9 +43,15 @@ router.use(session({
   store: new MySQLStore(dbOptions),
   resave: false,
   saveUninitialized: false,
-  cookie : {maxAge: 1000 * 60 * 60 }// 유효기간 1시간  
+  cookie : {secure : false ,maxAge: 1000 * 60 * 60 }// 유효기간 1시간  
 }));
+router.use(passport.initialize());
+router.use(passport.session());
 
+mysqlcon.connect(function (err) {
+})
+
+//passport 로그인 구현단.
 passport.use(new LocalStrategy(
   function(username, password, done) {
     var sql = 'SELECT * FROM user WHERE id=?';
@@ -64,6 +64,7 @@ passport.use(new LocalStrategy(
       var user = results[0];
         if(password === user.password){
           console.log("pw일치");
+          console.log(user);
           return done(null, user);
         }
         else {
@@ -74,12 +75,12 @@ passport.use(new LocalStrategy(
   }
 ));
 passport.serializeUser(function(user, done) {
+  console.log(user.id); // id 출력 잘됨.
   console.log("serializeUser 실행");
   done(null, user.id);
 });
-// 이부분 호출안됨.
 passport.deserializeUser(function(id, done) {
-  console.log("deserializeUser 실행");
+  console.log("deserializeUser 실행"); //실행이 왜 안될까.
   var sql = 'SELECT * FROM user WHERE id=?';
   conn.query(sql, [id], function(err, results){
     if(err){
@@ -93,8 +94,6 @@ passport.deserializeUser(function(id, done) {
     return done(null, results[0]);
   });
 });
-
-
 router.get('/', function (req, res) {
   if(!req.user)
     res.redirect('/login');
@@ -103,6 +102,7 @@ router.get('/', function (req, res) {
 });
 router.get('/login', function(req, res){
   if(!req.user){
+    console.log("req.user 안가져와짐.")
     res.render('login.ejs', {message:'input your id and password.'});    
   }
   else
@@ -134,6 +134,7 @@ router.post('/login',
       failureFlash: false
     })
 );
+
 // session 구현부분.
 // router.get('/', function (req, res) {
 //   if(!req.session.name)
