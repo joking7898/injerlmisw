@@ -33,7 +33,7 @@
 		Navigation
 	--------------------*/
     $(".mobile-menu").slicknav(
-        {prependTo: '#mobile-menu-wrap', allowParentLinks: true}
+        { prependTo: '#mobile-menu-wrap', allowParentLinks: true }
     );
 
     $('.slicknav_nav ul ').prepend('<li class="header-right-warp"></li>');
@@ -60,7 +60,7 @@
     /*------------------
         Magnific Popup
     --------------------*/
-    $('.pop-up').magnificPopup({type: 'image'});
+    $('.pop-up').magnificPopup({ type: 'image' });
 
     /*-------------------
 		Category Select
@@ -80,38 +80,39 @@
     /*-------------------
 		Radio Btn
 	--------------------- */
-    $(".filter-left .category-filter .category-option .co-item label").on(
-        'click',
-        function () {
-            if ($(this).hasClass('active')) {
-                $(this).removeClass('active');
-            } else {
-                $(this).addClass('active');
-            }
+    //평점 체크박스 클릭시 리스팅 분류
+    $(".filter-left .rating-filter .rating-option .ro-item label").on('click', function () {
+        var nowUrl = window.location.href; //현재 주소
+        var starlabel;          //별점 라벨 텍스트
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            starlabel = $(this).text();
+            nowUrl = nowUrl.replace('&grade=' + starlabel,'');
+            window.location = nowUrl;
+        } else {
+            $(this).addClass('active');
+            starlabel = $(this).text();
+            window.location = nowUrl + '&grade=' + starlabel;
         }
+    }
     );
 
-    $(".filter-left .rating-filter .rating-option .ro-item label").on(
-        'click',
-        function () {
-            if ($(this).hasClass('active')) {
-                $(this).removeClass('active');
-            } else {
-                $(this).addClass('active');
-            }
-        }
-    );
-
-    $(".filter-left .distance-filter .distance-option .do-item label").on(
-        'click',
-        function () {
-            if ($(this).hasClass('active')) {
-                $(this).removeClass('active');
-            } else {
-                $(this).addClass('active');
-            }
-        }
-    );
+    //리다이렉트 하더라도 체크박스 유지되도록
+    if(window.location.href.indexOf('5.0') != -1) {
+        $(".filter-left .rating-filter .rating-option #five label").addClass('active')
+    }
+    if(window.location.href.indexOf('4.0') != -1) {
+        $(".filter-left .rating-filter .rating-option #four label").addClass('active')
+    }
+    if(window.location.href.indexOf('3.0') != -1) {
+        $(".filter-left .rating-filter .rating-option #three label").addClass('active')
+    }
+    if(window.location.href.indexOf('2.0') != -1) {
+        $(".filter-left .rating-filter .rating-option #two label").addClass('active')
+    }
+    if(window.location.href.indexOf('1.0') != -1) {
+        $(".filter-left .rating-filter .rating-option #one label").addClass('active')
+    }
 
     /*-------------------
 		리뷰 작성
@@ -138,11 +139,11 @@
     });
 
     $("#rating, #content").on("blur", function () {
-        if ($(this).val() == "") 
+        if ($(this).val() == "")
             $(this)
                 .prev()
                 .css("left", "2px");
-        }
+    }
     );
 
     $("#submit").click(function () {
@@ -150,9 +151,9 @@
         // option:selected').text() + '&location=' + $('#AttractionLocation
         // option:selected').text());
 
-        location.href = './listings.ejs?category=' + $(
-            '#AttractionCategory option:selected'
-        ).text() + '&location=' + $('#AttractionLocation option:selected').text();
+        // location.href = './listings.ejs?category=' + $(
+        //     '#AttractionCategory option:selected'
+        // ).text() + '&location=' + $('#AttractionLocation option:selected').text();
 
     });
 
@@ -161,9 +162,9 @@
         // option:selected').text() + '&location=' + $('#AttractionLocation
         // option:selected').text());
 
-        location.href = './listings.ejs?category=' + $(
-            '#AttractionCategory2 option:selected'
-        ).text() + '&location=' + $('#AttractionLocation2 option:selected').text();
+        // location.href = './listings.ejs?category=' + $(
+        //     '#AttractionCategory2 option:selected'
+        // ).text() + '&location=' + $('#AttractionLocation2 option:selected').text();
 
     });
 
@@ -225,11 +226,11 @@
         }
     });
 
-    $('.starRev span').click(function(){
+    $('.starRev span').click(function () {
         $(this).parent().children('span').removeClass('on');
         $(this).addClass('on').prevAll('span').addClass('on');
         $(this).parent().value++;
         return false;
-      });
+    });
 
 })(jQuery);

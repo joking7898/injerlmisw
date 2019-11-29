@@ -7,125 +7,160 @@ var url = require('url')
 
 //밑 코드 데이터베이스 연결
 var mysqlcon = mysql.createConnection({
-    host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com', user: 'admin', password: 'freehongkong', database: 'gottraction',multipleStatements:true,
+    host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com',
     user: 'admin',
     password: 'freehongkong',
-    database: 'gottraction'
-    
+    database: 'gottraction',
+    multipleStatements: true
+
     //port: '3306'
 });
 var fs = require('fs')
 var ejs = require('ejs')
 var bodyparser = require('body-parser')
-router.use(bodyparser.urlencoded({extended: false}))
+router.use(bodyparser.urlencoded({ extended: false }))
 
 mysqlcon.connect(function (err) {
 })
 
 //index.ejs 관련 sql
-router.get("/views/index.ejs",function (req,res){
-    var querydata = url.parse(req.url,true).query;
-    
+router.get("/views/index.ejs", function (req, res) {
+    var querydata = url.parse(req.url, true).query;
+
     console.log(querydata.category)
     var querystring = "SELECT category,count(*)AS count FROM gottraction.attraction group by category";
-    mysqlcon.query(querystring,function(err,results) {
-    if (!err){
-       // console.log('The solution is: ', rows);
-       // log로 체크하는구문.   
-        res.render('index.ejs', {
-        result: results    
-        // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
-      });
-    }
-    else{
-        console.log('Error while performing Query.', err);
-    }
+    mysqlcon.query(querystring, function (err, results) {
+        if (!err) {
+            //console.log('The solution is: ', rows);
+            // log로 체크하는구문.   
+            res.render('index.ejs', {
+                result: results
+                // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
+            });
+        }
+        else {
+            console.log('Error while performing Query.', err);
+        }
     })
     //res.redirect("/views/listing.ejs")
 })
 
 
 //페이지 출력 여기서 해주라는 요청.
-router.get("/views/listings.ejs",function (req,res){
-    var querydata = url.parse(req.url,true).query;
-    
-    var category = (querydata.category == undefined)?"전체":querydata.category;
-    var location = (querydata.location == undefined)?"전체":querydata.location;
-    var querystring = "select * from attraction";
-    var authorizationCondition ="";
+router.get("/views/listings.ejs", function (req, res) {
+    var querydata = url.parse(req.url, true).query;
 
-    if(category =="전체" && location == "전체"){
+    var category = (querydata.category == undefined) ? "전체" : querydata.category;
+    var location = (querydata.location == undefined) ? "전체" : querydata.location;
+    var querystring = "select * from attraction";
+    var authorizationCondition = "";
+    var gradeCondition = "";
+
+    var starUrl = req.url;
+
+    if (category == "전체" && location == "전체") {
         querystring;
     }
-    else if(category !="전체" || location != "전체"){
-        if(category =="전체"){
-            querystring += " where location = '"+location+"'";
+    else if (category != "전체" && location != "전체") {
+        querystring += " where location = '" + location + "' and category = '" + category + "'";
+    }
+    else if (category != "전체" || location != "전체") {
+        if (category == "전체") {
+            querystring += " where location = '" + location + "'";
         }
-        else if(location =="전체"){
-            querystring += " where category = '"+category+"'";
+        else if (location == "전체") {
+            querystring += " where category = '" + category + "'";
         }
     }
-    if(category !="전체"&&  location != "전체")
-        querystring += " where location = '"+location+"' and category = '"+category+"'";
-    
-    mysqlcon.query("select authority from user where id = ?",['yunu'],function(err,result){
-        if(result[0].authority=='user')
-        {
-            if(category == "전체"&& location == "전체")
+
+
+    mysqlcon.query("select authority from user where id = ?", ['yunu'], function (err, result) {
+        if (result[0].authority == 'user') {
+            if (category == "전체" && location == "전체")
                 authorizationCondition = " where authorized = 1"
             else
                 authorizationCondition = " and authorized = 1"
         }
-        mysqlcon.query(querystring +authorizationCondition,function(err,results) {
-            if (!err){
-               // console.log('The solution is: ', rows);
-               // log로 체크하는구문.   
+        //별점 분류 코드 - start
+        if (category == "전체" && location == "전체" && starUrl.indexOf('grade=') != -1) {
+            gradeCondition = " where (";
+        }
+        else if (starUrl.indexOf('grade=') != -1) {
+            gradeCondition = " and (";
+        }
+        else {
+            gradeCondition = "";
+        }
+        if (starUrl.indexOf('5.0') != -1) {
+            gradeCondition = gradeCondition + 'score = 5.0 or ';
+        }
+        if (starUrl.indexOf('4.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 4.0 and score < 5.0 or ';
+        }
+        if (starUrl.indexOf('3.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 3.0 and score < 4.0 or ';
+        }
+        if (starUrl.indexOf('2.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 2.0 and score < 3.0 or ';
+        }
+        if (starUrl.indexOf('1.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 1.0 and score < 2.0 or ';
+        }
+        if (starUrl.indexOf('grade=') != -1) {
+            gradeCondition = gradeCondition.substr(0, gradeCondition.length - 4);
+            gradeCondition = gradeCondition + ')';
+        }
+        //별점 분류 코드 - end
+        mysqlcon.query(querystring + authorizationCondition + gradeCondition, function (err, results) {
+            if (!err) {
+                // console.log('The solution is: ', rows);
+                // log로 체크하는구문.  
+                //console.log(querystring + authorizationCondition + gradeCondition + '======================================================'); 
                 res.render('listings.ejs', {
-                result: results,
-                _url:req.url
-                // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
-              });
+                    result: results,
+                    _url: req.url
+                    // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
+                });
             }
-            else{
+            else {
                 console.log('Error while performing Query.', err);
             }
-            })    
+        })
     })
-    
+
     //res.redirect("/views/listing.ejs")
 })
 
-router.get("/views/single-listing.ejs",function (req,res){
-    var querydata = url.parse(req.url,true).query;
-    
+router.get("/views/single-listing.ejs", function (req, res) {
+    var querydata = url.parse(req.url, true).query;
+
     var AttractionId = querydata.id;
-    if(AttractionId == undefined){
+    if (AttractionId == undefined) {
         res.redirect('/views/index.ejs?#')
     }
-    else
-    {
-    mysqlcon.query("select * from attraction where id = ?; select * from review where AttractionId = ?; select authority from user where id = ?",[AttractionId,AttractionId,"yunu"],function(err,results) {
-    if (!err){
-        results[0][0].contents= (results[0][0].contents.replace(new RegExp('\n','g'), '<br>'))
-        res.render('single-listing.ejs', {
-        result: results[0],
-        reviews: results[1],
-        Aid:AttractionId,
-        authority:results[2][0].authority
-        // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
-      });
+    else {
+        mysqlcon.query("select * from attraction where id = ?; select * from review where AttractionId = ?; select authority from user where id = ?", [AttractionId, AttractionId, "yunu"], function (err, results) {
+            if (!err) {
+                results[0][0].contents = (results[0][0].contents.replace(new RegExp('\n', 'g'), '<br>'))
+                res.render('single-listing.ejs', {
+                    result: results[0],
+                    reviews: results[1],
+                    Aid: AttractionId,
+                    authority: results[2][0].authority
+                    // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
+                });
+            }
+            else {
+                console.log('Error while performing Query.', err);
+            }
+        })
     }
-    else{
-        console.log('Error while performing Query.', err);
-    }
-    })
-}
 }
     //res.redirect("/views/listing.ejs")
 )
 
 // 홈페이지에 url없이 접속시 index url로 리다이렉트
-router.get("/",function (req,res){
+router.get("/", function (req, res) {
     res.redirect("/views/index.ejs?#") // 이 주소로 해야지 정상 작동되는거 구현완료.
 })
 
@@ -150,12 +185,12 @@ router.post("/views/register.ejs", function (req, res, next) {
     var loca_r = req.body.loca_r;
     var content_r = req.body.content_r;
     var picture_r = req.body.picture_r;
-    if(name_r=="")
+    if (name_r == "")
         res.redirect(req.url)
     mysqlcon.query(
         `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
-        [req.body.name_r, req.body.address_r, req.body.phone_r, req.body.fee_r, req.body.time_r, 
-        req.body.cate_r, req.body.loca_r, req.body.content_r, req.body.picture_r,'yunu'], 
+        [req.body.name_r, req.body.address_r, req.body.phone_r, req.body.fee_r, req.body.time_r,
+        req.body.cate_r, req.body.loca_r, req.body.content_r, req.body.picture_r, 'yunu'],
         function (error, result) {
             if (error) {
                 console.log("데이터베이스 입력 에러...");
@@ -167,88 +202,89 @@ router.post("/views/register.ejs", function (req, res, next) {
     )
     res.redirect("/views/listings.ejs")
 })
-router.post("/views/listings.ejs",function(req,res){
-    console.log("씨발",req.body)
-    //req.url.querystring+="&page="
-    res.redirect(req.url)
+router.post("/views/listings.ejs", function (req, res) {
+    var Loc = req.body._location;
+    var Category = req.body._category;
+    console.log("=======================")
+    console.log("=======================", req.url)
+    res.redirect(req.url + "?category=" + Category + "&location=" + Loc)
 })
 router.post("/views/single-listing.ejs", function (req, res, next) {
     var description = req.body.description;
     var stars = req.body.stars;
 
-    if(description=="")
+    if (description == "")
         res.redirect(req.url)
-    else
-    {
-        mysqlcon.query( "insert into review (AttractionId,userid,description,Wtime,stars) values (?,?,?,"+"sysdate()"+",?)",[req.query.id,'yunu',description,stars],function(err,result){
-         
-            console.log("insert into review (AttractionId,userid,description,Wtime,stars) values (?,?,?,"+"sysdate()"+",?)",[req.query.id,'yunu',description,stars])
-            if(err)
-            console.log("Query Error : "+ err)
+    else {
+        mysqlcon.query("insert into review (AttractionId,userid,description,Wtime,stars) values (?,?,?," + "sysdate()" + ",?)", [req.query.id, 'yunu', description, stars], function (err, result) {
+
+            console.log("insert into review (AttractionId,userid,description,Wtime,stars) values (?,?,?," + "sysdate()" + ",?)", [req.query.id, 'yunu', description, stars])
+            if (err)
+                console.log("Query Error : " + err)
         })
-        mysqlcon.query("update attraction set score = (select round(avg(stars),2) from review where Attractionid = ?) where id = ?",[req.query.id,req.query.id],function(err,result){
-            if(err)
-            console.log("Query Error : "+ err)
+        mysqlcon.query("update attraction set score = (select round(avg(stars),2) from review where Attractionid = ?) where id = ?", [req.query.id, req.query.id], function (err, result) {
+            if (err)
+                console.log("Query Error : " + err)
         })
         res.redirect(req.url)
     }
 })
 
-router.post("/views/deleteReview",function(req,res){
-    if(req.query.Rid == undefined){
+router.post("/views/deleteReview", function (req, res) {
+    if (req.query.Rid == undefined) {
         res.redirect("index.ejs")
-    }else
-    {
-    mysqlcon.query("select userid,AttrctionId from review where id = ?;select authority from user where id = ?",[req.query.Rid,'yunu'],
-    function(err,result){
-        if(err)
-            console.log(err);
-        if(result[0][0].userid=='yunu' || result[1][0].authority =='admin' ){
-        //세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.    
-            mysqlcon.query("delete from review where id = ?",[req.query.Rid],function(err,result){
-                mysqlcon.query("update attraction set score = (select round(avg(stars),2) from review where Attractionid = ?) where id = ?",[result[0][0].AttractionId, result[0][0].AttractionId],function(err,result){
-                    if(err)
-                    console.log("Query Error : "+ err)
-                });
-                res.redirect("/views/single-listing.ejs?id="+req.query.Aid);
-            })}
-        else res.redirect("/views/single-listing.ejs?id="+req.query.Aid);
-            
-    })
+    } else {
+        mysqlcon.query("select userid,AttractionId from review where id = ?;select authority from user where id = ?", [req.query.Rid, 'yunu'],
+            function (err, result) {
+                if (err)
+                    console.log(err);
+                if (result[0][0].userid == 'yunu' || result[1][0].authority == 'admin') {
+                    //세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.    
+                    mysqlcon.query("delete from review where id = ?", [req.query.Rid], function (err, results) {
+                        mysqlcon.query("update attraction set score = (select round(avg(stars),2) from review where Attractionid = ?) where id = ?", [result[0][0].AttractionId, result[0][0].AttractionId], function (err, result) {
+                            if (err)
+                                console.log("Query Error : " + err)
+                        });
+                        res.redirect("/views/single-listing.ejs?id=" + req.query.Aid);
+                    })
+                }
+                else res.redirect("/views/single-listing.ejs?id=" + req.query.Aid);
+
+            })
     }
 })
-router.post("/views/deleteAttraction",function(req,res){
-    if(req.query.Aid == undefined){
+router.post("/views/deleteAttraction", function (req, res) {
+    if (req.query.Aid == undefined) {
         res.redirect("index.ejs")
     }
-    else
-    {
-    mysqlcon.query("select user_id from attraction where id = ?;select authority from user where id = ?",[req.query.Aid,'yunu'],
-    //글 게시자랑 글 지우려는 색기 권한을 불러오는거임.//세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.
-    function(err,result){
-        if(err)
-            console.log(err);
-        if(result[0][0].user_id=='yunu' || result[1][0].authority =='admin' ){
-        //세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.    
-            mysqlcon.query("delete from review where attractionid = ?;delete from attraction where id = ?",[req.query.Aid,req.query.Aid],function(err,result){
-                res.redirect("/views/listings.ejs");
-            })}
-        else res.redirect("/views/single-listing.ejs?id="+req.query.Aid);
-            
-    })
-}
+    else {
+        mysqlcon.query("select user_id from attraction where id = ?;select authority from user where id = ?", [req.query.Aid, 'yunu'],
+            //글 게시자랑 글 지우려는 색기 권한을 불러오는거임.//세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.
+            function (err, result) {
+                if (err)
+                    console.log(err);
+                if (result[0][0].user_id == 'yunu' || result[1][0].authority == 'admin') {
+                    //세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.    
+                    mysqlcon.query("delete from review where attractionid = ?;delete from attraction where id = ?", [req.query.Aid, req.query.Aid], function (err, result) {
+                        res.redirect("/views/listings.ejs");
+                    })
+                }
+                else res.redirect("/views/single-listing.ejs?id=" + req.query.Aid);
+
+            })
+    }
 })
-router.post("/views/authorize",function(req,res){
-    if(req.query.Aid == undefined){
+router.post("/views/authorize", function (req, res) {
+    if (req.query.Aid == undefined) {
         res.redirect("index.ejs")
     }
-    mysqlcon.query("select authority from user where id = ?",["yunu"],function(err,result){
+    mysqlcon.query("select authority from user where id = ?", ["yunu"], function (err, result) {
         //세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.
-        if(result[0].authority ="admin")
-            mysqlcon.query("update attraction set authorized = !authorized where id = ?",[req.query.Aid],function(err,result){
-                if(err)
+        if (result[0].authority = "admin")
+            mysqlcon.query("update attraction set authorized = !authorized where id = ?", [req.query.Aid], function (err, result) {
+                if (err)
                     console.log("DB error" + err)
-                    res.redirect("/views/single-listing.ejs?id="+req.query.Aid)
+                res.redirect("/views/single-listing.ejs?id=" + req.query.Aid)
             })
     })
 })
