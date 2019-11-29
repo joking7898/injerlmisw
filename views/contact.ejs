@@ -50,7 +50,11 @@
             </nav>
             <div class="header-right">
                 <div class="user-access">
-                    <a href="./Register/Login.ejs?" class="primary-btn">로그인</a>
+                        <%if(loggedin){%>
+                            <a href="/views/Register/Modify.ejs" class="primary-btn"><%=user_id%></a>
+                        <%}else{%>
+                            <a href="/views/Register/Login.ejs?" class="primary-btn">로그인</a>
+                        <%}%>
                 </div>
             </div>
             <div id="mobile-menu-wrap"></div>

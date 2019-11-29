@@ -51,7 +51,7 @@
             <div class="header-right">
                 <div class="user-access">
                     <%if(loggedin){%>
-                        <a href="/views/Register/Modify.ejs" class="primary-btn"> 회원정보 수정</a>
+                        <a href="/views/Register/Modify.ejs" class="primary-btn"><%=user_id%></a>
                     <%}else{%>
                         <a href="/views/Register/Login.ejs?" class="primary-btn">로그인</a>
                     <%}%>

@@ -113,7 +113,8 @@ router.get("/views/index.ejs", function (req, res) {
             // log로 체크하는구문.   
             res.render('index.ejs', {
                 result: results,
-                loggedin: session.user.id != null && session.user.id != 'dummy'
+                loggedin: session.user.id != null && session.user.id != 'dummy',
+                user_id: session.user.id
                 // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
             });
         }
@@ -164,7 +165,7 @@ router.get("/views/listings.ejs", function (req, res) {
             if (querystring.indexOf('where') != -1) {
                 gradeCondition = " and (";
             }
-            else if (authorizationCondition.indexOf('where') != -1){
+            else if (authorizationCondition.indexOf('where') != -1) {
                 gradeCondition = " and (";
             }
             else {
@@ -231,7 +232,8 @@ router.get("/views/single-listing.ejs", function (req, res) {
                     reviews: results[1],
                     Aid: AttractionId,
                     authority: results[2][0].authority,
-                    loggedin: session.user.id != null && session.user.id != 'dummy'
+                    loggedin: session.user.id != null && session.user.id != 'dummy',
+                    user_id: session.user.id
                     // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
                 });
             }
@@ -259,7 +261,7 @@ router.post("/views/register.ejs", function (req, res, next) {
     var loca_r = req.body.loca_r;
     var content_r = req.body.content_r;
     var picture_r = req.body.picture_r;
-    if (name_r == "" || session.user.id == 'dummy'){
+    if (name_r == "" || session.user.id == 'dummy') {
         res.redirect(req.url);
     }
     else {
@@ -410,23 +412,28 @@ router.post("/views/Register/Modify.ejs", function (req, res) {
     if (req.body.pass != session.user.password)
         res.redirect("Modify.ejs")
     else {
-        if(req.body.choice=="회원정보수정")
-        {
-            mysqlcon.query("update user set password = ? where id=?", [req.body.New_pass,session.user.id], function (err, results) {
-                if(err)
-                    console.log("DB query error : ",err)
+        if (req.body.choice == "회원정보수정") {
+            mysqlcon.query("update user set password = ? where id=?", [req.body.New_pass, session.user.id], function (err, results) {
+                if (err)
+                    console.log("DB query error : ", err)
                 res.redirect("/views/index.ejs")
             })
         }
-        else if(req.body.choice=='회원 탈퇴')
-        {
+        else if (req.body.choice == '회원 탈퇴') {
             mysqlcon.query("delete from user where id=?", [session.user.id], function (err, results) {
-                if(err)
-                    console.log("DB query error : ",err)
+                if (err)
+                    console.log("DB query error : ", err)
                 res.redirect("/views/index.ejs")
             })
         }
     }
+})
+router.get("/views/contact.ejs", function (req, res) {
+    res.render('contact.ejs', {
+        loggedin: session.user.id != null && session.user.id != 'dummy',
+        user_id: session.user.id
+        // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
+    });
 })
 
 module.exports = router;
