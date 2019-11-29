@@ -52,87 +52,92 @@ mysqlcon.connect(function (err) {
 })
 
 //passport 로그인 구현단.
-// passport.use(new LocalStrategy(
-//   function(username, password, done) {
-//     var sql = 'SELECT * FROM user WHERE id=?';
-//     conn.query(sql, [username], function(err, results){
-//       if(err)
-//         return done(err);
-//       if(!results[0])
-//         return done('please check your id.');
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    var sql = 'SELECT * FROM user WHERE id=?';
+    conn.query(sql, [username], function(err, results){
+      if(err)
+        return done(err);
+      if(!results[0])
+        return done('please check your id.');
 
-//       var user = results[0];
-//         if(password === user.password){
-//           console.log("pw일치");
-//           console.log(user);
-//           return done(null, user);
-//         }
-//         else {
-//           console.log("pw체크해라.");
-//           return done('please check your password.');
-//         }
-//     });//query
-//   }
-// ));
-// passport.serializeUser(function(user, done) {
-//     console.log(user.id); // id 출력 잘됨.
-//     console.log("serializeUser 실행");
-//     done(null, user.id);
-// });
-// passport.deserializeUser(function(id, done) {
-//     console.log("deserializeUser 실행"); //실행이 왜 안될까.
-//     var sql = 'SELECT * FROM user WHERE id=?';
-//     conn.query(sql, [id], function(err, results){
-//         if(err){
-//         console.log("1");
-//         return done(err, false);      
-//         }
-//         if(!results[0]){
-//         console.log("2");
-//         return done(err, false);      
-//         }
-//         return done(null, results[0]);
-//     });
-// });
-// router.get('/', function (req, res) {
-//     if(!req.user)
-//         res.redirect('/login');
-//     else
-//         res.redirect('/welcome');
-//     });
-//     router.get('/login', function(req, res){
-//         if(!req.user){
-//             console.log("req.user 안가져와짐.")
-//             res.render('login.ejs', {message:'input your id and password.'});    
-//         }
-//         else
-//             res.redirect('/welcome');
-// });
-// router.get('/welcome', function(req, res){
-//     if(!req.user){
-//             //왜 안가져와지는걸까.
-//             console.log("안가져와짐.")
-//             return res.redirect('/login');
-//             }
-//             else{
-//             console.log("id가져옴.");
-//             res.render('welcome.ejs', {name:req.user.id});    
-//             }
-//         });
-//     router.get('/logout', function(req, res){
-//     req.logout();
-//     res.redirect('/');
-// });
-    
-//     router.post('/login',
-// passport.authenticate(
-//     'local',
-//     {
-//         successRedirect: '/welcome',
-//         failureRedirect: '/login',
-//         failureFlash: false
-//     })
-// );
+      var user = results[0];
+        if(password === user.password){
+          console.log("pw일치");
+          console.log(user);
+          return done(null, user);
+        }
+        else {
+          console.log("pw체크해라.");
+          return done('please check your password.');
+        }
+    });//query
+  }
+));
+passport.serializeUser(function(user, done) {
+    console.log(user.id); // id 출력 잘됨.
+    console.log("serializeUser 실행");
+    done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+    console.log("deserializeUser 실행"); //실행이 왜 안될까.
+    var sql = 'SELECT * FROM user WHERE id=?';
+    conn.query(sql, [id], function(err, results){
+        if(err){
+        console.log("1");
+        return done(err, false);      
+        }
+        if(!results[0]){
+        console.log("2");
+        return done(err, false);      
+        }
+        return done(null, results[0]);
+    });
+});
+//처음 실행했을때
+router.get('/', function (req, res) {
+    // 로그인 확인된 유저가 안보이면 login함수로 로그인 유저 보이면 welcome으로
+    if(!req.user)
+        res.redirect('/login');
+    else
+        res.redirect('/welcome');
+    });
+    //만약 login함수들어왔는데 로그인 확인 보여지면 welcome으로 안보이면 로그인 login.ejs 페이지 뿌림
+    router.get('/login', function(req, res){
+        if(!req.user){
+            console.log("req.user 안가져와짐.")
+            // login.ejs massage 변수 전달.
+            res.render('login.ejs', {message:'input your id and password.'});    
+        }
+        else
+            res.redirect('/welcome');
+});
+router.get('/welcome', function(req, res){
+    if(!req.user){
+        console.log("안가져와짐.")
+        return res.redirect('/login');
+    }
+    //아이디 로그인 됬을때.
+    else{
+        console.log("id가져옴.");
+        res.render('welcome.ejs', {name:req.user.id});    
+    }
+});
+//로그아웃 함수.
+router.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+});
+//패스포트인증 성공했을때 welcome 라우터로 실패시 login라우터로  이동.
+router.post('/login',
+    passport.authenticate(
+        'local',
+        {
+            successRedirect: '/welcome',
+            failureRedirect: '/login',
+            failureFlash: false
+        })
+);
 
 // session 구현부분.
 // router.get('/', function (req, res) {
@@ -228,17 +233,17 @@ router.get("/views/index.ejs",function (req,res){
     console.log(querydata.category)
     var querystring = "SELECT category,count(*)AS count FROM gottraction.attraction group by category";
     mysqlcon.query(querystring,function(err,results) {
-    if (!err){
-       // console.log('The solution is: ', rows);
-       // log로 체크하는구문.   
-        res.render('index.ejs', {
-        result: results    
-        // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
-      });
-    }
-    else{
-        console.log('Error while performing Query.', err);
-    }
+        if (!err){
+        // console.log('The solution is: ', rows);
+        // log로 체크하는구문.   
+            res.render('index.ejs', {
+            result: results    
+            // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
+        });
+        }
+        else{
+            console.log('Error while performing Query.', err);
+        }
     })
     //res.redirect("/views/listing.ejs")
 })
