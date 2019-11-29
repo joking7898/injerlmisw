@@ -30,6 +30,7 @@ Eapp.use(morgan('short'))
 Eapp.use(bodyparser.urlencoded({extended:false}))
 Eapp.use(PageRouter);
 Eapp.use(express.static('./public'))
+
 /*
 mysqlcon.connect(function(err){
     if(err)
