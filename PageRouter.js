@@ -113,7 +113,7 @@ router.get("/views/index.ejs", function (req, res) {
             // log로 체크하는구문.   
             res.render('index.ejs', {
                 result: results,
-                loggedin: session.user.id != null || session.user.id != 'dummy'
+                loggedin: session.user.id != null && session.user.id != 'dummy'
                 // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
             });
         }
@@ -231,7 +231,7 @@ router.get("/views/single-listing.ejs", function (req, res) {
                     reviews: results[1],
                     Aid: AttractionId,
                     authority: results[2][0].authority,
-                    loggedin: session.user.id != null || session.user.id != 'dummy'
+                    loggedin: session.user.id != null && session.user.id != 'dummy'
                     // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
                 });
             }
