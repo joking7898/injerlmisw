@@ -146,28 +146,6 @@
     }
     );
 
-    $("#submit").click(function () {
-        // console.log('listings.ejs?category=' + $('#AttractionCategory
-        // option:selected').text() + '&location=' + $('#AttractionLocation
-        // option:selected').text());
-
-        // location.href = './listings.ejs?category=' + $(
-        //     '#AttractionCategory option:selected'
-        // ).text() + '&location=' + $('#AttractionLocation option:selected').text();
-
-    });
-
-    $("#submit2").click(function () {
-        // console.log('listings.ejs?category=' + $('#AttractionCategory
-        // option:selected').text() + '&location=' + $('#AttractionLocation
-        // option:selected').text());
-
-        // location.href = './listings.ejs?category=' + $(
-        //     '#AttractionCategory2 option:selected'
-        // ).text() + '&location=' + $('#AttractionLocation2 option:selected').text();
-
-    });
-
     $("#AttractionLocation").change(function () {
         var selectLocation = $('#AttractionLocation option:selected').text();
 
