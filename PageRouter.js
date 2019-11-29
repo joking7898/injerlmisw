@@ -241,7 +241,8 @@ router.get("/views/index.ejs",function (req,res){
         // console.log('The solution is: ', rows);
         // log로 체크하는구문.   
             res.render('index.ejs', {
-            result: results    
+            result: results,
+            loggedin : session.user.id!=null||session.user.id!='dummy'    
             // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
         });
         }
@@ -290,7 +291,8 @@ router.get("/views/listings.ejs",function (req,res){
                // log로 체크하는구문.   
                 res.render('listings.ejs', {
                 result: results,
-                _url:req.url
+                _url:req.url,
+                loggedin : session.user.id!=null||session.user.id!='dummy'
                 // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
               });
             }
@@ -320,7 +322,8 @@ router.get("/views/single-listing.ejs",function (req,res){
             result: results[0],
             reviews: results[1],
             Aid:AttractionId,
-            authority:results[2][0].authority
+            authority:results[2][0].authority,
+            loggedin : session.user.id!=null||session.user.id!='dummy'
         // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
       });
     }
