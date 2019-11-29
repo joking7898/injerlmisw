@@ -54,7 +54,8 @@ router.use(session({
 session.user = {
     id:'dummy',
     password:''
-}  
+} 
+//yeah 
 router.use(passport.initialize());
 router.use(passport.session());
 
