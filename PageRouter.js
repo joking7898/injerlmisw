@@ -75,6 +75,7 @@ router.get("/views/listings.ejs",function (req,res){
                 authorizationCondition = " where authorized = 1"
             else
                 authorizationCondition = " and authorized = 1"
+                
         }
         mysqlcon.query(querystring +authorizationCondition,function(err,results) {
             if (!err){
@@ -166,11 +167,6 @@ router.post("/views/register.ejs", function (req, res, next) {
         }
     )
     res.redirect("/views/listings.ejs")
-})
-router.post("/views/listings.ejs",function(req,res){
-    console.log("씨발",req.body)
-    //req.url.querystring+="&page="
-    res.redirect(req.url)
 })
 router.post("/views/single-listing.ejs", function (req, res, next) {
     var description = req.body.description;
