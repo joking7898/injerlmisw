@@ -23,7 +23,7 @@ var mysqlcon = mysql.createConnection({
     //port: '3306'
 });
 var app = express();
-var dbOptions = {
+/*var dbOptions = {
   host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com', 
   user: 'admin', 
   password: 'freehongkong',
@@ -31,20 +31,30 @@ var dbOptions = {
 };
  
 var conn = mysql.createConnection(dbOptions);
-conn.connect();
+conn.connect();*/
 var fs = require('fs')
 var ejs = require('ejs')
 var bodyparser = require('body-parser')
 router.use(bodyparser.urlencoded({extended: false}))
 
 //session test - kty
+// router.use(session({
+//   secret: '!@#$%^&*',
+//   store: new MySQLStore(dbOptions),
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie : {secure : false ,maxAge: 1000 * 60 * 60 }// 유효기간 1시간  
+// }));
 router.use(session({
-  secret: '!@#$%^&*',
-  store: new MySQLStore(dbOptions),
-  resave: false,
-  saveUninitialized: false,
-  cookie : {secure : false ,maxAge: 1000 * 60 * 60 }// 유효기간 1시간  
-}));
+    secret: 'Yunu',
+    resave: false,
+    saveUninitialized: false,
+    cookie : {secure : false ,maxAge: 1000 * 60 * 60 }// 유효기간 1시간  
+  }));
+session.user = {
+    id:'dummy',
+    password:''
+}  
 router.use(passport.initialize());
 router.use(passport.session());
 
@@ -52,7 +62,7 @@ mysqlcon.connect(function (err) {
 })
 
 //passport 로그인 구현단.
-passport.use(new LocalStrategy(
+/*passport.use(new LocalStrategy(
   function(username, password, done) {
     var sql = 'SELECT * FROM user WHERE id=?';
     conn.query(sql, [username], function(err, results){
@@ -93,7 +103,7 @@ passport.deserializeUser(function(id, done) {
         }
         return done(null, results[0]);
     });
-});
+});*/
 //처음 실행했을때
 router.get('/views/Register/Login.ejs', function (req, res) {
     // 로그인 확인된 유저가 안보이면 login함수로 로그인 유저 보이면 welcome으로
@@ -103,14 +113,14 @@ router.get('/views/Register/Login.ejs', function (req, res) {
         res.redirect('/welcome');
     });
     //만약 login함수들어왔는데 로그인 확인 보여지면 welcome으로 안보이면 로그인 login.ejs 페이지 뿌림
-    router.get('/login', function(req, res){
-        if(!req.user){
-            console.log("req.user 안가져와짐.")
-            // login.ejs massage 변수 전달.
-            res.render('Register/Login.ejs');    
-        }
-        else
-            res.redirect('/welcome');
+router.get('/login', function(req, res){
+    if(!req.user){
+        console.log("req.user 안가져와짐.")
+        // login.ejs massage 변수 전달.
+        res.render('Register/Login.ejs');    
+    }
+    else
+    res.redirect('/welcome');
 });
 router.get('/welcome', function(req, res){
     if(!req.user){
@@ -130,16 +140,36 @@ router.get('/logout', function(req, res){
     res.redirect('/');
 });
 //패스포트인증 성공했을때 welcome 라우터로 실패시 login라우터로  이동.
-router.post('/login',
-    passport.authenticate(
-        'local',
-        {
-            successRedirect: '/welcome',
-            failureRedirect: '/login',
-            failureFlash: false
-        })
-);
-
+// router.post('/login',
+//     passport.authenticate(
+//         'local',
+//         {
+//             successRedirect: '/welcome',
+//             failureRedirect: '/login',
+//             failureFlash: false
+//         })
+// );
+router.post('/login',function(req,res){
+    var id = req.body.id;
+    var password = req.body.your_pass;
+    mysqlcon.query("select * from user where id = ? and password = ?",[id,password],function(err,results) {
+        if (!err && results[0] !=undefined){
+            session.user = {
+                "id":results[0].id,
+                "password":results[0].password
+            }
+            res.redirect("/views/index.ejs?#");
+//            res.render('index.ejs', {
+//            result: results    
+            // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
+//            });
+        }
+        else{
+            res.redirect("/login");
+            console.log('Error while performing Query in login.', err);
+        }
+    })
+});
 // session 구현부분.
 // router.get('/', function (req, res) {
 //   if(!req.session.name)
@@ -244,8 +274,8 @@ router.get("/views/listings.ejs",function (req,res){
     }
     if(category !="전체"&&  location != "전체")
         querystring += " where location = '"+location+"' and category = '"+category+"'";
-    
-    mysqlcon.query("select authority from user where id = ?",['yunu'],function(err,result){
+    var userid = session.user.id?session.user.id:'dummy'
+    mysqlcon.query("select authority from user where id = ?",[userid],function(err,result){
         if(result[0].authority=='user')
         {
             if(category == "전체"&& location == "전체")
@@ -281,14 +311,15 @@ router.get("/views/single-listing.ejs",function (req,res){
     }
     else
     {
-    mysqlcon.query("select * from attraction where id = ?; select * from review where AttractionId = ?; select authority from user where id = ?",[AttractionId,AttractionId,"yunu"],function(err,results) {
-    if (!err){
-        results[0][0].contents= (results[0][0].contents.replace(new RegExp('\n','g'), '<br>'))
-        res.render('single-listing.ejs', {
-        result: results[0],
-        reviews: results[1],
-        Aid:AttractionId,
-        authority:results[2][0].authority
+        var userid = session.user.id?session.user.id:'dummy'
+        mysqlcon.query("select * from attraction where id = ?; select * from review where AttractionId = ?; select authority from user where id = ?",[AttractionId,AttractionId,userid],function(err,results) {
+        if (!err){
+            results[0][0].contents= (results[0][0].contents.replace(new RegExp('\n','g'), '<br>'))
+            res.render('single-listing.ejs', {
+            result: results[0],
+            reviews: results[1],
+            Aid:AttractionId,
+            authority:results[2][0].authority
         // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
       });
     }
@@ -318,12 +349,12 @@ router.post("/views/register.ejs", function (req, res, next) {
     var loca_r = req.body.loca_r;
     var content_r = req.body.content_r;
     var picture_r = req.body.picture_r;
-    if(name_r=="")
+    if(name_r=="" ||session.user.id == 'dummy')
         res.redirect(req.url)
     mysqlcon.query(
         `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
         [req.body.name_r, req.body.address_r, req.body.phone_r, req.body.fee_r, req.body.time_r, 
-        req.body.cate_r, req.body.loca_r, req.body.content_r, req.body.picture_r,'yunu'], 
+        req.body.cate_r, req.body.loca_r, req.body.content_r, req.body.picture_r,session.user.id], 
         function (error, result) {
             if (error) {
                 console.log("데이터베이스 입력 에러...");
@@ -376,7 +407,6 @@ router.post("/views/Register/Register_user.ejs", function (req, res, next) {
 })
 
 router.post("/views/listings.ejs",function(req,res){
-    console.log("씨발",req.body)
     //req.url.querystring+="&page="
     res.redirect(req.url)
 })
@@ -384,36 +414,37 @@ router.post("/views/single-listing.ejs", function (req, res, next) {
     var description = req.body.description;
     var stars = req.body.stars;
 
-    if(description=="")
+    if(description=="" || session.user.id == 'dummy')
         res.redirect(req.url)
     else
     {
-        mysqlcon.query( "insert into review (AttractionId,userid,description,Wtime,stars) values (?,?,?,"+"sysdate()"+",?)",[req.query.id,'yunu',description,stars],function(err,result){
+        mysqlcon.query( "insert into review (AttractionId,userid,description,Wtime,stars) values (?,?,?,"+"sysdate()"+",?)",[req.query.id,session.user.id,description,stars],function(err,result){
          
-            console.log("insert into review (AttractionId,userid,description,Wtime,stars) values (?,?,?,"+"sysdate()"+",?)",[req.query.id,'yunu',description,stars])
+            console.log("insert into review (AttractionId,userid,description,Wtime,stars) values (?,?,?,"+"sysdate()"+",?)",[req.query.id,session.user.id,description,stars])
             if(err)
-            console.log("Query Error : "+ err)
+                console.log("Query Error : "+ err)
         })
         mysqlcon.query("update attraction set score = (select round(avg(stars),2) from review where Attractionid = ?) where id = ?",[req.query.id,req.query.id],function(err,result){
             if(err)
-            console.log("Query Error : "+ err)
+                console.log("Query Error : "+ err)
         })
         res.redirect(req.url)
     }
 })
 
 router.post("/views/deleteReview",function(req,res){
-    if(req.query.Rid == undefined){
+    if(req.query.Rid == undefined ||session.user.id == 'dummy'){
         res.redirect("index.ejs")
     }else
     {
-    mysqlcon.query("select userid,AttrctionId from review where id = ?;select authority from user where id = ?",[req.query.Rid,'yunu'],
+    mysqlcon.query("select userid,AttractionId from review where id = ?;select authority from user where id = ?",[req.query.Rid,session.user.id],
     function(err,result){
+        console.log(req.query.Rid)
         if(err)
             console.log(err);
-        if(result[0][0].userid=='yunu' || result[1][0].authority =='admin' ){
+        if(result[0][0].userid==session.user.id || result[1][0].authority =='admin' ){
         //세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.    
-            mysqlcon.query("delete from review where id = ?",[req.query.Rid],function(err,result){
+            mysqlcon.query("delete from review where id = ?",[req.query.Rid],function(err,results){
                 mysqlcon.query("update attraction set score = (select round(avg(stars),2) from review where Attractionid = ?) where id = ?",[result[0][0].AttractionId, result[0][0].AttractionId],function(err,result){
                     if(err)
                     console.log("Query Error : "+ err)
@@ -431,12 +462,12 @@ router.post("/views/deleteAttraction",function(req,res){
     }
     else
     {
-    mysqlcon.query("select user_id from attraction where id = ?;select authority from user where id = ?",[req.query.Aid,'yunu'],
+    mysqlcon.query("select user_id from attraction where id = ?;select authority from user where id = ?",[req.query.Aid,session.user.id],
     //글 게시자랑 글 지우려는 색기 권한을 불러오는거임.//세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.
     function(err,result){
         if(err)
             console.log(err);
-        if(result[0][0].user_id=='yunu' || result[1][0].authority =='admin' ){
+        if(result[0][0].user_id==session.user.id || result[1][0].authority =='admin' ){
         //세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.    
             mysqlcon.query("delete from review where attractionid = ?;delete from attraction where id = ?",[req.query.Aid,req.query.Aid],function(err,result){
                 res.redirect("/views/listings.ejs");
@@ -450,7 +481,7 @@ router.post("/views/authorize",function(req,res){
     if(req.query.Aid == undefined){
         res.redirect("index.ejs")
     }
-    mysqlcon.query("select authority from user where id = ?",["yunu"],function(err,result){
+    mysqlcon.query("select authority from user where id = ?",[session.user.id],function(err,result){
         //세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.
         if(result[0].authority ="admin")
             mysqlcon.query("update attraction set authorized = !authorized where id = ?",[req.query.Aid],function(err,result){
