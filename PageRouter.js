@@ -35,7 +35,7 @@ conn.connect();*/
 var fs = require('fs')
 var ejs = require('ejs')
 var bodyparser = require('body-parser')
-router.use(bodyparser.urlencoded({extended: false}))
+router.use(bodyparser.urlencoded({ extended: false }))
 
 //session test - kty
 // router.use(session({
@@ -230,21 +230,21 @@ router.post('/login',function(req,res){
  
 
 //index.ejs 관련 sql
-router.get("/views/index.ejs",function (req,res){
-    var querydata = url.parse(req.url,true).query;
-    
+router.get("/views/index.ejs", function (req, res) {
+    var querydata = url.parse(req.url, true).query;
+
     console.log(querydata.category)
     var querystring = "SELECT category,count(*)AS count FROM gottraction.attraction group by category";
-    mysqlcon.query(querystring,function(err,results) {
-        if (!err){
-        // console.log('The solution is: ', rows);
-        // log로 체크하는구문.   
+    mysqlcon.query(querystring, function (err, results) {
+        if (!err) {
+            //console.log('The solution is: ', rows);
+            // log로 체크하는구문.   
             res.render('index.ejs', {
-            result: results    
-            // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
-        });
+                result: results
+                // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
+            });
         }
-        else{
+        else {
             console.log('Error while performing Query.', err);
         }
     })
@@ -253,23 +253,29 @@ router.get("/views/index.ejs",function (req,res){
 
 
 //페이지 출력 여기서 해주라는 요청.
-router.get("/views/listings.ejs",function (req,res){
-    var querydata = url.parse(req.url,true).query;
-    
-    var category = (querydata.category == undefined)?"전체":querydata.category;
-    var location = (querydata.location == undefined)?"전체":querydata.location;
-    var querystring = "select * from attraction";
-    var authorizationCondition ="";
+router.get("/views/listings.ejs", function (req, res) {
+    var querydata = url.parse(req.url, true).query;
 
-    if(category =="전체" && location == "전체"){
+    var category = (querydata.category == undefined) ? "전체" : querydata.category;
+    var location = (querydata.location == undefined) ? "전체" : querydata.location;
+    var querystring = "select * from attraction";
+    var authorizationCondition = "";
+    var gradeCondition = "";
+
+    var starUrl = req.url;
+
+    if (category == "전체" && location == "전체") {
         querystring;
     }
-    else if(category !="전체" || location != "전체"){
-        if(category =="전체"){
-            querystring += " where location = '"+location+"'";
+    else if (category != "전체" && location != "전체") {
+        querystring += " where location = '" + location + "' and category = '" + category + "'";
+    }
+    else if (category != "전체" || location != "전체") {
+        if (category == "전체") {
+            querystring += " where location = '" + location + "'";
         }
-        else if(location =="전체"){
-            querystring += " where category = '"+category+"'";
+        else if (location == "전체") {
+            querystring += " where category = '" + category + "'";
         }
     }
     if(category !="전체"&&  location != "전체")
@@ -283,30 +289,61 @@ router.get("/views/listings.ejs",function (req,res){
             else
                 authorizationCondition = " and authorized = 1"
         }
-        mysqlcon.query(querystring +authorizationCondition,function(err,results) {
-            if (!err){
-               // console.log('The solution is: ', rows);
-               // log로 체크하는구문.   
+        //별점 분류 코드 - start
+        if (category == "전체" && location == "전체" && starUrl.indexOf('grade=') != -1) {
+            gradeCondition = " where (";
+        }
+        else if (starUrl.indexOf('grade=') != -1) {
+            gradeCondition = " and (";
+        }
+        else {
+            gradeCondition = "";
+        }
+        if (starUrl.indexOf('5.0') != -1) {
+            gradeCondition = gradeCondition + 'score = 5.0 or ';
+        }
+        if (starUrl.indexOf('4.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 4.0 and score < 5.0 or ';
+        }
+        if (starUrl.indexOf('3.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 3.0 and score < 4.0 or ';
+        }
+        if (starUrl.indexOf('2.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 2.0 and score < 3.0 or ';
+        }
+        if (starUrl.indexOf('1.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 1.0 and score < 2.0 or ';
+        }
+        if (starUrl.indexOf('grade=') != -1) {
+            gradeCondition = gradeCondition.substr(0, gradeCondition.length - 4);
+            gradeCondition = gradeCondition + ')';
+        }
+        //별점 분류 코드 - end
+        mysqlcon.query(querystring + authorizationCondition + gradeCondition, function (err, results) {
+            if (!err) {
+                // console.log('The solution is: ', rows);
+                // log로 체크하는구문.  
+                //console.log(querystring + authorizationCondition + gradeCondition + '======================================================'); 
                 res.render('listings.ejs', {
-                result: results,
-                _url:req.url
-                // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
-              });
+                    result: results,
+                    _url: req.url
+                    // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
+                });
             }
-            else{
+            else {
                 console.log('Error while performing Query.', err);
             }
-            })    
+        })
     })
-    
+
     //res.redirect("/views/listing.ejs")
 })
 
-router.get("/views/single-listing.ejs",function (req,res){
-    var querydata = url.parse(req.url,true).query;
-    
+router.get("/views/single-listing.ejs", function (req, res) {
+    var querydata = url.parse(req.url, true).query;
+
     var AttractionId = querydata.id;
-    if(AttractionId == undefined){
+    if (AttractionId == undefined) {
         res.redirect('/views/index.ejs?#')
     }
     else
@@ -326,14 +363,12 @@ router.get("/views/single-listing.ejs",function (req,res){
     else{
         console.log('Error while performing Query.', err);
     }
-    })
-}
 }
     //res.redirect("/views/listing.ejs")
 )
 
 // 홈페이지에 url없이 접속시 index url로 리다이렉트
-router.get("/",function (req,res){
+router.get("/", function (req, res) {
     res.redirect("/views/index.ejs?#") // 이 주소로 해야지 정상 작동되는거 구현완료.
 })
 
@@ -456,8 +491,8 @@ router.post("/views/deleteReview",function(req,res){
     })
     }
 })
-router.post("/views/deleteAttraction",function(req,res){
-    if(req.query.Aid == undefined){
+router.post("/views/deleteAttraction", function (req, res) {
+    if (req.query.Aid == undefined) {
         res.redirect("index.ejs")
     }
     else
@@ -477,17 +512,17 @@ router.post("/views/deleteAttraction",function(req,res){
     })
 }
 })
-router.post("/views/authorize",function(req,res){
-    if(req.query.Aid == undefined){
+router.post("/views/authorize", function (req, res) {
+    if (req.query.Aid == undefined) {
         res.redirect("index.ejs")
     }
     mysqlcon.query("select authority from user where id = ?",[session.user.id],function(err,result){
         //세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.
-        if(result[0].authority ="admin")
-            mysqlcon.query("update attraction set authorized = !authorized where id = ?",[req.query.Aid],function(err,result){
-                if(err)
+        if (result[0].authority = "admin")
+            mysqlcon.query("update attraction set authorized = !authorized where id = ?", [req.query.Aid], function (err, result) {
+                if (err)
                     console.log("DB error" + err)
-                    res.redirect("/views/single-listing.ejs?id="+req.query.Aid)
+                res.redirect("/views/single-listing.ejs?id=" + req.query.Aid)
             })
     })
 })
