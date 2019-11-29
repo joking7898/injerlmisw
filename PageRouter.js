@@ -109,10 +109,11 @@ router.get("/views/index.ejs", function (req, res) {
     var querystring = "SELECT category,count(*)AS count FROM gottraction.attraction group by category";
     mysqlcon.query(querystring, function (err, results) {
         if (!err) {
-            //console.log('The solution is: ', rows);
+            // console.log('The solution is: ', rows);
             // log로 체크하는구문.   
             res.render('index.ejs', {
-                result: results
+                result: results,
+                loggedin: session.user.id != null || session.user.id != 'dummy'
                 // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
             });
         }
@@ -229,16 +230,15 @@ router.get("/views/single-listing.ejs", function (req, res) {
                     result: results[0],
                     reviews: results[1],
                     Aid: AttractionId,
-                    authority: results[2][0].authority
+                    authority: results[2][0].authority,
+                    loggedin: session.user.id != null || session.user.id != 'dummy'
                     // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
                 });
             }
             else {
                 console.log('Error while performing Query.', err);
             }
-        }
-            //res.redirect("/views/listing.ejs")
-        )
+        })
     }
 })
 
@@ -404,4 +404,29 @@ router.post("/views/authorize", function (req, res) {
             })
     })
 })
+
+router.post("/views/Register/Modify.ejs", function (req, res) {
+    console.log(req.body)
+    if (req.body.pass != session.user.password)
+        res.redirect("Modify.ejs")
+    else {
+        if(req.body.choice=="회원정보수정")
+        {
+            mysqlcon.query("update user set password = ? where id=?", [req.body.New_pass,session.user.id], function (err, results) {
+                if(err)
+                    console.log("DB query error : ",err)
+                res.redirect("/views/index.ejs")
+            })
+        }
+        else if(req.body.choice=='회원 탈퇴')
+        {
+            mysqlcon.query("delete from user where id=?", [session.user.id], function (err, results) {
+                if(err)
+                    console.log("DB query error : ",err)
+                res.redirect("/views/index.ejs")
+            })
+        }
+    }
+})
+
 module.exports = router;
