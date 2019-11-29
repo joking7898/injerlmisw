@@ -213,37 +213,14 @@
                         </div>
                         <%}%>
                             <!-- 아래 표 부분이 db에서 붙여버린것. 이런형식으로 db에서 가져오면됨. -->
-                            <div >
-                            <!-- <table>
-                                <thead>
-                                     <tr>
-                                       <th>sid</th>
-                                       <th>sname</th>
-                                       <th>saddress</th>
-                                       <th>sinfo</th>
-                                     </tr>
-                                   </thead>
-                                   <tbody id="listings">
-                                     <% for (var index in result) { %>  
-                                       <tr>
-                                         <td>
-                                             <%= result[index].title%>
-                                         </td>
-                                       </tr>
-                                       <% } %>
-                                   </tbody>
-                                 </table>  -->
-                                 </div>
-                                 
-                            <div class="col-lg-12 text-right">
-                                <div class="pagination-num">
-                                        <%for(var i = 0; i<result[0].length/9 +1;i++) {%>
-                                        <% var targetpage = _url%>
-                                       <%-'<a href='+_url+'>'%><%='i'%></a>
-                                       <%}%>
-                                    <!-- <a href="#">01</a>
-                                    <a href="#">02</a>
-                                    <a href="#">03</a> -->
+                    </div>
+
+                    <div class="col-lg-12 text-right">
+                        <div class="pagination-num">
+                            <%for(var i = 0; i<result.length/9 +1;i++) {%>
+                            <% var targetpage = _url%>
+                            <%-'<a href='+_url+'>'%><%='i'%></a>
+                            <%}%>
                         </div>
                     </div>
                 </div>

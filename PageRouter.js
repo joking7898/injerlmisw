@@ -23,28 +23,11 @@ var mysqlcon = mysql.createConnection({
     //port: '3306'
 });
 var app = express();
-/*var dbOptions = {
-  host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com', 
-  user: 'admin', 
-  password: 'freehongkong',
-  database: 'gottraction',
-};
- 
-var conn = mysql.createConnection(dbOptions);
-conn.connect();*/
 var fs = require('fs')
 var ejs = require('ejs')
 var bodyparser = require('body-parser')
 router.use(bodyparser.urlencoded({ extended: false }))
 
-//session test - kty
-// router.use(session({
-//   secret: '!@#$%^&*',
-//   store: new MySQLStore(dbOptions),
-//   resave: false,
-//   saveUninitialized: false,
-//   cookie : {secure : false ,maxAge: 1000 * 60 * 60 }// 유효기간 1시간  
-// }));
 router.use(session({
     secret: 'Yunu',
     resave: false,
@@ -55,56 +38,12 @@ session.user = {
     id: 'dummy',
     password: ''
 }
-//yeah 
 router.use(passport.initialize());
 router.use(passport.session());
 
 mysqlcon.connect(function (err) {
 })
 
-//passport 로그인 구현단.
-/*passport.use(new LocalStrategy(
-  function(username, password, done) {
-    var sql = 'SELECT * FROM user WHERE id=?';
-    conn.query(sql, [username], function(err, results){
-      if(err)
-        return done(err);
-      if(!results[0])
-        return done('please check your id.');
-
-      var user = results[0];
-        if(password === user.password){
-          console.log("pw일치");
-          console.log(user);
-          return done(null, user);
-        }
-        else {
-          console.log("pw체크해라.");
-          return done('please check your password.');
-        }
-    });//query
-  }
-));
-passport.serializeUser(function(user, done) {
-    console.log(user.id); // id 출력 잘됨.
-    console.log("serializeUser 실행");
-    done(null, user.id);
-});
-passport.deserializeUser(function(id, done) {
-    console.log("deserializeUser 실행"); //실행이 왜 안될까.
-    var sql = 'SELECT * FROM user WHERE id=?';
-    conn.query(sql, [id], function(err, results){
-        if(err){
-        console.log("1");
-        return done(err, false);      
-        }
-        if(!results[0]){
-        console.log("2");
-        return done(err, false);      
-        }
-        return done(null, results[0]);
-    });
-});*/
 //처음 실행했을때
 router.get('/views/Register/Login.ejs', function (req, res) {
     // 로그인 확인된 유저가 안보이면 login함수로 로그인 유저 보이면 welcome으로
@@ -140,16 +79,6 @@ router.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
-//패스포트인증 성공했을때 welcome 라우터로 실패시 login라우터로  이동.
-// router.post('/login',
-//     passport.authenticate(
-//         'local',
-//         {
-//             successRedirect: '/welcome',
-//             failureRedirect: '/login',
-//             failureFlash: false
-//         })
-// );
 router.post('/login', function (req, res) {
     var id = req.body.id;
     var password = req.body.your_pass;
@@ -171,64 +100,6 @@ router.post('/login', function (req, res) {
         }
     })
 });
-// session 구현부분.
-// router.get('/', function (req, res) {
-//   if(!req.session.name)
-//     res.redirect('/login');
-//   else
-//     res.redirect('/welcome');
-// });
-// router.get('/login', function(req, res){
-//   if(!req.session.name)
-//     res.render('login.ejs', { message:'로그인좀 해라.'});
-//   else
-//     res.redirect('/welcome');
-// });
-// router.get('/welcome', function(req, res){
-//   if(!req.user)
-//     return res.redirect('/login');
-//   else
-//     res.render('welcome.ejs', {name:req.user.id});
-// });
-// router.get('/welcome', function(req, res){
-//   console.log('웰컴들어오냐?');
-//   if(!req.session.name){
-//     console.log('세션 이름이 왜없니.?');
-//     return res.redirect('/login');    
-//   }
-//   else
-//     res.render('welcome.ejs', {name:req.session.name});
-// });
-// router.post('/login', function(req, res) {
-//     var id = req.body.username;
-//     var pw = req.body.password;
-//     var sql = 'SELECT * FROM user WHERE id=?';
-//     conn.query(sql, [id], function(err, results){
-//       if(err)
-//         console.log(err);
-
-//       if(!results[0])
-//       return res.render('login.ejs', {message:'아이디 체크 안허냐'});
-
-//       var user = results[0];
-//       if(pw === user.password){
-//         req.session.name = user.id;
-//         req.session.save(function(){
-//           return res.redirect('/welcome');
-//         });
-//       }
-//       else {
-//         return res.render('login.ejs', {message:'비밀번호 체크하라고!!.'});
-//       }
-//     });//query
-//   }
-// );
-// router.get('/logout', function(req, res){
-//   req.session.destroy(function(err){
-//     res.redirect('/');
-//   });
-// });
-
 
 //index.ejs 관련 sql
 router.get("/views/index.ejs", function (req, res) {
@@ -262,9 +133,15 @@ router.get("/views/listings.ejs", function (req, res) {
     var location = (querydata.location == undefined) ? "전체" : querydata.location;
     var querystring = "select * from attraction";
     var authorizationCondition = "";
+    var gradeCondition = "";
+
+    var starUrl = req.url;
 
     if (category == "전체" && location == "전체") {
         querystring;
+    }
+    else if (category != "전체" && location != "전체") {
+        querystring += " where location = '" + location + "' and category = '" + category + "'";
     }
     else if (category != "전체" || location != "전체") {
         if (category == "전체") {
@@ -274,8 +151,6 @@ router.get("/views/listings.ejs", function (req, res) {
             querystring += " where category = '" + category + "'";
         }
     }
-    if (category != "전체" && location != "전체")
-        querystring += " where location = '" + location + "' and category = '" + category + "'";
     var userid = session.user.id ? session.user.id : 'dummy'
     mysqlcon.query("select authority from user where id = ?", [userid], function (err, result) {
         if (result[0].authority == 'user') {
@@ -284,14 +159,49 @@ router.get("/views/listings.ejs", function (req, res) {
             else
                 authorizationCondition = " and authorized = 1"
         }
-        mysqlcon.query(querystring + authorizationCondition, function (err, results) {
+        //별점 분류 코드 - start
+        if (starUrl.indexOf('grade=') != -1) {
+            if (querystring.indexOf('where') != -1) {
+                gradeCondition = " and (";
+            }
+            else if (authorizationCondition.indexOf('where') != -1){
+                gradeCondition = " and (";
+            }
+            else {
+                gradeCondition = " where (";
+            }
+        }
+        else {
+            gradeCondition = "";
+        }
+        if (starUrl.indexOf('5.0') != -1) {
+            gradeCondition = gradeCondition + 'score = 5.0 or ';
+        }
+        if (starUrl.indexOf('4.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 4.0 and score < 5.0 or ';
+        }
+        if (starUrl.indexOf('3.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 3.0 and score < 4.0 or ';
+        }
+        if (starUrl.indexOf('2.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 2.0 and score < 3.0 or ';
+        }
+        if (starUrl.indexOf('1.0') != -1) {
+            gradeCondition = gradeCondition + 'score >= 1.0 and score < 2.0 or ';
+        }
+        if (starUrl.indexOf('grade=') != -1) {
+            gradeCondition = gradeCondition.substr(0, gradeCondition.length - 4);
+            gradeCondition = gradeCondition + ')';
+        }
+        //별점 분류 코드 - end
+        mysqlcon.query(querystring + authorizationCondition + gradeCondition, function (err, results) {
             if (!err) {
                 // console.log('The solution is: ', rows);
-                // log로 체크하는구문.   
+                // log로 체크하는구문.  
+                //console.log(querystring + authorizationCondition + gradeCondition + '======================================================'); 
                 res.render('listings.ejs', {
                     result: results,
-                    _url: req.url,
-                    loggedin: session.user.id != null || session.user.id != 'dummy'
+                    _url: req.url
                     // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
                 });
             }
@@ -330,9 +240,7 @@ router.get("/views/single-listing.ejs", function (req, res) {
             }
         })
     }
-}
-    //res.redirect("/views/listing.ejs")
-)
+})
 
 // 홈페이지에 url없이 접속시 index url로 리다이렉트
 router.get("/", function (req, res) {
@@ -351,22 +259,26 @@ router.post("/views/register.ejs", function (req, res, next) {
     var loca_r = req.body.loca_r;
     var content_r = req.body.content_r;
     var picture_r = req.body.picture_r;
-    if (name_r == "" || session.user.id == 'dummy')
-        res.redirect(req.url)
-    mysqlcon.query(
-        `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
-        [req.body.name_r, req.body.address_r, req.body.phone_r, req.body.fee_r, req.body.time_r,
-        req.body.cate_r, req.body.loca_r, req.body.content_r, req.body.picture_r, session.user.id],
-        function (error, result) {
-            if (error) {
-                console.log("데이터베이스 입력 에러...");
-                throw error;
+    if (name_r == "" || session.user.id == 'dummy'){
+        res.redirect(req.url);
+    }
+    else {
+        mysqlcon.query(
+            `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
+            [req.body.name_r, req.body.address_r, req.body.phone_r, req.body.fee_r, req.body.time_r,
+            req.body.cate_r, req.body.loca_r, req.body.content_r, req.body.picture_r, session.user.id],
+            function (error, result) {
+                if (error) {
+                    console.log("데이터베이스 입력 에러...");
+                    throw error;
+                }
+                // response.writeHead(302, {Location: `/?id=${result.insertId}`});
+                // response.end();
             }
-            // response.writeHead(302, {Location: `/?id=${result.insertId}`});
-            // response.end();
-        }
-    )
-    res.redirect("/views/listings.ejs")
+        )
+        console.log('=================================등록====================================');
+        res.redirect('/views/listings.ejs');
+    }
 })
 //회원가입 sql문 구분.
 router.post("/views/Register/Register_user.ejs", function (req, res, next) {
@@ -375,7 +287,7 @@ router.post("/views/Register/Register_user.ejs", function (req, res, next) {
     var pass = req.body.pass;
     var repass = req.body.re_pass;
     var sql = 'SELECT * FROM user WHERE id=?';
-    conn.query(sql, [id], function (err, results) {
+    mysqlcon.query(sql, [id], function (err, results) {
         if (err) {
             console.log(err);
         }
