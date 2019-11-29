@@ -589,4 +589,8 @@ label.valid {
     margin-right: 0px;
     margin-bottom: 10px; } }
 
+    #cancel_Membership {
+      background: none;
+      border: none;
+    }
 /*# sourceMappingURL=style.css.map */

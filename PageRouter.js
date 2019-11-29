@@ -45,41 +45,48 @@ mysqlcon.connect(function (err) {
 })
 
 //처음 실행했을때
+// router.get('/views/Register/Login.ejs', function (req, res) {
+//     // 로그인 확인된 유저가 안보이면 login함수로 로그인 유저 보이면 welcome으로
+//     if (!req.user)
+//         res.redirect('/login');
+//     else
+//         res.redirect('/welcome');
+// });
+// //만약 login함수들어왔는데 로그인 확인 보여지면 welcome으로 안보이면 로그인 login.ejs 페이지 뿌림
+// router.get('/login', function (req, res) {
+//     if (!req.user) {
+//         console.log("req.user 안가져와짐.")
+//         // login.ejs massage 변수 전달.
+//         res.render('Register/Login.ejs');
+//     }
+//     else
+//         res.redirect('/welcome');
+// });
+// router.get('/welcome', function (req, res) {
+//     if (!req.user) {
+//         console.log("안가져와짐.")
+//         return res.redirect('/login');
+//     }
+//     //아이디 로그인 됬을때.
+//     else {
+//         console.log("id가져옴.");
+//         // res.render('/views/index.ejs', {name:req.user.id});
+//         res.render('index.ejs');
+//     }
+// });
+// //로그아웃 함수.
+// router.get('/logout', function (req, res) {
+//     req.logout();
+//     res.redirect('/');
+// });
 router.get('/views/Register/Login.ejs', function (req, res) {
-    // 로그인 확인된 유저가 안보이면 login함수로 로그인 유저 보이면 welcome으로
-    if (!req.user)
-        res.redirect('/login');
-    else
-        res.redirect('/welcome');
-});
-//만약 login함수들어왔는데 로그인 확인 보여지면 welcome으로 안보이면 로그인 login.ejs 페이지 뿌림
-router.get('/login', function (req, res) {
-    if (!req.user) {
-        console.log("req.user 안가져와짐.")
-        // login.ejs massage 변수 전달.
-        res.render('Register/Login.ejs');
-    }
-    else
-        res.redirect('/welcome');
-});
-router.get('/welcome', function (req, res) {
-    if (!req.user) {
-        console.log("안가져와짐.")
-        return res.redirect('/login');
-    }
-    //아이디 로그인 됬을때.
-    else {
-        console.log("id가져옴.");
-        // res.render('/views/index.ejs', {name:req.user.id});
-        res.render('index.ejs');
-    }
-});
-//로그아웃 함수.
-router.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/');
-});
-router.post('/login', function (req, res) {
+    var tryagain = req.query.tryagain
+    res.render('Register/Login.ejs',
+        {tryagain:tryagain!=undefined}
+    );
+})
+
+router.post('/views/Register/Login.ejs', function (req, res) {
     var id = req.body.id;
     var password = req.body.your_pass;
     mysqlcon.query("select * from user where id = ? and password = ?", [id, password], function (err, results) {
@@ -89,13 +96,15 @@ router.post('/login', function (req, res) {
                 "password": results[0].password
             }
             res.redirect("/views/index.ejs?#");
+
+
             //            res.render('index.ejs', {
             //            result: results    
             // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
             //            });
         }
         else {
-            res.redirect("/login");
+            res.redirect("/views/Register/Login.ejs?tryagain=true");
             console.log('Error while performing Query in login.', err);
         }
     })
@@ -124,7 +133,11 @@ router.get("/views/index.ejs", function (req, res) {
     })
     //res.redirect("/views/listing.ejs")
 })
-
+router.get("/views/logout", function (req, res) {
+    session.user.id = 'dummy'
+    session.user.password = ''
+    res.redirect("/views/index.ejs")
+})
 
 //페이지 출력 여기서 해주라는 요청.
 router.get("/views/listings.ejs", function (req, res) {
@@ -202,7 +215,9 @@ router.get("/views/listings.ejs", function (req, res) {
                 //console.log(querystring + authorizationCondition + gradeCondition + '======================================================'); 
                 res.render('listings.ejs', {
                     result: results,
-                    _url: req.url
+                    user_id: session.user.id,
+                    _url: req.url,
+                    loggedin: session.user.id != null && session.user.id != 'dummy'
                     // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
                 });
             }
@@ -412,7 +427,7 @@ router.post("/views/Register/Modify.ejs", function (req, res) {
     if (req.body.pass != session.user.password)
         res.redirect("Modify.ejs")
     else {
-        if (req.body.choice == "회원정보수정") {
+        if (req.body.choice == "확인") {
             mysqlcon.query("update user set password = ? where id=?", [req.body.New_pass, session.user.id], function (err, results) {
                 if (err)
                     console.log("DB query error : ", err)
@@ -426,6 +441,7 @@ router.post("/views/Register/Modify.ejs", function (req, res) {
                 res.redirect("/views/index.ejs")
             })
         }
+        session.user.id='dummy'
     }
 })
 router.get("/views/contact.ejs", function (req, res) {
