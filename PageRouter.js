@@ -52,88 +52,87 @@ mysqlcon.connect(function (err) {
 })
 
 //passport 로그인 구현단.
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    var sql = 'SELECT * FROM user WHERE id=?';
-    conn.query(sql, [username], function(err, results){
-      if(err)
-        return done(err);
-      if(!results[0])
-        return done('please check your id.');
+// passport.use(new LocalStrategy(
+//   function(username, password, done) {
+//     var sql = 'SELECT * FROM user WHERE id=?';
+//     conn.query(sql, [username], function(err, results){
+//       if(err)
+//         return done(err);
+//       if(!results[0])
+//         return done('please check your id.');
 
-      var user = results[0];
-        if(password === user.password){
-          console.log("pw일치");
-          console.log(user);
-          return done(null, user);
-        }
-        else {
-          console.log("pw체크해라.");
-          return done('please check your password.');
-        }
-    });//query
-  }
-));
-passport.serializeUser(function(user, done) {
-  console.log(user.id); // id 출력 잘됨.
-  console.log("serializeUser 실행");
-  done(null, user.id);
-});
-passport.deserializeUser(function(id, done) {
-  console.log("deserializeUser 실행"); //실행이 왜 안될까.
-  var sql = 'SELECT * FROM user WHERE id=?';
-  conn.query(sql, [id], function(err, results){
-    if(err){
-      console.log("1");
-      return done(err, false);      
-    }
-    if(!results[0]){
-      console.log("2");
-      return done(err, false);      
-    }
-    return done(null, results[0]);
-  });
-});
-router.get('/', function (req, res) {
-  if(!req.user)
-    res.redirect('/login');
-  else
-    res.redirect('/welcome');
-});
-router.get('/login', function(req, res){
-  if(!req.user){
-    console.log("req.user 안가져와짐.")
-    res.render('login.ejs', {message:'input your id and password.'});    
-  }
-  else
-    res.redirect('/welcome');
-});
-router.get('/welcome', function(req, res){
-  if(!req.user){
-    //왜 안가져와지는걸까.
-    console.log("안가져와짐.")
-    return res.redirect('/login');
-  }
-  else{
-    console.log("id가져옴.");
-    res.render('welcome.ejs', {name:req.user.id});    
-  }
-
-});
-router.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
-});
- 
-router.post('/login',
-  passport.authenticate(
-    'local',
-    {
-      successRedirect: '/welcome',
-      failureRedirect: '/login',
-      failureFlash: false
-    })
-);
+//       var user = results[0];
+//         if(password === user.password){
+//           console.log("pw일치");
+//           console.log(user);
+//           return done(null, user);
+//         }
+//         else {
+//           console.log("pw체크해라.");
+//           return done('please check your password.');
+//         }
+//     });//query
+//   }
+// ));
+// passport.serializeUser(function(user, done) {
+//     console.log(user.id); // id 출력 잘됨.
+//     console.log("serializeUser 실행");
+//     done(null, user.id);
+// });
+// passport.deserializeUser(function(id, done) {
+//     console.log("deserializeUser 실행"); //실행이 왜 안될까.
+//     var sql = 'SELECT * FROM user WHERE id=?';
+//     conn.query(sql, [id], function(err, results){
+//         if(err){
+//         console.log("1");
+//         return done(err, false);      
+//         }
+//         if(!results[0]){
+//         console.log("2");
+//         return done(err, false);      
+//         }
+//         return done(null, results[0]);
+//     });
+// });
+// router.get('/', function (req, res) {
+//     if(!req.user)
+//         res.redirect('/login');
+//     else
+//         res.redirect('/welcome');
+//     });
+//     router.get('/login', function(req, res){
+//         if(!req.user){
+//             console.log("req.user 안가져와짐.")
+//             res.render('login.ejs', {message:'input your id and password.'});    
+//         }
+//         else
+//             res.redirect('/welcome');
+// });
+// router.get('/welcome', function(req, res){
+//     if(!req.user){
+//             //왜 안가져와지는걸까.
+//             console.log("안가져와짐.")
+//             return res.redirect('/login');
+//             }
+//             else{
+//             console.log("id가져옴.");
+//             res.render('welcome.ejs', {name:req.user.id});    
+//             }
+//         });
+//     router.get('/logout', function(req, res){
+//     req.logout();
+//     res.redirect('/');
+// });
+    
+//     router.post('/login',
+// passport.authenticate(
+//     'local',
+//     {
+//         successRedirect: '/welcome',
+//         failureRedirect: '/login',
+//         failureFlash: false
+//     })
+// );
 
 // session 구현부분.
 // router.get('/', function (req, res) {
@@ -340,7 +339,6 @@ router.get("/views/single-listing.ejs",function (req,res){
 
 
 //작성 내용 mysql에 넣기
-
 router.post("/views/register.ejs", function (req, res, next) {
     // console.log(req.body);
     var name_r = req.body.name_r;
@@ -369,6 +367,46 @@ router.post("/views/register.ejs", function (req, res, next) {
     )
     res.redirect("/views/listings.ejs")
 })
+//회원가입 sql문 구분.
+router.post("/views/Register/Register_user.ejs", function (req, res, next) {
+    // console.log(req.body);
+    var id = req.body.id;
+    var pass = req.body.pass;
+    var repass = req.body.re_pass;
+    var sql = 'SELECT * FROM user WHERE id=?';
+        conn.query(sql, [id], function(err, results){
+        if(err){
+            console.log(err);              
+        }
+
+        if(results.length == 0){
+              if(pass == repass){
+                mysqlcon.query(
+                    `INSERT INTO user (id, email, password, authority) VALUES (?,?,?,?)`,
+                    [req.body.id, req.body.email, req.body.pass,'user'], 
+                    function (error, result) {
+                        if (error) {
+                            console.log("데이터베이스 입력 에러...");
+                            throw error;
+                        }
+                    }
+                )
+                res.redirect("/views/Register/Login.ejs")
+            }
+            else{
+                //이거 로그 따로 alert로 만들것.
+                console.log('pw 맞지않음.');
+                res.redirect("/views/Register/Register_user.ejs");
+            }
+        }
+        else{
+            //이거 로그 따로 alert로 만들것.
+            console.log('id중복');
+            res.redirect("/views/Register/Register_user.ejs");
+        }
+    })
+})
+
 router.post("/views/listings.ejs",function(req,res){
     console.log("씨발",req.body)
     //req.url.querystring+="&page="
