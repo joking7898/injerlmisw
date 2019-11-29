@@ -94,16 +94,16 @@ passport.deserializeUser(function(id, done) {
     return done(null, results[0]);
   });
 });
-router.get('/', function (req, res) {
-  if(!req.user)
-    res.redirect('/login');
-  else
-    res.redirect('/welcome');
-});
+// router.get('/', function (req, res) {
+//   if(!req.user)
+//     res.redirect('/views/Register/login.ejs');
+//   else
+//     res.redirect('/views/index.ejs');
+// });
 router.get('/login', function(req, res){
   if(!req.user){
     console.log("req.user 안가져와짐.")
-    res.render('login.ejs', {message:'input your id and password.'});    
+    res.render('Register/login.ejs', {message:'input your id and password.'});    
   }
   else
     res.redirect('/welcome');
@@ -194,34 +194,6 @@ router.post('/login',
 // });
  
 
-router.get('/views/Register/login', function(req, res){
-  if(!req.user)
-    res.render('login', {message:'input your id and password.'});
-  else
-    res.redirect('/views/Register/welcome.ejs');
-});
-
-router.get('/views/Register/welcome.ejs', function(req, res){
-  if(!req.user)
-    return res.redirect('/views/Register/login.ejs');
-  else
-    res.render('welcome', {name:req.user.name});
-});
-
-router.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
-});
- 
-router.post('/views/Register/login.ejs',
-  passport.authenticate(
-    'local',
-    {
-      successRedirect: '/views/Register/welcome.ejs',
-      failureRedirect: '/views/Register/login.ejs',
-      failureFlash: false
-    })
-);
 //index.ejs 관련 sql
 router.get("/views/index.ejs",function (req,res){
     var querydata = url.parse(req.url,true).query;
@@ -325,19 +297,9 @@ router.get("/views/single-listing.ejs",function (req,res){
 )
 
 // 홈페이지에 url없이 접속시 index url로 리다이렉트
-// router.get("/",function (req,res){
-//     res.redirect("/views/index.ejs?#") // 이 주소로 해야지 정상 작동되는거 구현완료.
-// })
-
-//index.html 페이지를 시작페이지로 설정하는 부분.
-
-  router.get('/', function (req, res) { // 이거 건드리면 시작페이지 이동 이상함.
-    if(!req.user)
-      res.redirect('/views/index.ejs');
-    else
-      res.redirect('/views/Register/welcome.ejs');
-  });
-
+router.get("/",function (req,res){
+    res.redirect("/views/index.ejs?#") // 이 주소로 해야지 정상 작동되는거 구현완료.
+})
 
 //작성 내용 mysql에 넣기
 
