@@ -224,20 +224,24 @@
                                      </tr>
                                    </thead>
                                    <tbody id="listings">
-                                     <% for (var index in result) { %>
-                        <tr>
-                            <td>
-                                <%= result[index].title%>
-                            </td>
-                        </tr>
-                        <% } %>
-                        </tbody>
-                        </table> -->
-                    </div>
-
-                    <div class="col-lg-12 text-right">
-                        <div class="pagination-num">
-                            <!-- <a href="#">01</a>
+                                     <% for (var index in result) { %>  
+                                       <tr>
+                                         <td>
+                                             <%= result[index].title%>
+                                         </td>
+                                       </tr>
+                                       <% } %>
+                                   </tbody>
+                                 </table>  -->
+                                 </div>
+                                 
+                            <div class="col-lg-12 text-right">
+                                <div class="pagination-num">
+                                        <%for(var i = 0; i<result[0].length/9 +1;i++) {%>
+                                        <% var targetpage = _url%>
+                                       <%-'<a href='+_url+'>'%><%='i'%></a>
+                                       <%}%>
+                                    <!-- <a href="#">01</a>
                                     <a href="#">02</a>
                                     <a href="#">03</a> -->
                         </div>

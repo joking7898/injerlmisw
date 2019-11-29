@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="zxx">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>인절미BS : 회원가입</title>
+    <title>인절미BS : 비밀번호 변경</title>
 
     <!-- Font Icon -->
     <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
@@ -21,36 +21,29 @@
             <div class="container">
                 <div class="signup-content">
                     <div class="signup-form">
-                        <h2 class="form-title">회원가입</h2>
+                        <h2 class="form-title">비밀번호 변경</h2>
                         <form method="POST" class="register-form" id="register-form">
                             <div class="form-group">
-                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="id" id="id" placeholder="아이디"/>
-                            </div>
-                            <div class="form-group">
-                                <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                <input type="email" name="email" id="email" placeholder="이메일"/>
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="pass" id="pass" placeholder="현재 비밀번호"/>
                             </div>
                             <div class="form-group">
                                 <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="pass" id="pass" placeholder="비밀번호"/>
+                                <input type="password" name="pass" id="pass" placeholder="새 비밀번호"/>
                             </div>
                             <div class="form-group">
                                 <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                <input type="password" name="re_pass" id="re_pass" placeholder="비밀번호 재확인"/>
-                            </div>
-                            <div class="form-group">
-                                <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-                                <label for="agree-term" class="label-agree-term"><span><span></span></span>모든 약관에 동의합니다. <a href="#" class="term-service"> 서비스 약관</a></label>
+                                <input type="password" name="re_pass" id="re_pass" placeholder="새 비밀번호 확인"/>
                             </div>
                             <div class="form-group form-button">
-                                <input type="submit" name="signup" id="signup" class="form-submit" value="가입하기"/>
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="확인"/>
+                                <a href="/views/index.ejs?#" class="form-submit" style="text-decoration:none;">취소</a>
                             </div>
                         </form>
                     </div>
                     <div class="signup-image">
-                        <figure><img src="images/signup-image2.jpg" alt="sing up image"></figure>
-                        <a href="Login.ejs" class="signup-image-link">이미 회원입니다.</a>
+                        <figure><img src="images/Modify.jpg" alt="sing up image"></figure>
+                        <a href="#" class="signup-image-link" onclick="btn_is_confirm_click()" style="text-decoration: underline;">회원 탈퇴</a>
                     </div>
                 </div>
             </div>

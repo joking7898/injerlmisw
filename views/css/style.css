@@ -407,7 +407,8 @@ ol {
 }
 
 .hero-text h1 {
-	color: #fff;
+	color: white;
+	text-shadow:  0 0 20px black;
 	font-size: 96px;
 	margin-bottom: 34px;
 }
@@ -436,7 +437,7 @@ ol {
 }
 
 .filter-search .category-search h5 {
-	color: #fff;
+	color: black;
 	font-size: 18px;
 	font-weight: 900;
 	margin-bottom: 12px;
@@ -445,12 +446,14 @@ ol {
 .filter-search .category-search .nice-select {
 	width: calc(100% - 20px);
 	font-size: 16px;
-	color: #fff;
+	color: black;
 	background: transparent;
 	height: 50px;
 	line-height: 46px;
 	border-radius: 0;
 	padding-left: 31px;
+	border-color: black;
+	font-weight: bold;
 }
 
 .filter-search .category-search .nice-select:after {
@@ -465,7 +468,7 @@ ol {
 }
 
 .filter-search .category-search .nice-select .list {
-	background-color: #1D1D1D;
+	background-color: white;
 	border-radius: 0;
 	margin-top: 1px;
 	width: 100%;
@@ -477,7 +480,7 @@ ol {
 }
 
 .filter-search .location-search h5 {
-	color: #fff;
+	color: black;
 	font-size: 18px;
 	font-weight: 900;
 	margin-bottom: 12px;
@@ -486,12 +489,14 @@ ol {
 .filter-search .location-search .nice-select {
 	width: calc(100% - 20px);
 	font-size: 16px;
-	color: #fff;
+	color: black;
 	background: transparent;
 	height: 50px;
 	line-height: 46px;
 	border-radius: 0;
 	padding-left: 31px;
+	border-color: black;
+	font-weight: bold;
 }
 
 .filter-search .location-search .nice-select:after {
@@ -506,7 +511,7 @@ ol {
 }
 
 .filter-search .location-search .nice-select .list {
-	background-color: #1D1D1D;
+	background-color: white;
 	border-radius: 0;
 	margin-top: 1px;
 	width: 100%;
@@ -524,17 +529,30 @@ ol {
 	border: 1px solid #FF5581;
 }
 
-.nice-select:active,
-.nice-select.open,
-.nice-select:focus {
+.filter-search .category-search .nice-select:active,
+.filter-search .category-search .nice-select.open,
+.filter-search .category-search .nice-select:focus {
 	border-color: #fff;
 }
 
-.nice-select .option:hover,
-.nice-select .option.focus,
-.nice-select .option.selected.focus {
+.filter-search .category-search .nice-select .option:hover,
+.filter-search .category-search .nice-select .option.focus,
+.filter-search .category-search .nice-select .option.selected.focus {
 	background-color: #FF5581;
-	color: #fff;
+	color: black;
+}
+
+.filter-search .location-search .nice-select:active,
+.filter-search .location-search .nice-select.open,
+.filter-search .location-search .nice-select:focus {
+	border-color: #fff;
+}
+
+.filter-search .location-search .nice-select .option:hover,
+.filter-search .location-search .nice-select .option.focus,
+.filter-search .location-search .nice-select .option.selected.focus {
+	background-color: #FF5581;
+	color: black;
 }
 
 /*---------------------
@@ -1110,6 +1128,7 @@ ol {
   Map
 -----------------------*/
 
+
 .map {
 	position: relative;
 	height: 657px;
@@ -1118,7 +1137,7 @@ ol {
 }
 
 .map iframe {
-	width: 76%;
+	width: 86%;
 }
 
 .map img {
@@ -1126,6 +1145,7 @@ ol {
 	left: 500px;
 	top: 260px;
 }
+
 
 /*---------------------
   Search Filter
@@ -1175,6 +1195,7 @@ ol {
 	line-height: 46px;
 	border-radius: 0;
 	padding-left: 31px;
+	border-color: #fff;
 }
 
 .search-filter .filter-search .category-search .nice-select:after {
@@ -1216,6 +1237,7 @@ ol {
 	line-height: 46px;
 	border-radius: 0;
 	padding-left: 31px;
+	border-color: #fff;
 }
 
 .search-filter .filter-search .location-search .nice-select:after {
@@ -1246,6 +1268,33 @@ ol {
 	padding: 13px 65px;
 	cursor: pointer;
 	border: 1px solid #FF5581;
+}
+
+
+.search-filter .filter-search .category-search .nice-select:active,
+.search-filter .filter-search .category-search .nice-select.open,
+.search-filter .filter-search .category-search .nice-select:focus {
+	border-color: #fff;
+}
+
+.search-filter .filter-search .category-search .nice-select .option:hover,
+.search-filter .filter-search .category-search .nice-select .option.focus,
+.search-filter .filter-search .category-search .nice-select .option.selected.focus {
+	background-color: #FF5581;
+	color: #fff;
+}
+
+.search-filter .filter-search .location-search .nice-select:active,
+.search-filter .filter-search .location-search .nice-select.open,
+.search-filter .filter-search .location-search .nice-select:focus {
+	border-color: #fff;
+}
+
+.search-filter .filter-search .location-search .nice-select .option:hover,
+.search-filter .filter-search .location-search .nice-select .option.focus,
+.search-filter .filter-search .location-search .nice-select .option.selected.focus {
+	background-color: #FF5581;
+	color: #fff;
 }
 
 /*---------------------

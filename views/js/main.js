@@ -174,54 +174,105 @@
         switch (selectLocation) {
             case "서울":
                 $("#mainLocalText").text("서울특별시");
+                $("#local_img").css('background-image', 'url(local_img/Seoul.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "부산":
                 $("#mainLocalText").text("부산광역시");
+                $("#local_img").css('background-image', 'url(local_img/Busan.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "대구":
                 $("#mainLocalText").text("대구광역시");
+                $("#local_img").css('background-image', 'url(local_img/Daegu.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "인천":
                 $("#mainLocalText").text("인천광역시");
+                $("#local_img").css('background-image', 'url(local_img/Incheon.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "광주":
                 $("#mainLocalText").text("광주광역시");
+                $("#local_img").css('background-image', 'url(local_img/Gwangju.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "대전":
                 $("#mainLocalText").text("대전광역시");
+                $("#local_img").css('background-image', 'url(local_img/Daejeon.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "울산":
                 $("#mainLocalText").text("울산광역시");
+                $("#local_img").css('background-image', 'url(local_img/Ulsan.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "세종":
                 $("#mainLocalText").text("세종특별자치시");
+                $("#local_img").css('background-image', 'url(local_img/Sejong.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "경기":
                 $("#mainLocalText").text("경기도");
+                $("#local_img").css('background-image', 'url(local_img/Gyeonggi.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "강원":
                 $("#mainLocalText").text("강원도");
+                $("#local_img").css('background-image', 'url(local_img/Gwangwon.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "충북":
                 $("#mainLocalText").text("충청북도");
+                $("#local_img").css('background-image', 'url(local_img/Chungbuk.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "충남":
                 $("#mainLocalText").text("충청남도");
+                $("#local_img").css('background-image', 'url(local_img/Chungnam.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "전북":
                 $("#mainLocalText").text("전라북도");
+                $("#local_img").css('background-image', 'url(local_img/Jeonbuk.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "전남":
                 $("#mainLocalText").text("전라남도");
+                $("#local_img").css('background-image', 'url(local_img/Jeonnam.jpg');
+                $("#mainLocalText").css('color', 'black');
+                $("#mainLocalText").css('text-shadow', '0 0 20px white');
                 break;
             case "경북":
                 $("#mainLocalText").text("경상북도");
+                $("#local_img").css('background-image', 'url(local_img/Gyeongbuk.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "경남":
                 $("#mainLocalText").text("경상남도");
+                $("#local_img").css('background-image', 'url(local_img/Gyeongnam.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
             case "제주":
                 $("#mainLocalText").text("제주특별시");
+                $("#local_img").css('background-image', 'url(local_img/Jeju.jpg');
+                $("#mainLocalText").css('color', 'white');
+                $("#mainLocalText").css('text-shadow', '0 0 20px black');
                 break;
         }
     });
