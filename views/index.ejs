@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="zxx">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="Yoga Studio Template">
-        <meta name="keywords" content="Yoga, unica, creative, html">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>인절미BS | 홈</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Yoga Studio Template">
+    <meta name="keywords" content="Yoga, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>인절미BS | 홈</title>
 
-        <!-- Google Font -->
-        <link
-            href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900&display=swap"
-            rel="stylesheet">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900&display=swap" rel="stylesheet">
 
         <!-- Css Styles -->
         <link rel="stylesheet" href="/views/css/bootstrap.min.css" type="text/css">
@@ -25,11 +23,11 @@
         <link rel="stylesheet" href="/views/css/style.css" type="text/css">
     </head>
 
-    <body>
-        <!-- Page Preloder -->
-        <div id="preloder">
-            <div class="loader"></div>
-        </div>
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
 
         <!-- Header Section Begin -->
         <header class="header-section">
@@ -56,12 +54,11 @@
                     <div class="user-access">
                         <a href="/views/Register/Login.ejs?#?" class="primary-btn">로그인</a>
                     </div>
-                    <!-- <a href="#" class="primary-btn">Add Listing</a> -->
                 </div>
-                <div id="mobile-menu-wrap"></div>
             </div>
-        </header>
-        <!-- Header End -->
+        </div>
+    </section>
+    <!-- Hero Section End -->
 
         <!-- Hero Section Begin -->
         <section class="hero-section set-bg" id="local_img" data-setbg="/views/local_img/Seoul.jpg">
@@ -123,6 +120,7 @@
                         <div class="section-title">
                             <h2>가장 인기 많은 관광지</h2>
                         </div>
+                        <div class="tic-text">Restaurants</div>
                     </div>
                 </div>
                 <div class="row">
@@ -156,6 +154,7 @@
                             </div>
                             <div class="tic-text">Nightlife</div>
                         </div>
+                        <div class="tic-text">Nightlife</div>
                     </div>
                     <div class="col-lg-6">
                         <div class="trend-item hotels">
@@ -172,6 +171,7 @@
                             </div>
                             <div class="tic-text">Hotels</div>
                         </div>
+                        <div class="tic-text">Hotels</div>
                     </div>
                     <div class="col-lg-6">
                         <div class="trend-item events">
@@ -187,11 +187,13 @@
                             </div>
                             <div class="tic-text">Events</div>
                         </div>
+                        <div class="tic-text">Events</div>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- Trending Restaurant Section End -->
+        </div>
+    </section>
+    <!-- Trending Restaurant Section End -->
 
         <!-- Testimonial Section Begin -->
         <section class="testimonial-section">
@@ -232,8 +234,9 @@
                     <img src="/views/img/testimonial-bg.png" alt="">
                 </div>
             </div>
-        </section>
-        <!-- Testimonial Section End -->
+        </div>
+    </section>
+    <!-- Testimonial Section End -->
 
         <!-- Categories Section Begin -->
         <section class="categories-section spad">
@@ -326,35 +329,52 @@
                             <button type="submit">Subscribe to our Newsletter</button>
                         </form>
                     </div>
-                </div> -->
-                <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-widget">
-                            <h4>사이트 맵</h4>
-                            <ul>
-                                <li>홈</li>
-                                <li>관광지</li>
-                                <li>문의</li>
-                            </ul>
+                    <div class="col-md-6">
+                        <div class="categories-item set-bg" data-setbg="img/categories/cat-5.jpg">
+                            <a href="img/categories/cat-5.jpg" class="img-hover pop-up"><img src="img/zoom.png"
+                                    alt=""></a>
+                            <div class="categories-text">
+                                <h4>레저/체험</h4>
+                                <p>2373 Listings</p>
+                                <a href="#">View All</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-widget">
-                            <h4>카테고리</h4>
-                            <ul>
-                                <li>전체</li>
-                                <li>자연</li>
-                                <li>문화관광</li>
-                                <li>테마관광지</li>
-                                <li>도보</li>
-                                <li>레저/체험</li>>
-                            </ul>
-                        </div>
+                    <!-- 아래 표 부분이 db에서 붙여버린것. 이런형식으로 db에서 가져오면됨. -->
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>categori</th>
+                                    <th>count</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listings">
+                                <% for (var index in result) { %>
+                                <tr>
+                                    <td>
+                                        <%= result[index].category%>
+                                    </td>
+                                    <td>
+                                        <%= result[index].count%>
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </footer>
-        <!-- Footer Section End -->
+        </div>
+    </section>
+    <!-- Categories Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer-section spad">
+        <div class="container">
+        </div>
+    </footer>
+    <!-- Footer Section End -->
 
         <!-- Js Plugins -->
         <script src="/views/js/jquery-3.3.1.min.js"></script>
