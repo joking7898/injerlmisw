@@ -94,12 +94,14 @@ passport.deserializeUser(function(id, done) {
     return done(null, results[0]);
   });
 });
-// router.get('/', function (req, res) {
-//   if(!req.user)
-//     res.redirect('/views/Register/login.ejs');
-//   else
-//     res.redirect('/views/index.ejs');
-// });
+/*
+router.get('/', function (req, res) {
+  if(!req.user)
+    res.redirect('/views/Register/Login.ejs');
+  else
+    res.redirect('/views/welcome.ejs');
+});
+*/
 router.get('/login', function(req, res){
   if(!req.user){
     console.log("req.user 안가져와짐.")
