@@ -2669,6 +2669,51 @@ ol {
 	outline: 0;
 }
 
+#btn-delete-list {
+	display: inline-block;
+    color: #fff;
+    font-size: 18px;
+	font-weight: 400;
+	padding: 5px 5px 5px;
+	margin: 11px 0px 33px 0px;
+	background: gray;
+	line-height: 23px;
+	text-decoration: none;
+	cursor: pointer;
+	border: 0;
+	outline: 0;
+}
+
+#btn-delete-review {
+	display: inline-block;
+    color: #fff;
+    font-size: 18px;
+	font-weight: 400;
+	padding: 5px 5px 5px;
+	margin: 11px 0px 33px 0px;
+	background: gray;
+	line-height: 23px;
+	text-decoration: none;
+	cursor: pointer;
+	border: 0;
+	outline: 0;
+}
+
+#register-submit {
+	display: inline-block;
+    color: #fff;
+    font-size: 18px;
+	font-weight: 400;
+	padding: 11px 22px 11px;
+	margin: 11px 0px 33px 0px;
+	background: #FF5581;
+	line-height: 23px;
+	text-decoration: none;
+	cursor: pointer;
+	border: 0;
+	outline: 0;
+}
+
 .starR{
 	color: #999999;
 	font-size: 30px;

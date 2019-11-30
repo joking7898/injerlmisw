@@ -255,6 +255,49 @@
         }
     });
 
+    $("#AttractionLocation2").change(function () {
+        var selectLocation2 = $('#AttractionLocation2 option:selected').text();
+
+        switch (selectLocation2) {
+            case "서울":
+                $("#listing-map").attr("src","https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d202404.22056510206!2d126.84912352641236!3d37.56528899085878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca28b61c565cd%3A0x858aedb4e4ea83eb!2z7ISc7Jq47Yq567OE7Iuc!5e0!3m2!1sko!2skr!4v1573526085048!5m2!1sko!2skr");
+                break;
+            case "부산":
+                $("#listing-map").attr("src","https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d145481.98595633433!2d128.9770748749855!3d35.16940421665001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3568eb6de823cd35%3A0x35d8cb74247108a7!2z67aA7IKw6rSR7Jet7Iuc!5e0!3m2!1sko!2skr!4v1575117488237!5m2!1sko!2skr");
+                break;
+            case "대구":
+                break;
+            case "인천":
+                break;
+            case "광주":
+                break;
+            case "대전":
+                break;
+            case "울산":
+                break;
+            case "세종":
+                break;
+            case "경기":
+                break;
+            case "강원":
+                break;
+            case "충북":
+                break;
+            case "충남":
+                break;
+            case "전북":
+                break;
+            case "전남":
+                break;
+            case "경북":
+                break;
+            case "경남":
+                break;
+            case "제주":
+                break;
+        }
+    });
+
     $('.starRev span').click(function () {
         $(this).parent().children('span').removeClass('on');
         $(this).addClass('on').prevAll('span').addClass('on');
