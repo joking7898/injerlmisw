@@ -112,7 +112,7 @@
                                     <div class="about-video">
                                         <!-- <img src="img/everland456.jpg" alt=""> -->
                                     </div>
-                                    <form method="POST" action =<%="deleteAttraction?Aid="+result[0].id %>><button type="submit">글 삭제</button></form><br>
+                                    <form method="POST" action =<%="deleteAttraction?Aid="+result[0].id %>><button type="submit" id="btn-delete-list">글 삭제</button></form><br>
                                     <div class="client-reviews">
                                         <p style="font-size: 30px; font-weight: bold;">
                                             리뷰&nbsp;&nbsp;
@@ -134,7 +134,7 @@
                                                 <p><%=reviews[index].Description%></p>
                                                 <div class="client-text">
                                                     <h5><%=reviews[index].UserId%></h5>
-                                                    <span><%=reviews[index].Wtime%></span><form method="POST" action =<%="deleteReview?Aid="+reviews[index].AttractionId + "&Rid=" + reviews[index].id %>><button type="submit">삭제</button></form>
+                                                    <span><%=reviews[index].Wtime%></span><form method="POST" action =<%="deleteReview?Aid="+reviews[index].AttractionId + "&Rid=" + reviews[index].id %>><button type="submit" id="btn-delete-review">삭제</button></form>
                                                 </div>
                                             </div>
                                         <%}%>
