@@ -2775,12 +2775,26 @@ ol {
 		background: #1eb49f;
 	}
 
+	#h5-cate {
+		font-style: italic;
+		font-size: 14px;
+		color: #838383;
+		font-weight: 700;
+	}
+
+	#h5-loca {
+		font-style: italic;
+		font-size: 14px;
+		color: #838383;
+		font-weight: 700;
+	}
+
 	#cate_r {
-		padding: 5px 140px 5px 20px;
+		padding: 5px 120px 5px 20px;
 	}
 
 	#loca_r {
-		padding: 5px 188px 5px 20px;
+		padding: 5px 168px 5px 20px;
 	}
 
 	.register-section {
