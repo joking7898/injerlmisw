@@ -73,7 +73,7 @@
         <!-- Header End -->
 
         <!-- Hero Section Begin -->
-        <div class="hero-listing set-bg" data-setbg=<%="img/uploaded/"+result[0].picture%> onerror="set this.data-setbg = 'img/gottraction.png';"></div>
+        <div class="hero-listing set-bg" data-setbg=<%=(result[0].picture==null)?"img/gottraction.png":"img/uploaded/"+result[0].picture%>></div>
         <!-- Hero Section End -->
 
         <!-- About Secton Begin -->
