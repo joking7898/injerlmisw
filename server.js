@@ -5,16 +5,28 @@
 서버를 가동하려면, visual code로 이 파일 연 다음, 위에 Terminal - New Terminal 들어가서 밑에 터미널 창 띄운 후, node server.js라는 명령어 치면 됨.
 */
 var express = require('express')
+//var fileupload = require('express-fileupload')
+
+var multer = require('multer')
+//var storage = multer.memoryStorage();
+/*var storage = multer.diskStorage({
+    destination:function(req,file,cb){cb(null,'/views/img/uploaded/')},
+    filename: function(req,file,cb){cb(null,file.filename)}
+});
+var upload = multer({storage:storage})*/
+
 var Eapp = express()
 var morgan = require('morgan')
 var PageRouter = require('./PageRouter.js')
 var bodyparser = require('body-parser')
 
 var http = require('http');
-var fs = require('fs');
+var fs = require('fs-extra');
 var _url = require('url');
 var mysql = require('mysql');
 var ejs = require('ejs');
+var path = require('path')
+var busboy = require('connect-busboy')
 /*
 mysql 연결하는 단계. 호스트, 유저, 비밀번호, 사용 데이터베이스는 본인 깔려있는 데이터베이스에 맞게 알아서 맞추면 됨.
 사실 db연결을 여기서 할 필요는 업음, 이건 DB기능 테스트할때 만들어본거. 지워도 됨. DB연결부는 Pagerouter.js에 몰빵하시오.
@@ -27,9 +39,11 @@ var mysqlcon = mysql.createConnection({
     database: 'injerlme'
 });*/
 Eapp.use(morgan('short'))
-Eapp.use(bodyparser.urlencoded({extended:false}))
-Eapp.use(PageRouter);
+Eapp.use(bodyparser.urlencoded({extended:true}))
 Eapp.use(express.static('./public'))
+Eapp.use(busboy())
+//Eapp.use(fileupload());
+Eapp.use(PageRouter);
 
 /*
 mysqlcon.connect(function(err){

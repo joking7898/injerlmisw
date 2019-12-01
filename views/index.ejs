@@ -132,7 +132,27 @@
                 </div>
             </div>
             <div class="row">
+                <!--  -->
+                <% for (var index in popular){ if (index >3) break;%>
                 <div class="col-lg-6">
+                    <div class='trend-item'>
+                        <a class="arrange-items" href=<%="single-listing.ejs?id="+popular[index].id%>>
+                            <div class="trend-pic">
+                                <img src="img/arrange/arrange-9.jpg" alt="">
+                                <div class="rating"><%= result[index].score%></div>
+                            </div>
+                            <div class="trend-text">
+                                <h4> <%= popular[index].title%> </h4>
+                                <span><%= popular[index].address%></span>
+                                <p>요금 : <%= (popular[index].fee ==0)?'무료': popular[index].fee%></p>
+                                <div class="open"><%= popular[index].opentime%></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <%}%>
+                <!--  -->
+                <!-- <div class="col-lg-6">
                     <div class="trend-item">
                         <div class="trend-pic">
                             <img src="/views/img/trending/trending-1.jpg" alt="">
@@ -196,7 +216,7 @@
                         <div class="tic-text">Events</div>
                     </div>
                     <div class="tic-text">Events</div>
-                </div>
+                </div> -->
             </div>
         </div>
         </div>
@@ -221,17 +241,15 @@
                             <img src="/views/img/testimonial-1.png" alt="">
                             <p>이 프로젝트가 일정대로 진행이 되어 하이패스처럼 쉽고 빠르게 끝낼 수 있었으면 좋겠네요.</p>
                             <h4>Jeong Min Na</h4>
-                            <span>CEO Company</span>
+                            <span>Lead Designer</span>
                         </div>
                         <div class="single-testimonial-item">
-                            <img src="/views/img/testimonial-1.png" alt="">
-                            <p>Fusce urna quam, euismod sit amet mollis quis. Fusce urna quam, euismod sit
-                                amet mollis quis, vestibulum quis velit. Vestibulum malesuada aliquet libero
-                                viverra cursus. Aliquam erat volutpat. Morbi id dictum quam, ut commodo lorem.
-                                In at nisi nec arcu porttitor aliquet vitae at dui. Sed sollicitudin nulla non
-                                leo viverra.</p>
-                            <h4>Michael Smith</h4>
-                            <span>CEO Company</span>
+                            <img src="/views/img/von.png" alt="">
+                            <p>I personally never regret inventing computer. because of all the works Gi cheol and his crews have established through this website. I
+                                 appreciate their input, and i send them my most humble salute for their truly remarkable spirit.
+                            </p>
+                            <h4>John von neumann</h4>
+                            <span>Technical Advisor</span>
                         </div>
                     </div>
                 </div>

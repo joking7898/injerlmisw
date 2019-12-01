@@ -10,6 +10,14 @@ var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var LocalStrategy = require('passport-local').Strategy;
 var bodyParser = require('body-parser');
+var multer = require('multer')
+var path = require('path')
+//var storage = multer.memoryStorage();
+ var storage = multer.diskStorage({
+     destination:function(req,file,cb){cb(null,path.join(__dirname,'views/img/uploaded'))},
+     filename: function(req,file,cb){cb(null,file.originalname)}
+ });
+var upload = multer({storage:storage});//{storage:storage})
 
 //밑 코드 데이터베이스 연결
 var dbConfig = require('./dbConfig');
@@ -115,13 +123,14 @@ router.get("/views/index.ejs", function (req, res) {
     var querydata = url.parse(req.url, true).query;
 
     console.log(querydata.category)
-    var querystring = "SELECT category,count(*)AS count FROM gottraction.attraction group by category";
+    var querystring = "SELECT category,count(*)AS count FROM gottraction.attraction group by category;SELECT * FROM attraction ORDER BY  score DESC LIMIT 4";
     mysqlcon.query(querystring, function (err, results) {
         if (!err) {
             // console.log('The solution is: ', rows);
             // log로 체크하는구문.   
             res.render('index.ejs', {
-                result: results,
+                result: results[0],
+                popular:results[1],
                 loggedin: session.user.id != null && session.user.id != 'dummy',
                 user_id: session.user.id
                 // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
@@ -132,7 +141,24 @@ router.get("/views/index.ejs", function (req, res) {
         }
     })
     //res.redirect("/views/listing.ejs")
+
+
+    //윤기철 작업 - 가장 인기있는 관광지 4
+    // let popularQuery = "SELECT * FROM attraction ORDER BY  score DESC LIMIT 4";
+    // mysqlcon.query(popularQuery, function(err, results) {
+    //     if (!err) {
+    //         console.log('142line===========================================================');
+    //         res.render('index.ejs', {
+    //             popular: results
+    //         });
+    //     }
+    //     else {
+    //         console.log('Error while performing popularQuery==========', err);
+    //     }
+    // })
+    //윤기철 작업 - end
 })
+
 router.get("/views/logout", function (req, res) {
     session.user.id = 'dummy'
     session.user.password = ''
@@ -263,10 +289,20 @@ router.get("/views/single-listing.ejs", function (req, res) {
 router.get("/", function (req, res) {
     res.redirect("/views/index.ejs?#") // 이 주소로 해야지 정상 작동되는거 구현완료.
 })
-
+router.get("/views/register.ejs",function(req,res){
+    if(session.user.id=='dummy' && false)//////////////////////////////////////////////////////////////////////////////////////나중에 고치기
+        res.redirect('/views/listings.ejs?')
+    else
+        res.render('register.ejs',
+            {
+                user_id : session.user.id,
+                loggedin : session.user.id!='dummy'
+            })
+})
 //작성 내용 mysql에 넣기
-router.post("/views/register.ejs", function (req, res, next) {
-    // console.log(req.body);
+router.post("/views/register.ejs",upload.single('picture_r'), function (req, res, next) {
+//    console.log(req)
+//    console.log(req.files)
     var name_r = req.body.name_r;
     var address_r = req.body.address_r;
     var phone_r = req.body.phone_r;
@@ -275,16 +311,17 @@ router.post("/views/register.ejs", function (req, res, next) {
     var cate_r = req.body.cate_r;
     var loca_r = req.body.loca_r;
     var content_r = req.body.content_r;
-    var picture_r = req.body.picture_r;
-
+    //var picture_r = req.body.picture_r;
+  
     if (name_r == "" || session.user.id == 'dummy') {
         res.redirect(req.url);
     }
     else {
+        
         mysqlcon.query(
             `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
-            [req.body.name_r, req.body.address_r, req.body.phone_r, req.body.fee_r, req.body.time_r,
-            req.body.cate_r, req.body.loca_r, req.body.content_r, req.body.picture_r, session.user.id],
+            [name_r, address_r, phone_r, fee_r, time_r,
+            cate_r, loca_r, content_r, req.file.originalname, session.user.id],
             function (error, result) {
                 if (error) {
                     console.log("데이터베이스 입력 에러...");
