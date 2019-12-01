@@ -616,8 +616,10 @@ ol {
 
 .trend-item .trend-text {
 	display: inline-block;
+	width: 300px;
 	padding-top: 20px;
 	padding-bottom: 15px;
+	/* padding-left: 250px; */
 	float: right;
 }
 

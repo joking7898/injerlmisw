@@ -115,13 +115,14 @@ router.get("/views/index.ejs", function (req, res) {
     var querydata = url.parse(req.url, true).query;
 
     console.log(querydata.category)
-    var querystring = "SELECT category,count(*)AS count FROM gottraction.attraction group by category";
+    var querystring = "SELECT category,count(*)AS count FROM gottraction.attraction group by category;SELECT * FROM attraction ORDER BY  score DESC LIMIT 4";
     mysqlcon.query(querystring, function (err, results) {
         if (!err) {
             // console.log('The solution is: ', rows);
             // log로 체크하는구문.   
             res.render('index.ejs', {
-                result: results,
+                result: results[0],
+                popular:results[1],
                 loggedin: session.user.id != null && session.user.id != 'dummy',
                 user_id: session.user.id
                 // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
@@ -132,7 +133,24 @@ router.get("/views/index.ejs", function (req, res) {
         }
     })
     //res.redirect("/views/listing.ejs")
+
+
+    //윤기철 작업 - 가장 인기있는 관광지 4
+    // let popularQuery = "SELECT * FROM attraction ORDER BY  score DESC LIMIT 4";
+    // mysqlcon.query(popularQuery, function(err, results) {
+    //     if (!err) {
+    //         console.log('142line===========================================================');
+    //         res.render('index.ejs', {
+    //             popular: results
+    //         });
+    //     }
+    //     else {
+    //         console.log('Error while performing popularQuery==========', err);
+    //     }
+    // })
+    //윤기철 작업 - end
 })
+
 router.get("/views/logout", function (req, res) {
     session.user.id = 'dummy'
     session.user.password = ''

@@ -132,7 +132,27 @@
                 </div>
             </div>
             <div class="row">
+                <!--  -->
+                <% for (var index in popular){ if (index >3) break;%>
                 <div class="col-lg-6">
+                    <div class='trend-item'>
+                        <a class="arrange-items" href=<%="single-listing.ejs?id="+popular[index].id%>>
+                            <div class="trend-pic">
+                                <img src="img/arrange/arrange-9.jpg" alt="">
+                                <div class="rating"><%= result[index].score%></div>
+                            </div>
+                            <div class="trend-text">
+                                <h4> <%= popular[index].title%> </h4>
+                                <span><%= popular[index].address%></span>
+                                <p>요금 : <%= (popular[index].fee ==0)?'무료': popular[index].fee%></p>
+                                <div class="open"><%= popular[index].opentime%></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <%}%>
+                <!--  -->
+                <!-- <div class="col-lg-6">
                     <div class="trend-item">
                         <div class="trend-pic">
                             <img src="/views/img/trending/trending-1.jpg" alt="">
@@ -196,7 +216,7 @@
                         <div class="tic-text">Events</div>
                     </div>
                     <div class="tic-text">Events</div>
-                </div>
+                </div> -->
             </div>
         </div>
         </div>
