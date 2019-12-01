@@ -2669,6 +2669,51 @@ ol {
 	outline: 0;
 }
 
+#btn-delete-list {
+	display: inline-block;
+    color: #fff;
+    font-size: 18px;
+	font-weight: 400;
+	padding: 5px 5px 5px;
+	margin: 11px 0px 33px 0px;
+	background: gray;
+	line-height: 23px;
+	text-decoration: none;
+	cursor: pointer;
+	border: 0;
+	outline: 0;
+}
+
+#btn-delete-review {
+	display: inline-block;
+    color: #fff;
+    font-size: 18px;
+	font-weight: 400;
+	padding: 5px 5px 5px;
+	margin: 11px 0px 33px 0px;
+	background: gray;
+	line-height: 23px;
+	text-decoration: none;
+	cursor: pointer;
+	border: 0;
+	outline: 0;
+}
+
+#register-submit {
+	display: inline-block;
+    color: #fff;
+    font-size: 18px;
+	font-weight: 400;
+	padding: 11px 22px 11px;
+	margin: 11px 0px 33px 0px;
+	background: #FF5581;
+	line-height: 23px;
+	text-decoration: none;
+	cursor: pointer;
+	border: 0;
+	outline: 0;
+}
+
 .starR{
 	color: #999999;
 	font-size: 30px;
@@ -2689,4 +2734,41 @@ ol {
 		color: #999999;
 		font-size: 16px;
 		margin: 0px 0px 5px 10px;
+	}
+
+	.user-access li {
+		background: #FF5581;
+		color: #fff;
+		font-size: 20px;
+		font-weight: 400;
+		display: inline-block;  /* 평상시에는 서브메뉴가 안보이게 하기 */
+		padding: 11px 43px 15px;
+	}
+
+	.user-access li ul {
+		background: #FF5581;
+		list-style: none;
+		color: #fff;
+		font-size: 10px;
+		font-weight: 200;
+		display: none;  /* 평상시에는 서브메뉴가 안보이게 하기 */
+		position: absolute;
+		top: 87px;
+		right: 40px;
+	}
+	
+	.user-access li ul li {
+		background: #1D1D1D;
+		padding: 10px;
+		text-align: center;
+		display: block;
+		border-color: black;
+	}
+
+	.user-access li:hover ul {
+		display: block;
+	}
+
+	.user-access li ul li:hover {
+		background: #1eb49f;
 	}
