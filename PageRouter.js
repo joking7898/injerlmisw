@@ -312,6 +312,7 @@ router.post("/views/register.ejs",upload.single('picture_r'), function (req, res
     var loca_r = req.body.loca_r;
     var content_r = req.body.content_r;
     //var picture_r = req.body.picture_r;
+  
     if (name_r == "" || session.user.id == 'dummy') {
         res.redirect(req.url);
     }
@@ -334,6 +335,7 @@ router.post("/views/register.ejs",upload.single('picture_r'), function (req, res
         res.redirect('/views/listings.ejs');
     }
 })
+
 //회원가입 sql문 구분.
 router.post("/views/Register/Register_user.ejs", function (req, res, next) {
     // console.log(req.body);
