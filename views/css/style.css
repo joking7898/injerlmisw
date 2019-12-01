@@ -2772,3 +2772,15 @@ ol {
 	.user-access li ul li:hover {
 		background: #1eb49f;
 	}
+
+	#cate_r {
+		padding: 5px 140px 5px 20px;
+	}
+
+	#loca_r {
+		padding: 5px 188px 5px 20px;
+	}
+
+	.register-section {
+		padding-top: 170px;
+	}
