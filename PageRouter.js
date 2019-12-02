@@ -30,6 +30,7 @@ var mysqlcon = mysql.createConnection({
     multipleStatements: true
     //port: '3306'
 });
+
 var app = express();
 var fs = require('fs')
 var ejs = require('ejs')
@@ -42,6 +43,8 @@ router.use(session({
     saveUninitialized: false,
     cookie: { secure: false, maxAge: 1000 * 60 * 60 }// 유효기간 1시간  
 }));
+
+
 session.user = {
     id: 'dummy',
     password: ''
@@ -243,7 +246,8 @@ router.get("/views/listings.ejs", function (req, res) {
                     result: results,
                     user_id: session.user.id,
                     _url: req.url,
-                    loggedin: session.user.id != null && session.user.id != 'dummy'
+                    loggedin: session.user.id != null && session.user.id != 'dummy',
+                    loginfirst:querydata.loginfirst!=null
                     // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
                 });
             }
@@ -290,8 +294,8 @@ router.get("/", function (req, res) {
     res.redirect("/views/index.ejs?#") // 이 주소로 해야지 정상 작동되는거 구현완료.
 })
 router.get("/views/register.ejs",function(req,res){
-    if(session.user.id=='dummy' && false)//////////////////////////////////////////////////////////////////////////////////////나중에 고치기
-        res.redirect('/views/listings.ejs?')
+    if(session.user.id=='dummy')
+        res.redirect('/views/listings.ejs?loginfirst=true')
     else
         res.render('register.ejs',
             {
@@ -321,7 +325,7 @@ router.post("/views/register.ejs",upload.single('picture_r'), function (req, res
         mysqlcon.query(
             `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
             [name_r, address_r, phone_r, fee_r, time_r,
-            cate_r, loca_r, content_r, req.file.originalname, session.user.id],
+            cate_r, loca_r, content_r, (req.file)?req.file.originalname:"", session.user.id],
             function (error, result) {
                 if (error) {
                     console.log("데이터베이스 입력 에러...");
@@ -380,6 +384,7 @@ router.post("/views/listings.ejs", function (req, res) {
     //req.url.querystring+="&page="
     res.redirect(req.url)
 })
+
 router.post("/views/single-listing.ejs", function (req, res, next) {
     var description = req.body.description;
     var stars = req.body.stars;
@@ -425,6 +430,7 @@ router.post("/views/deleteReview", function (req, res) {
             })
     }
 })
+
 router.post("/views/deleteAttraction", function (req, res) {
     if (req.query.Aid == undefined) {
         res.redirect("index.ejs")
@@ -446,6 +452,7 @@ router.post("/views/deleteAttraction", function (req, res) {
             })
     }
 })
+
 router.post("/views/authorize", function (req, res) {
     if (req.query.Aid == undefined) {
         res.redirect("index.ejs")
@@ -467,7 +474,7 @@ router.post("/views/Register/Modify.ejs", function (req, res) {
         res.redirect("Modify.ejs")
     else {
         if (req.body.choice == "확인") {
-            mysqlcon.query("update user set password = ? where id=?", [req.body.New_pass, session.user.id], function (err, results) {
+            mysqlcon.query("update user set password = ? where id=?", [req.body.new_pass, session.user.id], function (err, results) {
                 if (err)
                     console.log("DB query error : ", err)
                 res.redirect("/views/index.ejs")
@@ -483,6 +490,7 @@ router.post("/views/Register/Modify.ejs", function (req, res) {
         session.user.id='dummy'
     }
 })
+
 router.get("/views/contact.ejs", function (req, res) {
     res.render('contact.ejs', {
         loggedin: session.user.id != null && session.user.id != 'dummy',
