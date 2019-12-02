@@ -89,8 +89,11 @@ mysqlcon.connect(function (err) {
 // });
 router.get('/views/Register/Login.ejs', function (req, res) {
     var tryagain = req.query.tryagain
+    var succses = req.query.succses
+
     res.render('Register/Login.ejs',
-        {tryagain:tryagain!=undefined}
+        {tryagain:tryagain!=undefined,
+            succses:succses!=undefined,}
     );
 })
 
@@ -108,7 +111,7 @@ router.post('/views/Register/Login.ejs', function (req, res) {
 
             //            res.render('index.ejs', {
             //            result: results    
-            // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
+            //            SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
             //            });
         }
         else {
@@ -121,6 +124,7 @@ router.post('/views/Register/Login.ejs', function (req, res) {
 //index.ejs 관련 sql
 router.get("/views/index.ejs", function (req, res) {
     var querydata = url.parse(req.url, true).query;
+    var change = req.query.change
 
     console.log(querydata.category)
     var querystring = "SELECT category,count(*)AS count FROM gottraction.attraction group by category;SELECT * FROM attraction ORDER BY  score DESC LIMIT 4";
@@ -132,7 +136,8 @@ router.get("/views/index.ejs", function (req, res) {
                 result: results[0],
                 popular:results[1],
                 loggedin: session.user.id != null && session.user.id != 'dummy',
-                user_id: session.user.id
+                user_id: session.user.id,
+                change:change!=undefined
                 // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
             });
         }
@@ -335,7 +340,19 @@ router.post("/views/register.ejs",upload.single('picture_r'), function (req, res
         res.redirect('/views/listings.ejs');
     }
 })
+router.get('/views/Register/Register_user.ejs', function (req, res) {
+    var insertagain = req.query.insertagain
+    var passagain = req.query.passagain
+    var idagain = req.query.idagain
 
+    res.render('Register/Register_user.ejs',
+        {
+            insertagain:insertagain!=undefined,
+            passagain:passagain!=undefined,
+            idagain:idagain!=undefined
+        }
+    );
+})
 //회원가입 sql문 구분.
 router.post("/views/Register/Register_user.ejs", function (req, res, next) {
     // console.log(req.body);
@@ -343,8 +360,13 @@ router.post("/views/Register/Register_user.ejs", function (req, res, next) {
     var pass = req.body.pass;
     var repass = req.body.re_pass;
     var sql = 'SELECT * FROM user WHERE id=?';
-    mysqlcon.query(sql, [id], function (err, results) {
+    if(id=='undefined' || pass=='undefined' || repass=='undefined'){
+        res.redirect("/views/Register/Register_user.ejs#?insertagain=true");
+    }
+    else{
+         mysqlcon.query(sql, [id], function (err, results) {
         if (err) {
+            res.redirect("/views/Register/Register_user.ejs?insertagain=true");
             console.log(err);
         }
 
@@ -355,25 +377,27 @@ router.post("/views/Register/Register_user.ejs", function (req, res, next) {
                     [req.body.id, req.body.email, req.body.pass, 'user'],
                     function (error, result) {
                         if (error) {
+                            res.redirect("/views/Register/Register_user.ejs?insertagain=true");
                             console.log("데이터베이스 입력 에러...");
                             throw error;
                         }
                     }
                 )
-                res.redirect("/views/Register/Login.ejs")
+                res.redirect("/views/Register/Login.ejs?succses=true")
             }
             else {
                 //이거 로그 따로 alert로 만들것.
                 console.log('pw 맞지않음.');
-                res.redirect("/views/Register/Register_user.ejs");
+                res.redirect("/views/Register/Register_user.ejs?passagain=true");
             }
         }
         else {
             //이거 로그 따로 alert로 만들것.
             console.log('id중복');
-            res.redirect("/views/Register/Register_user.ejs");
+            res.redirect("/views/Register/Register_user.ejs?idagain=true");
         }
     })
+    }
 })
 
 router.post("/views/listings.ejs", function (req, res) {
@@ -460,29 +484,77 @@ router.post("/views/authorize", function (req, res) {
             })
     })
 })
+router.get('/views/Register/Modify.ejs', function (req, res) {
+    var passagain = req.query.passagain
+    var insertpassagain = req.query.insertpassagain
+    res.render('Register/Modify.ejs',
+        {   
+            passagain:passagain!=undefined ,
+            insertpassagain:insertpassagain!=undefined   
+        }
+    );
+})
 
 router.post("/views/Register/Modify.ejs", function (req, res) {
-    console.log(req.body)
-    if (req.body.pass != session.user.password)
-        res.redirect("Modify.ejs")
-    else {
+//     console.log(res.body)
+//     if (req.body.pass != session.user.password)
+//         res.redirect("Modify.ejs?passagain=true")
+//     else {
+//         if (req.body.choice == "확인") {
+//             if(req.body.New_pass == req.body.re_pass){
+//                 mysqlcon.query("update user set password = ? where id=?", [req.body.New_pass, session.user.id], function (err, results) {
+//                 if (err){
+
+//                 }
+//                     console.log("DB query error : ", err)
+//                 res.redirect("/views/index.ejs")})
+//             }
+//             else
+//                 res.redirect("Modify.ejs?insertpassagain=true")
+//         }
+//         else if (req.body.choice == '회원 탈퇴') {
+//             mysqlcon.query("delete from user where id=?", [session.user.id], function (err, results) {
+//                 if (err)
+//                     console.log("DB query error : ", err)
+//                 res.redirect("/views/index.ejs")
+//             })
+//         }
+//         session.user.id='dummy'
+//     }
+// })
+console.log(req.body.new_pass)
+console.log(req.body.re_pass)
+    if (!(req.body.new_pass == req.body.re_pass)){
+        res.redirect("Modify.ejs?passagain=true")  
+    }
+    if (!(req.body.pass == session.user.password)){
+        res.redirect("Modify.ejs?insertpassagain=true")  
+    }
+    if (req.body.pass == session.user.password){
         if (req.body.choice == "확인") {
-            mysqlcon.query("update user set password = ? where id=?", [req.body.New_pass, session.user.id], function (err, results) {
+            if(req.body.new_pass != req.body.re_pass){
+                    res.redirect("Modify.ejs?insertpassagain=true")
+                }
+            mysqlcon.query("update user set password = ? where id=?", [req.body.new_pass, session.user.id], function (err, results) {
                 if (err)
                     console.log("DB query error : ", err)
-                res.redirect("/views/index.ejs")
+
+                    res.redirect("/views/index.ejs?change=true")
             })
         }
         else if (req.body.choice == '회원 탈퇴') {
             mysqlcon.query("delete from user where id=?", [session.user.id], function (err, results) {
                 if (err)
                     console.log("DB query error : ", err)
-                res.redirect("/views/index.ejs")
+                else{
+                     res.redirect("/views/index.ejs")
+                }
             })
         }
-        session.user.id='dummy'
     }
+
 })
+
 router.get("/views/contact.ejs", function (req, res) {
     res.render('contact.ejs', {
         loggedin: session.user.id != null && session.user.id != 'dummy',

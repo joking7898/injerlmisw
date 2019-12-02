@@ -26,6 +26,10 @@
                     <%if(tryagain){%>
                         <script>alert("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.")</script>
                     <%}%>
+                    <% if(succses){%>
+                        <script>alert("회원가입 성공.")</script>
+                    <%}%> 
+
                     <div class="signin-form">
                         <h2 class="form-title">로그인</h2>
                         <form method="POST" class="register-form" id="login-form">
