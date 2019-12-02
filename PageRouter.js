@@ -322,7 +322,8 @@ router.post("/views/register.ejs", upload.single('picture_r'), function (req, re
         if(name_r==''||address_r==''){
             res.redirect('/views/listings.ejs?unregistering=true');
         }
-        mysqlcon.query(
+        else{
+             mysqlcon.query(
             `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
             [name_r, address_r, phone_r, fee_r, time_r,
             cate_r, loca_r, content_r, (req.file)?req.file.originalname:"", session.user.id],
@@ -336,8 +337,9 @@ router.post("/views/register.ejs", upload.single('picture_r'), function (req, re
                 // response.end();
             }
         )
-        console.log('=================================등록====================================');
+         console.log('=================================등록====================================');
         res.redirect('/views/listings.ejs?registering=true');
+        }
     }
 })
 router.get('/views/Register/Register_user.ejs', function (req, res) {
