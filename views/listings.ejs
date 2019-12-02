@@ -24,6 +24,12 @@
 </head>
 
 <body>
+    <% if(unregistering){%>
+        <script>alert("등록에 실패하였습니다.")</script>
+    <%}%>
+    <% if(registering){%>
+        <script>alert("관리자의 승인 후 등록됩니다.")</script>
+    <%}%>
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
