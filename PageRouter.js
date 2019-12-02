@@ -319,6 +319,9 @@ router.post("/views/register.ejs", upload.single('picture_r'), function (req, re
         res.redirect(req.url);
     }
     else {
+        if(name_r==''||address_r==''){
+            res.redirect('/views/listings.ejs?unregistering=true');
+        }
         mysqlcon.query(
             `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
             [name_r, address_r, phone_r, fee_r, time_r,
@@ -522,7 +525,9 @@ console.log(req.body.re_pass)
                 if (err)
                     console.log("DB query error : ", err)
                 else{
-                     res.redirect("/views/index.ejs?outchange=true")
+                    session.user.id = 'dummy'
+                    session.user.password = ''
+                    res.redirect("/views/index.ejs?outchange=true")
                 }
             })
         }
