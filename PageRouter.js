@@ -13,11 +13,11 @@ var bodyParser = require('body-parser');
 var multer = require('multer')
 var path = require('path')
 //var storage = multer.memoryStorage();
- var storage = multer.diskStorage({
-     destination:function(req,file,cb){cb(null,path.join(__dirname,'views/img/uploaded'))},
-     filename: function(req,file,cb){cb(null,file.originalname)}
- });
-var upload = multer({storage:storage});//{storage:storage})
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) { cb(null, path.join(__dirname, 'views/img/uploaded')) },
+    filename: function (req, file, cb) { cb(null, file.originalname) }
+});
+var upload = multer({ storage: storage });//{storage:storage})
 
 //밑 코드 데이터베이스 연결
 var dbConfig = require('./dbConfig');
@@ -30,6 +30,7 @@ var mysqlcon = mysql.createConnection({
     multipleStatements: true
     //port: '3306'
 });
+
 var app = express();
 var fs = require('fs')
 var ejs = require('ejs')
@@ -42,6 +43,8 @@ router.use(session({
     saveUninitialized: false,
     cookie: { secure: false, maxAge: 1000 * 60 * 60 }// 유효기간 1시간  
 }));
+
+
 session.user = {
     id: 'dummy',
     password: ''
@@ -135,7 +138,7 @@ router.get("/views/index.ejs", function (req, res) {
             // log로 체크하는구문.   
             res.render('index.ejs', {
                 result: results[0],
-                popular:results[1],
+                popular: results[1],
                 loggedin: session.user.id != null && session.user.id != 'dummy',
                 user_id: session.user.id,
                 change:change!=undefined,
@@ -148,22 +151,6 @@ router.get("/views/index.ejs", function (req, res) {
         }
     })
     //res.redirect("/views/listing.ejs")
-
-
-    //윤기철 작업 - 가장 인기있는 관광지 4
-    // let popularQuery = "SELECT * FROM attraction ORDER BY  score DESC LIMIT 4";
-    // mysqlcon.query(popularQuery, function(err, results) {
-    //     if (!err) {
-    //         console.log('142line===========================================================');
-    //         res.render('index.ejs', {
-    //             popular: results
-    //         });
-    //     }
-    //     else {
-    //         console.log('Error while performing popularQuery==========', err);
-    //     }
-    // })
-    //윤기철 작업 - end
 })
 
 router.get("/views/logout", function (req, res) {
@@ -174,6 +161,7 @@ router.get("/views/logout", function (req, res) {
 
 //페이지 출력 여기서 해주라는 요청.
 router.get("/views/listings.ejs", function (req, res) {
+    
     var querydata = url.parse(req.url, true).query;
     var unregistering = req.query.unregistering
     var registering = req.query.registering
@@ -251,7 +239,13 @@ router.get("/views/listings.ejs", function (req, res) {
                     result: results,
                     user_id: session.user.id,
                     _url: req.url,
+<<<<<<< HEAD
                     loggedin: session.user.id != null && session.user.id != 'dummy',
+=======
+                    pageNum:(req.query.page)?req.query.page:1,
+                    loggedin: session.user.id != null && session.user.id != 'dummy'
+                    loginfirst:querydata.loginfirst!=null
+>>>>>>> ed27e8bc867aa2d06c1a3a5a5c0e530b097761dc
                     // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
                     unregistering:unregistering!=undefined,
                     registering:registering!=undefined
@@ -300,6 +294,7 @@ router.get("/", function (req, res) {
     res.redirect("/views/index.ejs?#") // 이 주소로 해야지 정상 작동되는거 구현완료.
 })
 router.get("/views/register.ejs",function(req,res){
+<<<<<<< HEAD
 
     if(session.user.id=='dummy' && false)//////////////////////////////////////////////////////////////////////////////////////나중에 고치기
         res.redirect('/views/listings.ejs?')
@@ -309,12 +304,21 @@ router.get("/views/register.ejs",function(req,res){
                 user_id : session.user.id,
                 loggedin : session.user.id!='dummy',
                 
+=======
+    if(session.user.id=='dummy')
+        res.redirect('/views/listings.ejs?loginfirst=true')
+    else
+        res.render('register.ejs',
+            {
+                user_id: session.user.id,
+                loggedin: session.user.id != 'dummy'
+>>>>>>> ed27e8bc867aa2d06c1a3a5a5c0e530b097761dc
             })
 })
 //작성 내용 mysql에 넣기
-router.post("/views/register.ejs",upload.single('picture_r'), function (req, res, next) {
-//    console.log(req)
-//    console.log(req.files)
+router.post("/views/register.ejs", upload.single('picture_r'), function (req, res, next) {
+    //    console.log(req)
+    //    console.log(req.files)
     var name_r = req.body.name_r;
     var address_r = req.body.address_r;
     var phone_r = req.body.phone_r;
@@ -324,15 +328,19 @@ router.post("/views/register.ejs",upload.single('picture_r'), function (req, res
     var loca_r = req.body.loca_r;
     var content_r = req.body.content_r;
     //var picture_r = req.body.picture_r;
-  
+
     if (name_r == "" || session.user.id == 'dummy') {
         res.redirect(req.url);
     }
     else {
+<<<<<<< HEAD
+=======
+
+>>>>>>> ed27e8bc867aa2d06c1a3a5a5c0e530b097761dc
         mysqlcon.query(
             `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
             [name_r, address_r, phone_r, fee_r, time_r,
-            cate_r, loca_r, content_r, req.file.originalname, session.user.id],
+            cate_r, loca_r, content_r, (req.file)?req.file.originalname:"", session.user.id],
             function (error, result) {
                 if (error) {
                     console.log("데이터베이스 입력 에러...");
@@ -411,6 +419,7 @@ router.post("/views/listings.ejs", function (req, res) {
     //req.url.querystring+="&page="
     res.redirect(req.url)
 })
+
 router.post("/views/single-listing.ejs", function (req, res, next) {
     var description = req.body.description;
     var stars = req.body.stars;
@@ -456,6 +465,7 @@ router.post("/views/deleteReview", function (req, res) {
             })
     }
 })
+
 router.post("/views/deleteAttraction", function (req, res) {
     if (req.query.Aid == undefined) {
         res.redirect("index.ejs")
@@ -477,6 +487,7 @@ router.post("/views/deleteAttraction", function (req, res) {
             })
     }
 })
+
 router.post("/views/authorize", function (req, res) {
     if (req.query.Aid == undefined) {
         res.redirect("index.ejs")
@@ -513,6 +524,7 @@ console.log(req.body.re_pass)
     }
     if (req.body.pass == session.user.password){
         if (req.body.choice == "확인") {
+
             if(req.body.new_pass != req.body.re_pass){
                     res.redirect("Modify.ejs?insertpassagain=true")
                 }
