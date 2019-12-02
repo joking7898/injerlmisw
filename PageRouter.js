@@ -241,13 +241,9 @@ router.get("/views/listings.ejs", function (req, res) {
                     result: results,
                     user_id: session.user.id,
                     _url: req.url,
-<<<<<<< HEAD
-                    loggedin: session.user.id != null && session.user.id != 'dummy',
-=======
                     pageNum:(req.query.page)?req.query.page:1,
-                    loggedin: session.user.id != null && session.user.id != 'dummy'
-                    loginfirst:querydata.loginfirst!=null
->>>>>>> ed27e8bc867aa2d06c1a3a5a5c0e530b097761dc
+                    loggedin: session.user.id != null && session.user.id != 'dummy',
+                    loginfirst:querydata.loginfirst!=null,
                     // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
                     unregistering:unregistering!=undefined,
                     registering:registering!=undefined
@@ -296,17 +292,6 @@ router.get("/", function (req, res) {
     res.redirect("/views/index.ejs?#") // 이 주소로 해야지 정상 작동되는거 구현완료.
 })
 router.get("/views/register.ejs",function(req,res){
-<<<<<<< HEAD
-
-    if(session.user.id=='dummy' && false)//////////////////////////////////////////////////////////////////////////////////////나중에 고치기
-        res.redirect('/views/listings.ejs?')
-    else
-        res.render('register.ejs',
-            {
-                user_id : session.user.id,
-                loggedin : session.user.id!='dummy',
-                
-=======
     if(session.user.id=='dummy')
         res.redirect('/views/listings.ejs?loginfirst=true')
     else
@@ -314,7 +299,6 @@ router.get("/views/register.ejs",function(req,res){
             {
                 user_id: session.user.id,
                 loggedin: session.user.id != 'dummy'
->>>>>>> ed27e8bc867aa2d06c1a3a5a5c0e530b097761dc
             })
 })
 //작성 내용 mysql에 넣기
@@ -335,10 +319,6 @@ router.post("/views/register.ejs", upload.single('picture_r'), function (req, re
         res.redirect(req.url);
     }
     else {
-<<<<<<< HEAD
-=======
-
->>>>>>> ed27e8bc867aa2d06c1a3a5a5c0e530b097761dc
         mysqlcon.query(
             `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
             [name_r, address_r, phone_r, fee_r, time_r,
