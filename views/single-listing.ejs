@@ -42,11 +42,9 @@
                         <li>
                             <a href="index.ejs?#?">홈</a>
                         </li>
-                        <!-- <li> <a href="how-it-works.html">Explore</a> </li> -->
                         <li class="active">
                             <a href="listings.ejs?#?">관광지</a>
                         </li>
-                        <!-- <li> <a href="blog.html">News</a> </li> -->
                         <li>
                             <a href="contact.ejs?#?">문의</a>
                         </li>
@@ -65,7 +63,6 @@
                                     <a href="/views/Register/Login.ejs?" class="primary-btn">로그인</a>
                                 <%}%>
                         </div>
-                    <!-- <a href="#" class="primary-btn">Add Listing</a> -->
                 </div>
                 <div id="mobile-menu-wrap"></div>
             </div>
@@ -88,8 +85,6 @@
                                     <%var titletag = result[0].authorized?'h2':'h3'%>
                                     <%-'<'+titletag+'>'%><%=result[0].title%><%-'</'+titletag+'>'%>
                                     <p><%=result[0].category%></p>
-                                    <!-- <div class="open">운영 시간 : </div> -->
-                                    <!-- <div class="closed">운영 마감</div> -->
                                 </div>
                             </div>
                         </div>
