@@ -25,10 +25,10 @@
 
 <body>
     <% if(change){%>
-        <script>alert("비밀번호 변경성공!.")</script>
+        <script>alert("비밀번호를 변경하였습니다.")</script>
     <%}%>
     <% if(outchange){%>
-        <script>alert("회원탈퇴 성공!.")</script>
+        <script>alert("회원탈퇴가 완료되었습니다.")</script>
     <%}%>
     <!-- Page Preloder -->
     <div id="preloder">
@@ -59,7 +59,6 @@
             <div class="header-right">
                 <div class="user-access">
                     <%if(loggedin){%>
-                        <!-- <a href="/views/Register/Modify.ejs" class="primary-btn"><%=user_id%></a> -->
                         <li id="login_li"><a href="#" id="current"><%=user_id%> 님</a>
                             <ul>
                                 <li><a href="/views/Register/Modify.ejs">회원정보 수정</a></li>
