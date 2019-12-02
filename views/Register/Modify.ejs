@@ -22,14 +22,19 @@
         <section class="signup">
             <div class="container">
                 <form method="POST" action="Modify.ejs" class="register-form" id="register-form">
+                        
                     <div class="signup-content">
+                        <% if(passagain){%>
+                            <script>alert("동일하지 않은 비밀번호입니다.")</script>
+                        <%}%>
+                        <% if(insertpassagain){%>
+                            <script>alert("비밀번호가 올바르지 않습니다.")</script>
+                        <%}%>
                         <div class="signup-image">
                             <figure><img src="images/Modify.jpg" alt="sing up image"></figure>
                             <input type="submit" name="choice" onclick="btn_is_confirm_click()"
                                 style="text-decoration: underline;" class="signup-image-link" id="cancel_Membership"
                                 value="회원 탈퇴" />
-                            <!--<input type="submit" class="form-submit" name="signout" onclick="btn_is_confirm_click()" style="text-decoration: underline;">회원 탈퇴</input>-->
-                            <!-- <a href="#" class="signup-image-link" onclick="btn_is_confirm_click()" style="text-decoration: underline;">회원 탈퇴</a> -->
                         </div>
                         <div class="signup-form">
                             <h2 class="form-title">비밀번호 변경</h2>
@@ -40,14 +45,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="New_pass" id="pass" placeholder="새 비밀번호" />
+                                <input type="password" name="new_pass" id="new_pass" placeholder="새 비밀번호" />
                             </div>
                             <div class="form-group">
                                 <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
                                 <input type="password" name="re_pass" id="re_pass" placeholder="새 비밀번호 확인" />
                             </div>
+                            <div id="chkNotice"></div>
                             <div class="form-group form-button">
-                                <input type="submit" name="choice" class="form-submit" value="확인" />
+                                <input type="submit" onclick="confirm_click()" name="choice" class="form-submit" value="확인" />
                                 <a href="/views/index.ejs" class="form-submit" style="text-decoration:none;">취소</a>
                             </div>
                 </form>
@@ -60,6 +66,6 @@
     <!-- JS -->
     <script src="/views/Register/vendor/jquery/jquery.min.js"></script>
     <script src="/views/Register/js/main.js"></script>
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</body>
 
 </html>

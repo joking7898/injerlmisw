@@ -110,7 +110,6 @@
                                         
                                     </div>
                                     <div class="about-video">
-                                        <!-- <img src="img/everland456.jpg" alt=""> -->
                                     </div>
                                     <form method="POST" action =<%="deleteAttraction?Aid="+result[0].id %>>
                                         <%if((!result[0].authorized&&result[0].user_id==user_id)||authority=='admin'){%><button type="submit" id="btn-delete-list">글 삭제</button><%}%>
