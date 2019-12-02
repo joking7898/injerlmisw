@@ -203,7 +203,7 @@
                                 </select>
                             </form>
                         </div>
-                        <% for (var index in result){ if (index >8) break;%>
+                        <% for (var index = (pageNum - 1) * 9; index < result.length; index++){ if (index >= pageNum*9) break;%>
                         <div class="col-lg-4 col-sm-6">
                             <a class="arrange-items" href=<%="single-listing.ejs?id="+result[index].id%>>
                                 <div class="arrange-pic">
@@ -223,12 +223,18 @@
                     </div>
 
                     <div class="col-lg-12 text-right">
-                        <div class="pagination-num">
-                            <%for(var i = 0; i<result.length/9 +1;i++) {%>
+                        <!-- <div class="pagination-num" id="paging">
+                            <%for(var i = 0; i<result.length/9;i++) {%>
                             <% var targetpage = _url%>
-                            <%-'<a href='+_url+'>'%><%='i'%></a>
+                            <%-'<a href='+_url+'>'%><%=i+1%></a>
                             <%}%>
-                        </div>
+                        </div> -->
+                        <!-- <%var totalData = result.length%>
+                        <%var dataPerPage = 9;%>
+                        <%var pageCount = 3;%>
+                        <%var currentPage = 1;%> -->
+                        <!-- paging(totalData, dataPerPage, pageCount, currentPage); -->
+                        <div class="pagination-num" id="paging"></div>
                     </div>
                 </div>
             </div>
@@ -253,6 +259,8 @@
     <script src="js/jquery.nice-select.min.js"></script>
     <script src="js/mixitup.min.js"></script>
     <script src="js/main.js"></script>
+    <script>paging(<%=result.length%>, 9, 3, <%= pageNum %>);</script>
+    
 </body>
 
 </html>
