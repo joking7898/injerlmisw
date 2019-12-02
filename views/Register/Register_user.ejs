@@ -20,6 +20,15 @@
         <section class="signup">
             <div class="container">
                 <div class="signup-content">
+                    <%if(insertagain){%>
+                        <script>alert("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.")</script>
+                    <%}%>
+                    <% if(idagain){%>
+                        <script>alert("아이디가 중복입니다.")</script>
+                    <%}%>
+                    <% if(passagain){%>
+                        <script>alert("동일하지 않은 비밀번호입니다.")</script>
+                    <%}%>
                     <div class="signup-form">
                         <h2 class="form-title">회원가입</h2>
                         <form method="POST" class="register-form" id="register-form">
@@ -45,7 +54,7 @@
                                 <label for="agree-term" class="label-agree-term"><span><span></span></span>모든 약관에 동의합니다. <a href="#" class="term-service"> 서비스 약관</a></label>
                             </div>
                             <div class="form-group form-button">
-                                <input type="submit" name="signup" id="signup" class="form-submit" value="가입하기"/>
+                                <input type="submit" name="signup" id="signup" onclick=reg_confirm_click() class="form-submit" value="가입하기"/>
                                 <a href="/views/index.ejs" class="form-submit" style="text-decoration:none;">취소</a>
                             </div>
                         </form>

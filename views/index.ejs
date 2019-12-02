@@ -24,14 +24,19 @@
 </head>
 
 <body>
+    <% if(change){%>
+        <script>alert("성공!.")</script>
+    <%}%>
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
-
+    
     <!-- Header Section Begin -->
     <header class="header-section">
+        
         <div class="container-fluid">
+                
             <div class="logo">
                 <a href="/views/index.ejs?"><img src="/views/img/logo.png" alt=""></a>
             </div>

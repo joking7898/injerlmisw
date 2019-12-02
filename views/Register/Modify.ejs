@@ -22,7 +22,14 @@
         <section class="signup">
             <div class="container">
                 <form method="POST" action="Modify.ejs" class="register-form" id="register-form">
+                        
                     <div class="signup-content">
+                        <% if(passagain){%>
+                            <script>alert("동일하지 않은 비밀번호입니다.")</script>
+                        <%}%>
+                        <% if(insertpassagain){%>
+                            <script>alert("삽입비번에러.")</script>
+                        <%}%>
                         <div class="signup-image">
                             <figure><img src="images/Modify.jpg" alt="sing up image"></figure>
                             <input type="submit" name="choice" onclick="btn_is_confirm_click()"
@@ -48,7 +55,7 @@
                             </div>
                             <div id="chkNotice"></div>
                             <div class="form-group form-button">
-                                <input type="submit" name="choice" class="form-submit" value="확인" />
+                                <input type="submit" onclick="confirm_click()" name="choice" class="form-submit" value="확인" />
                                 <a href="/views/index.ejs" class="form-submit" style="text-decoration:none;">취소</a>
                             </div>
                 </form>
