@@ -130,9 +130,11 @@ router.get("/views/index.ejs", function (req, res) {
     var change = req.query.change
 
     console.log(querydata.category)
-    var querystring = "SELECT category,count(*)AS count FROM gottraction.attraction group by category;SELECT * FROM attraction ORDER BY  score DESC LIMIT 4";
+    var querystring = "SELECT category,count(*)AS count FROM attraction where category in('자연','문화관광','테마관광지','도보','레저/체험') group by category;\
+    SELECT * FROM attraction ORDER BY  score DESC LIMIT 4;";
     mysqlcon.query(querystring, function (err, results) {
         if (!err) {
+            console.log(results)
             // console.log('The solution is: ', rows);
             // log로 체크하는구문.   
             res.render('index.ejs', {
