@@ -317,30 +317,25 @@ router.post("/views/register.ejs", upload.single('picture_r'), function (req, re
     var content_r = req.body.content_r;
     //var picture_r = req.body.picture_r;
 
-    if (name_r == "" || session.user.id == 'dummy') {
-        res.redirect(req.url);
-    }
-    else {
-        if (name_r == '' || address_r == '') {
-            res.redirect('/views/listings.ejs?unregistering=true');
-        } else {
-            mysqlcon.query(
-                `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
-                [name_r, address_r, phone_r, fee_r, time_r,
-                    cate_r, loca_r, content_r, (req.file) ? req.file.originalname : "", session.user.id],
-                function (error, result) {
-                    if (error) {
-                        console.log("데이터베이스 입력 에러...");
-                        res.redirect('/views/listings.ejs?unregistering=true');
-                        throw error;
-                    }
-                    // response.writeHead(302, {Location: `/?id=${result.insertId}`});
-                    // response.end();
+    if (name_r == '' || address_r == '') {
+        res.redirect('/views/listings.ejs?unregistering=true');
+    } else {
+        mysqlcon.query(
+            `INSERT INTO attraction (title, address, phone, fee, opentime, category, location, contents, picture,user_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
+            [name_r, address_r, phone_r, fee_r, time_r,
+                cate_r, loca_r, content_r, (req.file) ? req.file.originalname : "", session.user.id],
+            function (error, result) {
+                if (error) {
+                    console.log("데이터베이스 입력 에러...");
+                    res.redirect('/views/listings.ejs?unregistering=true');
+                    throw error;
                 }
-            )
-            console.log('=================================등록====================================');
-            res.redirect('/views/listings.ejs?registering=true');
-        }
+                // response.writeHead(302, {Location: `/?id=${result.insertId}`});
+                // response.end();
+            }
+        )
+        console.log('=================================등록====================================');
+        res.redirect('/views/listings.ejs?registering=true');
     }
 })
 router.get('/views/Register/Register_user.ejs', function (req, res) {
