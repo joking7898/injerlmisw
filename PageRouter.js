@@ -19,13 +19,7 @@ var upload = multer({ storage: storage });//{storage:storage})
 
 //밑 코드 데이터베이스 연결
 var dbConfig = require('./dbConfig');
-var mysqlcon = mysql.createConnection({
-    host: 'yunudb.c9jcx2tgvrrn.us-west-2.rds.amazonaws.com',
-    user: 'admin',
-    password: 'freehongkong',
-    database: 'gottraction',
-    multipleStatements: true
-});
+var mysqlcon = mysql.createConnection(dbConfig);
 
 var app = express();
 var fs = require('fs')
