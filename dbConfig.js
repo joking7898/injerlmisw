@@ -3,6 +3,7 @@ var dbConfig = {
     user: 'admin', 
     password: 'freehongkong',
     database: 'gottraction',
+    multipleStatements: true
   };
   module.exports = dbConfig;
    
