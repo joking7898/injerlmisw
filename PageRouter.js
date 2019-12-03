@@ -132,12 +132,12 @@ router.get("/views/index.ejs", function (req, res) {
     var change = req.query.change
     var outchange = req.query.outchange
 
-    console.log(querydata.category)
-    var querystring = "SELECT category,count(*)AS count FROM attraction where category in('자연','문화관광','테마관광지','도보','레저/체험') group by category;\
+    //console.log(querydata.category)
+    var querystring = "SELECT category,count(*)AS count FROM attraction where authorized !=0 and category in('자연','문화관광','테마관광지','도보','레저/체험') group by category;\
     SELECT * FROM attraction ORDER BY  score DESC LIMIT 4;";
     mysqlcon.query(querystring, function (err, results) {
         if (!err) {
-            console.log(results)
+            //console.log(results)
             // console.log('The solution is: ', rows);
             // log로 체크하는구문.   
             res.render('index.ejs', {
@@ -284,7 +284,9 @@ router.get("/views/single-listing.ejs", function (req, res) {
     }
     else {
         var userid = session.user.id ? session.user.id : 'dummy'
-        mysqlcon.query("select * from attraction where id = ?; select * from review where AttractionId = ?; select authority from user where id = ?", [AttractionId, AttractionId, userid], function (err, results) {
+        mysqlcon.query("select * from attraction where id = ?;\
+                        select * from review where AttractionId = ?;\
+                        select authority from user where id = ?;", [AttractionId, AttractionId, userid], function (err, results) {
             if (!err) {
                 results[0][0].contents = (results[0][0].contents.replace(new RegExp('\n', 'g'), '<br>'))
                 res.render('single-listing.ejs', {
