@@ -167,8 +167,10 @@ router.get("/views/listings.ejs", function (req, res) {
     var querystring = "select * from attraction";
     var authorizationCondition = "";
     var gradeCondition = "";
+    var orderCondition = "";
 
     var starUrl = req.url;
+    var orderUrl = (querydata.order == undefined) ? "최신순" : querydata.order;
 
     if (category == "전체" && location == "전체") {
         querystring;
@@ -226,18 +228,31 @@ router.get("/views/listings.ejs", function (req, res) {
             gradeCondition = gradeCondition.substr(0, gradeCondition.length - 4);
             gradeCondition = gradeCondition + ')';
         }
+        if (orderUrl == '최신순') {
+            orderCondition = ' order by id desc';
+        }
+        else if (orderUrl == '오래된순') {
+            orderCondition = ' order by id asc';
+        }
+        else if (orderUrl == '평점순') {
+            orderCondition = ' order by score desc'
+        }
+        else {
+            orderCondition = '';
+            console.log('orderCondition error!!!================================');
+        }
         //별점 분류 코드 - end
-        mysqlcon.query(querystring + authorizationCondition + gradeCondition, function (err, results) {
+        mysqlcon.query(querystring + authorizationCondition + gradeCondition + orderCondition, function (err, results) {
             if (!err) {
                 // console.log('The solution is: ', rows);
                 // log로 체크하는구문.  
-                //console.log(querystring + authorizationCondition + gradeCondition + '======================================================'); 
+                console.log(querystring + authorizationCondition + gradeCondition + orderCondition + '======================================================'); 
                 res.render('listings.ejs', {
                     result: results,
                     user_id: session.user.id,
                     _url: req.url,
                     pageNum:(req.query.page)?req.query.page:1,
-                    loggedin: session.user.id != null && session.user.id != 'dummy'
+                    loggedin: session.user.id != null && session.user.id != 'dummy',
                     loginfirst:querydata.loginfirst!=null
                     // SQL Query 실행결과인 results 를 statusList.ejs 파일에 result 이름의 리스트로 전송
                 });
