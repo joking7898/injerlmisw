@@ -472,7 +472,7 @@ router.post("/views/deleteAttraction", function (req, res) {
     }
     else {
         mysqlcon.query("select user_id from attraction where id = ?;select authority from user where id = ?", [req.query.Aid, session.user.id],
-            //글 게시자랑 글 지우려는 색기 권한을 불러오는거임.//세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.
+            //글 게시자랑 글 지우려는 ID 권한을 불러오는거임.//세션 구현되면 위에 yunu 부분들 세션에 있는 id 불러오는걸로 바꿔라.
             function (err, result) {
                 if (err)
                     console.log(err);
