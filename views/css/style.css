@@ -1452,6 +1452,8 @@ ol {
 }
 
 .arrange-items .arrange-pic {
+	background: #F7F8FB;
+	height:180px;
 	position: relative;
 }
 
@@ -1490,6 +1492,7 @@ ol {
 
 .arrange-items .arrange-text {
 	background: #F7F8FB;
+	height: 226px;
 	padding-left: 16px;
 	padding-top: 35px;
 	padding-bottom: 32px;
@@ -1562,6 +1565,8 @@ ol {
 
 .hero-listing {
 	height: 656px;
+	width: 1200px;
+	margin: auto;
 }
 
 /*---------------------
