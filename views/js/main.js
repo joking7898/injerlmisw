@@ -78,7 +78,7 @@
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             starlabel = $(this).text();
-            nowUrl = nowUrl.replace('&grade=' + starlabel,'');
+            nowUrl = nowUrl.replace('&grade=' + starlabel, '');
             window.location = nowUrl;
         } else {
             $(this).addClass('active');
@@ -89,19 +89,19 @@
     );
 
     //리다이렉트 하더라도 체크박스 유지되도록
-    if(window.location.href.indexOf('5.0') != -1) {
+    if (window.location.href.indexOf('5.0') != -1) {
         $(".filter-left .rating-filter .rating-option #five label").addClass('active')
     }
-    if(window.location.href.indexOf('4.0') != -1) {
+    if (window.location.href.indexOf('4.0') != -1) {
         $(".filter-left .rating-filter .rating-option #four label").addClass('active')
     }
-    if(window.location.href.indexOf('3.0') != -1) {
+    if (window.location.href.indexOf('3.0') != -1) {
         $(".filter-left .rating-filter .rating-option #three label").addClass('active')
     }
-    if(window.location.href.indexOf('2.0') != -1) {
+    if (window.location.href.indexOf('2.0') != -1) {
         $(".filter-left .rating-filter .rating-option #two label").addClass('active')
     }
-    if(window.location.href.indexOf('1.0') != -1) {
+    if (window.location.href.indexOf('1.0') != -1) {
         $(".filter-left .rating-filter .rating-option #one label").addClass('active')
     }
 
@@ -255,7 +255,7 @@
 
 })(jQuery);
 
-function mapchange () {
+function mapchange() {
     const locationIndex = decodeURI(window.location.search).indexOf('location');
     const locationName = decodeURI(window.location.search).substr(locationIndex + 9, decodeURI(window.location.search).length - locationIndex + 9);
     switch (locationName) {
@@ -380,5 +380,16 @@ function paging(totalData, dataPerPage, pageCount, currentPage) {
 $("document").ready(function () {
     paging(totalData, dataPerPage, pageCount, 1);
 });
+
+//정렬 이용시
+function sorting(str) {
+    var nowUrl = window.location.href; //현재 주소
+    var sortlabel = '&order=' + str;          //별점 라벨 텍스트
+
+    if (nowUrl.indexOf('&order=') != -1) {
+        nowUrl = nowUrl.substring(0, nowUrl.indexOf('&order='));
+    }
+    window.location = nowUrl + sortlabel;
+}
 
 mapchange()
