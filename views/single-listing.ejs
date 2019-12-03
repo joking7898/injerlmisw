@@ -24,7 +24,9 @@
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
     </head>
-    
+    <%if(loginfirst){ %>
+    <script>alert("리뷰를 작성하려면 먼저 로그인이 되어야 합니다.")</script>
+    <%}%>
     <body>
         <!-- Page Preloder -->
         <div id="preloder">
@@ -70,6 +72,7 @@
         <!-- Header End -->
 
         <!-- Hero Section Begin -->
+        <div style="height:120px;"></div>
         <div class="hero-listing set-bg" data-setbg=<%=(result[0].picture==null)?"img/gottraction.png":"img/uploaded/"+result[0].picture%>></div>
         <!-- Hero Section End -->
 
@@ -98,7 +101,7 @@
                             <div class="about-left">
                                 <%var transition = (result[0].authorized)?'비공개글로 전환':'공개글로 전환'%>
                                 <%if(authority =='admin'){%>
-                                    <%-'<form method="POST" action ="authorize?Aid='+result[0].id+'" ><button type="submit">'+transition+'</button></form>'%><br>
+                                    <%-'<form method="POST" action ="authorize?Aid='+result[0].id+'" ><button type="submit" id="btn-delete-list">'+transition+'</button></form>'%><br>
                                 <%}%>
                                 <div class="about-desc">
                                     <%-result[0].contents%>
@@ -194,29 +197,6 @@
     <footer class="footer-section spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget">
-                        <h4>사이트 맵</h4>
-                        <ul>
-                            <li>홈</li>
-                            <li>관광지</li>
-                            <li>문의</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget">
-                        <h4>카테고리</h4>
-                        <ul>
-                            <li>전체</li>
-                            <li>자연</li>
-                            <li>문화관광</li>
-                            <li>테마관광지</li>
-                            <li>도보</li>
-                            <li>레저/체험</li>>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </footer>

@@ -1315,7 +1315,10 @@ ol {
 }
 
 .filter-left .rating-filter {
+	padding: 30px;
+	margin-top: 80px;
 	margin-bottom: 60px;
+	border: 1px solid #CCCCCC;
 }
 
 .filter-left .rating-filter h3 {
@@ -1429,7 +1432,7 @@ ol {
 }
 
 .arrange-select .nice-select .current {
-	display: none;
+	display: inline;
 }
 
 .arrange-select .nice-select.open .list {
@@ -1574,9 +1577,11 @@ ol {
 -----------------------*/
 
 .intro-item {
+	width: 1300px;
 	padding-top: 40px;
 	padding-bottom: 35px;
 	border-bottom: 1px solid #EEEEEE;
+	margin: auto;
 }
 
 .about-intro {
@@ -1682,7 +1687,8 @@ ol {
 }
 
 .about-left .about-desc {
-	margin-bottom: 82px;
+	padding-bottom: 82px;
+	border-bottom:1px solid #dddddd;
 }
 
 .about-left .about-desc h4 {
@@ -1785,7 +1791,7 @@ ol {
 }
 
 .about-right .contact-info {
-	padding-top: 130px;
+	padding-top: 10px;
 	margin-bottom: 30px;
 }
 
@@ -2647,7 +2653,7 @@ ol {
     color: #fff;
     font-size: 18px;
 	font-weight: 400;
-	padding: 5px 5px 5px;
+	padding: 10px 20px 10px;
 	margin: 11px 0px 33px 0px;
 	background: gray;
 	line-height: 23px;

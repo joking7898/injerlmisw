@@ -91,35 +91,35 @@
                         <div class="category-search">
                             <h5>카테고리</h5>
                             <select name="category" class="ca-search" id="AttractionCategory2">
-                                <option>전체</option>
-                                <option>자연</option>
-                                <option>문화관광</option>
-                                <option>테마관광지</option>
-                                <option>도보</option>
-                                <option>레저/체험</option>
+                                <option <%= fixedCategories[0] %>>전체</option>
+                                <option <%= fixedCategories[1] %>>자연</option>
+                                <option <%= fixedCategories[2] %>>문화관광</option>
+                                <option <%= fixedCategories[3] %>>테마관광지</option>
+                                <option <%= fixedCategories[4] %>>도보</option>
+                                <option <%= fixedCategories[5] %>>레저/체험</option>
                             </select>
                         </div>
                         <div class="location-search">
                             <h5>위치</h5>
                             <select name="location" class="lo-search" id="AttractionLocation2">
-                                <option>전체</option>
-                                <option>서울</option>
-                                <option>부산</option>
-                                <option>대구</option>
-                                <option>인천</option>
-                                <option>광주</option>
-                                <option>대전</option>
-                                <option>울산</option>
-                                <option>세종</option>
-                                <option>경기</option>
-                                <option>강원</option>
-                                <option>충북</option>
-                                <option>충남</option>
-                                <option>전북</option>
-                                <option>전남</option>
-                                <option>경북</option>
-                                <option>경남</option>
-                                <option>제주</option>
+                                <option <%= fixedLocations[0] %>>전체</option>
+                                <option <%= fixedLocations[1] %>>서울</option>
+                                <option <%= fixedLocations[2] %>>부산</option>
+                                <option <%= fixedLocations[3] %>>대구</option>
+                                <option <%= fixedLocations[4] %>>인천</option>
+                                <option <%= fixedLocations[5] %>>광주</option>
+                                <option <%= fixedLocations[6] %>>대전</option>
+                                <option <%= fixedLocations[7] %>>울산</option>
+                                <option <%= fixedLocations[8] %>>세종</option>
+                                <option <%= fixedLocations[9] %>>경기</option>
+                                <option <%= fixedLocations[10] %>>강원</option>
+                                <option <%= fixedLocations[11] %>>충북</option>
+                                <option <%= fixedLocations[12] %>>충남</option>
+                                <option <%= fixedLocations[13] %>>전북</option>
+                                <option <%= fixedLocations[14] %>>전남</option>
+                                <option <%= fixedLocations[15] %>>경북</option>
+                                <option <%= fixedLocations[16] %>>경남</option>
+                                <option <%= fixedLocations[17] %>>제주</option>
                             </select>
                         </div>
                         <button type="submit">검색</button>
@@ -196,7 +196,9 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="./register.ejs?" class="primary-btn">등록</a>
+                        <div style="width:55%;margin:auto;">
+                            <a href="./register.ejs?" class="primary-btn">등록</a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-9" id="viewtable">
@@ -204,10 +206,10 @@
                         <div class="col-lg-12">
                             <form action="#" class="arrange-select">
                                 <span>정렬</span>
-                                <select name='order' onchange='this.form.submit()'>
-                                    <option>최신순</option>
-                                    <option>오래된순</option>
-                                    <option>평점순</option>
+                                <select id='sort' name='order' onchange='sorting(this.value)'>
+                                    <option value="최신순" <%= orderSorts[0] %>>최신순</option>
+                                    <option value="오래된순" <%= orderSorts[1] %>>오래된순</option>
+                                    <option value="평점순" <%= orderSorts[2] %>>평점순</option>
                                 </select>
                             </form>
                         </div>
